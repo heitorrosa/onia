@@ -6,7 +6,7 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
 
 ## Study Plan (3rd phase)
 
-| Eixo Temático (Theme) | Ciclo Preparatório: What to Do | Recommended Exercises & Projects |
+| Eixo Temático | Ciclo Preparatório | Recommended Exercises |
 |---|---|---|
 | **1. Letramento & Pensamento Computacional** | Focus on advanced logic, identifying errors (debugging), and complex structures in Python. | **Programming Fundamentals:** Build tools using Pandas and Matplotlib to plot stock moving averages. |
 | **2. Fundamentos da IA** | Describe the full pipeline (data collection to monitoring) and recognize how IOAI topics connect to real problems. | **Data Science Fundamentals:** Build an "Evaluation Suite" to calculate Confusion Matrices and ROC Curves. |
