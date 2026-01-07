@@ -4,6 +4,11 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
 * [IOIA UAE Syllabus](https://ioai-official.org/wp-content/uploads/2025/10/Syllabus.pdf)
 * [2nd ONIA Syllabus](https://www.oniabrasil.com.br/assets/files/Syllabus_da_2_ONIA.pdf)
 
+### Related repositories
+* [open-cu/awesome-ioia-tasks](https://github.com/open-cu/awesome-ioai-tasks)
+* [NOIC-IA/Problem-Solutions](https://github.com/NOIC-IA/Problem-Solutions)
+* [stefanasandei/roai-solved](https://github.com/stefanasandei/roai-solved)
+
 ## Study Plan (3rd phase)
 
 | Eixo Temático | Ciclo Preparatório | Recommended Exercises |
