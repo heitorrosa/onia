@@ -8,6 +8,7 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
 * [open-cu/awesome-ioia-tasks](https://github.com/open-cu/awesome-ioai-tasks)
 * [NOIC-IA/Problem-Solutions](https://github.com/NOIC-IA/Problem-Solutions)
 * [stefanasandei/roai-solved](https://github.com/stefanasandei/roai-solved)
+* [ioai-writeup/ioai-writeup.github.io](https://github.com/ioai-writeup/ioai-writeup.github.io)
 
 ## Study Plan (3rd phase)
 
