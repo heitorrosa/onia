@@ -43,17 +43,17 @@ if __name__ == '__main__':
     y_prob = best_model.predict_proba(X_test)
 
     ce = log_loss(y_test, y_prob)
-    f_score = f1_score(y_test, y_pred, average='weighted')
-
-    print(f"best alpha: {grid_search.best_params_['classifier__alpha']}")
-    print(f"best l1 ratio: {grid_search.best_params_['classifier__l1_ratio']}")
-
-    print(f"ce: {ce:.4f}")
-    print(f"f-score: {f_score:.4f}")
+    f1_score = f1_score(y_test, y_pred, average='weighted')
 
     w = best_model.named_steps['classifier'].coef_
-    features = X.columns
     classes = best_model.named_steps['classifier'].classes_
+
+    print(f"alpha: {grid_search.best_params_['classifier__alpha']}")
+    print(f"l1_ratio: {grid_search.best_params_['classifier__l1_ratio']}")
+
+    print(f"\nce: {ce:.4f}")
+    print(f"f-score: {f1_score:.4f}")
+    print(f'weights:\n{w}')
 
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(8, 6))
@@ -61,6 +61,6 @@ if __name__ == '__main__':
     plt.title('Confusion Matrix')
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
-    plt.show()
+    plt.savefig(f'2A.1 {f1_score}.png')
 
 # ce: 0.0152 | f-score: 1.0000
