@@ -61,6 +61,6 @@ if __name__ == '__main__':
     plt.title('Confusion Matrix')
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
-    #plt.show()
+    plt.show()
 
 # ce: 0.0152 | f-score: 1.0000
