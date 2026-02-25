@@ -28,7 +28,6 @@ if __name__ == '__main__':
 
     targetStock = 'TSLA'
     targetData = stocksDict[targetStock].tail(30)
-    print(targetData)
 
     spikeDates = targetData[targetData['Volatility Spike'] == 1].index.tolist()
     smaLine = mpf.make_addplot(targetData['SMA_10'], color='blue', width=2.0)

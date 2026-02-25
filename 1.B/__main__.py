@@ -58,7 +58,6 @@ if __name__ == '__main__':
 
     allStocks = pd.concat(dfList, ignore_index=True)
     allStocks = allStocks.drop(columns={'Open', 'High', 'Low', 'Volume', 'OpenInt'})
-
     allStocks['Date'] = pd.to_datetime(allStocks['Date'])
     allStocks = allStocks.dropna(subset=['Date', 'Close'])
 
@@ -66,8 +65,6 @@ if __name__ == '__main__':
     returnsPivot = returnsPivot.dropna()
 
     corrMatrix = returnsPivot.corr()
-
-    print(corrMatrix)
 
     diffPairs = corrMatrix.unstack()
     diffPairs = diffPairs[diffPairs.index.get_level_values(0) != diffPairs.index.get_level_values(1)]
