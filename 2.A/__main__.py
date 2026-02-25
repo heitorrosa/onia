@@ -5,14 +5,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.model_selection import TimeSeriesSplit
-from sklearn.model_selection import cross_validate
 
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from sklearn.linear_model import RidgeCV, Ridge, LassoCV, Lasso, LinearRegression
-
-from sklearn.metrics import get_scorer_names
-from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error, mean_absolute_percentage_error, median_absolute_error
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import RidgeCV, LassoCV
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 def loadDataset():
     df = pd.read_csv("2.A/financial_forecasting_dataset.csv")
