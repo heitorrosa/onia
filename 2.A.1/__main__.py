@@ -30,8 +30,8 @@ if __name__ == '__main__':
     ])
 
     param_grid = {
-        'classifier__alpha': [0.0001, 0.001, 0.01, 0.1],
-        'classifier__l1_ratio': [0.0, 0.15, 0.5, 0.85, 1.0]
+        'alpha': [0.0001, 0.001, 0.01, 0.1],
+        'l1_ratio': [0.0, 0.15, 0.5, 0.85, 1.0]
     }
 
     grid_search = GridSearchCV(model, param_grid, cv=5, scoring='f1_weighted', n_jobs=-1)
@@ -48,8 +48,8 @@ if __name__ == '__main__':
     w = best_model.named_steps['classifier'].coef_
     classes = best_model.named_steps['classifier'].classes_
 
-    print(f"alpha: {grid_search.best_params_['classifier__alpha']}")
-    print(f"l1_ratio: {grid_search.best_params_['classifier__l1_ratio']}")
+    print(f"alpha: {grid_search.best_params_['alpha']}")
+    print(f"l1_ratio: {grid_search.best_params_['l1_ratio']}")
 
     print(f"\nce: {ce:.4f}")
     print(f"f-score: {f1_score:.4f}")
