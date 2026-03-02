@@ -48,7 +48,7 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
       <td><a href="https://www.kaggle.com/datasets/s3programmer/stock-market-dataset-for-financial-analysis">Link</a></td>
     </tr>
     <tr>
-      <td rowspan="3"><b>Supervised Learning</b></td>
+      <td rowspan="5"><b>Supervised Learning</b></td>
       <td>Use Linear Regression with L1/L2 Regularization to predict the next day's closing price based on the previous five days.</td>
       <td><a href="https://www.kaggle.com/datasets/ziya07/financial-market-forecasting-dataset">Link</a></td>
     </tr>
@@ -59,6 +59,14 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
     <tr>
       <td>XGBoost Market Ensemble. Build a Random Forest and a Gradient Boosting model (XGBoost) to predict stock volatility during "Market Stress" events.</td>
       <td><a href="https://www.kaggle.com/datasets/ziya07/financial-market-forecasting-dataset">Link</a></td>
+    </tr>
+    <tr>
+      <td>Logistic Regression Benchmark. Implement a Logistic Regression model to predict if a company will outperform the S&P 500 average return next month based on financial ratios.</td>
+      <td><a href="https://www.kaggle.com/datasets/camnugent/sandp500">Link</a></td>
+    </tr>
+    <tr>
+      <td>Multi-Class Sector Predictor. Use k-NN and Multinomial Logistic Regression to classify stocks into their 11 GICS sectors based on historical volatility and volume patterns.</td>
+      <td><a href="https://www.kaggle.com/datasets/s3programmer/stock-market-dataset-for-predictive-analysis">Link</a></td>
     </tr>
     <tr>
       <td rowspan="3"><b>Unsupervised Learning</b></td>
@@ -87,7 +95,7 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
       <td><a href="https://www.kaggle.com/datasets/s3programmer/stock-market-dataset-for-financial-analysis">Link</a></td>
     </tr>
     <tr>
-      <td rowspan="3"><b>Neural Network Mechanics</b></td>
+      <td rowspan="5"><b>Neural Network Mechanics</b></td>
       <td>The "XOR" Trader. Code a 2-layer neural network from scratch in NumPy to solve a simple "AND/OR" trading rule (e.g., If Volume is High AND Price is Low).</td>
       <td><a href="https://www.kaggle.com/datasets/anitarostami/historical-stock-price-dataset">Link</a></td>
     </tr>
@@ -98,6 +106,14 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
     <tr>
       <td>Optimizer Battle. Compare Adam, AdamW, and SGD when training an MLP to predict "Market Stress Levels."</td>
       <td><a href="https://www.kaggle.com/datasets/ziya07/financial-market-forecasting-dataset">Link</a></td>
+    </tr>
+    <tr>
+      <td>Dynamic Learning Rate Probe. Implement an MLP and test different Learning Rate Schedulers (StepLR, CosineAnnealing) to see which converges faster on binary prediction.</td>
+      <td><a href="https://www.kaggle.com/datasets/s3programmer/stock-market-dataset-for-predictive-analysis">Link</a></td>
+    </tr>
+    <tr>
+      <td>Weight Initialization Experiment. Compare Xavier/Glorot vs. He initialization on a deep MLP to observe the vanishing/exploding gradient phenomenon.</td>
+      <td><a href="https://www.kaggle.com/datasets/anitarostami/historical-stock-price-dataset">Link</a></td>
     </tr>
     <tr>
       <td rowspan="3"><b>Deep Learning Architectures</b></td>
