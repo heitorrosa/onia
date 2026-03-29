@@ -1,6 +1,11 @@
 # deeplearning
-A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência Artificial (ONIA) and the International Olympiad in Artificial Intelligence (IOAI).
+A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência Artificial (ONIA) and the International Olympiad in Artificial Intelligence (IOAI). This repository contain all documents and resolutions made by me during the iteration of this olympiad.
 
+* Fase 3 Etapa 1: 20/20
+
+---
+
+### Syllabus
 * [IOAI Kazakhstan Syllabus](https://ioai-official.org/wp-content/uploads/2025/10/Syllabus.pdf) 
 * [2nd ONIA Syllabus](https://www.oniabrasil.com.br/assets/files/Syllabus_da_2_ONIA.pdf) 
 
@@ -16,28 +21,8 @@ A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência
 * [jaredliw/ioai-tsp-2025](https://github.com/jaredliw/ioai-tsp-2025)
 * [babidisrc/introducao-a-ML](https://github.com/babidisrc/introducao-a-ML)
 
----
-
-## Study Roadmap
-
-**Phase 1: Neural Network Foundations**
-* *Topics:* Perceptrons, Activation Functions (ReLU, Sigmoid), Loss Functions (MSE, Cross-Entropy), Gradient Descent, Backpropagation, and the Chain Rule, Adam and AdamW.
-* *Goal:* Understand the "Theory (How it works)" of weights, biases, and learning rates.
-
-**Phase 2: Classical Machine Learning (StatQuest)**
-* *Topics:* Bias & Variance, Cross-Validation, Regularization (L1/L2), Evaluation Metrics (Confusion Matrix, ROC/AUC).
-* *Models:* Logistic Regression, SVMs, Decision Trees, Random Forests, AdaBoost, XGBoost.
-* *Unsupervised:* PCA, K-Means, Hierarchical Clustering, DBSCAN, t-SNE, UMAP.
-
-**Phase 3: Deep Learning & PyTorch Architectures**
-* *Vision:* CNNs (ResNet, U-Net), Object Detection (YOLO, R-CNN, DETR).
-* *Sequences:* RNNs, LSTMs, Word2Vec, Seq2Seq.
-* *Attention & Transformers:* Self-Attention, Vision Transformers (ViT), BERT (Encoder), GPT (Decoder).
-
-**Phase 4: Generative AI, Audio & Advanced Tuning**
-* *Generative:* Autoencoders, VAEs, GANs, Latent Diffusion Models (Stable Diffusion, ControlNet).
-* *Audio:* Mel Spectrograms, HuBERT, Wav2vec2, Whisper, Qwen-Audio.
-* *Optimization:* Transfer Learning, Fine-tuning, LoRA (PEFT), Reinforcement Learning (RLHF), Prompt Engineering.
+### Compiled Study Playlist
+[Machine Learning](https://www.youtube.com/playlist?list=PLjn45pXnqU0DY8RDF2FL8PKrAHZlALK2m)
 
 ---
 
