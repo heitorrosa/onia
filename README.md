@@ -1,7 +1,8 @@
-# deeplearning
-A repository dedicated to study for the 2nd Olimpíada Nacional de Inteligência Artificial (ONIA) and the International Olympiad in Artificial Intelligence (IOAI). This repository contain all documents and resolutions made by me during the iteration of this olympiad.
+# ONIA
+A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOIA (International Olympiad in Artificial Intelligence). This repository contain all documents and resolutions made by me during the iteration of this olympiad.
 
-* Fase 3 Etapa 1: 20/20
+* Fase 3 Etapa 1: *20/20*
+* Fase 3 Etapa 2: ~
 
 ---
 
