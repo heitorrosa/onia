@@ -1,0 +1,55 @@
+O exercicio pede pra constituir uma rede de Deep Learning usando Autoencoders, comecei analisando os dados do target. O dataset fornecido utilizou de PCA para atomizar o dataset em 28 features colunas Amount e Time (normalizadas usando o StandardScalar). Ao analisar o target do dataset (Class) usando dataset['Class'].value_counts(). Foi visto que o dataset está muito desbalanceado:
+
+Class
+0    284315
+1       492
+
+Isso significa que o Latent Space do Autoencoder terá clusters bem definidos, sem a necessidade de manipular de maneira muito profunda as features, usando umas 2 layers in between o input e o output.
+
+A estrutura da rede, inicialmente se demonstra como um Autoencoder e o 95th percentile da reconstruction loss deve ser usado para classificar o cartao como fraude ou nao.
+    Encoder: 
+        Input: 30, 128
+        LeakyRelu(0.1)
+        Dense: 128, 64
+        LeakyRelu(0.1)
+        Dense: 64, 32
+
+    Decoder:
+        Dense: 32, 64
+        LeakyRelu(0.1)
+        Dense: 64, 128
+        LeakyRelu(0.1)
+        Dense: 128, 30
+
+A funcao de loss escolhida foi MSE e o otimizador Adam. A escolha de 0.1 como valor da LeakyRelu serve como uma prevenção a possiveis overfittings e alinhamento com o uso correto da intenção do dataset. Aumentar o valor do LeakyReLU causaria na propagação de relações nao desejadas o que pode diminuir o scoring do modelo.
+
+O modelo performou como esperado, atingindo um recall de 0.88, o que é considerado bom para esse tipo de modelo não supervisionado, tendo em vista que labels aleatorias foram fornecidas ao modelo para identificar cartoes fraudados, sendo bem sucedido nessa tarefa.
+
+auprc: 0.6838
+              precision    recall  f1-score   support
+
+           0       1.00      0.95      0.97     56864
+           1       0.03      0.88      0.05        98
+
+    accuracy                           0.95     56962
+   macro avg       0.51      0.91      0.51     56962
+weighted avg       1.00      0.95      0.97     56962
+
+[[53918  2946]
+ [   12    86]]
+
+Uma outra approach que foge das requisições do modelo e que poderia ser utilizada é o uso de um Autoencoder com Classifiers para atingir o SOTA em exercicios do tipo, porém, sairia do campo de modelos não supervisionados e entraria no campo de modelos supervisionados, um modelo supervisionado do tipo, atinge scores muito melhores com apenas 41 eppochs, tendo um custo computacional infinitamente menor para uma performance muito maior
+
+auprc: 0.7739
+average precision: 0.7749
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     56864
+           1       0.86      0.79      0.82        98
+
+    accuracy                           1.00     56962
+   macro avg       0.93      0.89      0.91     56962
+weighted avg       1.00      1.00      1.00     56962
+
+[[56851    13]
+ [   21    77]]

@@ -60,7 +60,7 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-dataset">Breast Cancer (sklearn)</a></td>
     </tr>
     <tr>
-      <td><b>Statistical Metric Validation Formulation:</b> Bypassing high-level mapping libraries, natively compute rigorous statistical evaluation metrics. Construct NumPy matrices deriving Confusion Matrix isolation, deriving mathematically exact mappings for Sensitivity, Specificity, Log-Loss scaling, and ROC AUC integration limits sequentially on a heavily imbalanced target arrays.</td>
+      <td><b>Deep Fraud Detection with Autoencoders:</b> Utilizing PyTorch, architect an Autoencoder neural network to detect anomalies in highly imbalanced credit card transaction data. Leverage high-level PyTorch modules to construct the encoder-decoder topology and compute reconstruction loss via MSE, efficiently separating fraudulent anomalous transactions from legitimate distributions.</td>
       <td><a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud">Credit Card Fraud</a></td>
     </tr>
     <tr>
@@ -72,7 +72,7 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset">SMS Spam Collection</a></td>
     </tr>
     <tr>
-      <td><b>Tree Entropy Matrix Calculations:</b> Leveraging the Wine dataset, implement a rigorous Scikit-Learn <code>DecisionTreeClassifier</code>. However, to structurally validate the API, you must mathematically calculate the Gini Impurity and Shannon Entropy of the raw root split using pure Python loops, ensuring your matrix calculations match Scikit-Learn's explicit feature importances.</td>
+      <td><b>Advanced Decision Tree Pruning & Ensembling:</b> Leveraging the Wine dataset, implement a rigorous Scikit-Learn <code>DecisionTreeClassifier</code>. Rigorously deploy Scikit-Learn's structural constraints, validating <code>ccp_alpha</code> pruning parameters and integrating randomized Forest architectures to analyze structural feature importances efficiently, bypassing entirely from-scratch split manual calculations.</td>
       <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html">Wine Dataset</a></td>
     </tr>
     <tr>
@@ -136,12 +136,12 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://www.kaggle.com/datasets/ahmedmohammad2003/uber-trip-data">Uber Coordinates</a></td>
     </tr>
     <tr>
-      <td><b>Eigendecomposition & Principal Component Projections:</b> Working directly within Numpy dimensional matrices, natively scale a raw pixel feature array. Construct entirely customized functions calculating the raw Covariance Matrix deriving direct Eigenvalues actively sorting orthogonal Eigenvectors mapping direct dimensional mappings reconstructing 98% array variances strictly isolated from `sklearn.decomposition`.</td>
+      <td><b>High-Dimensional PCA & Feature Pipelines:</b> Working directly within the MNIST visual matrices, natively scale a raw pixel feature array. Construct entirely customized pipeline systems deploying Scikit-Learn's <code>PCA</code>, extracting optimal dimensions retaining 98% variances directly into an optimal downstream classifier rather than manual Eigendecomposition loops.</td>
       <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST</a></td>
     </tr>
     <tr>
       <td rowspan="12"><b>2. Neural Networks & Deep Learning</b></td>
-      <td><b>Mathematical Backpropagation Validation:</b> Operating purely in NumPy, reconstruct a 3-layer Multi-Layer Perceptron without deep learning APIs. Derive the explicit chain-rule gradients manually for ReLU activations and Cross-Entropy loss mapping over the Synthetic Moons dataset, validating weight stability numerically against PyTorch's <code>autograd</code> tensors.</td>
+      <td><b>Deep Multi-Layer Perceptron Architectures:</b> Operating over the Synthetic Moons dataset, design a 3-layer Multi-Layer Perceptron deploying PyTorch's high-level <code>nn.Module</code> arrays. Optimize non-linear decision boundaries through sequential <code>nn.ReLU</code> and <code>nn.CrossEntropyLoss</code> metrics natively executed on <code>autograd</code> rather than extracting manual derivations.</td>
       <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">Synthetic Moons</a></td>
     </tr>
     <tr>

@@ -1,0 +1,11 @@
+O exercicio pede para organizar um grande dataset (House Prices) usando metodos de ColumnTransformer para depois regularizar os missing data do dataset e normalizar seus dados usando IterativeImputer e Ridge, ajudando a fill null values. Para realizar o ColumnTransformer, organizei o dataset e escolhi as seguintes features para cada:
+    StandrdScalar (numerical): colunas com dtypes numericos (int, float no dataframe)
+    TargetEncoding (high complexity): colunas com mais de 10 valores unicos
+    OneHotEncoding (low complexity): colunas com menos de 10 valores unicos
+Como ele quer que o target(SalePrice) seja predito, encodei o y_train usando np.log1p() para depois decodar usando np.expm1().
+
+Para a regressão com Lasso, é possível usar muitos valores do hyperparametro alpha no cross validation, para o exercicio foi usado o log space de -4, -1 com 50 parametros, já que é o único parametro a ser tunado, facilitando no custo computacional.
+Com o resultado sendo:
+    params: {'alpha': np.float64(0.0009540954763499944)}
+    mse: -0.0220
+    r2: 0.8963

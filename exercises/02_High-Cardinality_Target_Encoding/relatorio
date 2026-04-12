@@ -1,0 +1,15 @@
+O problema pede pra classificar um dataset em um target (income) e aplicar transformacoes para normalizar esses dados para torná-los viaveis para classificação com Logistic Regression.
+    StandardScalar: fnlwgt, age, capital.gain, capital.loss, hours.per.week, education.num
+    TargetEncoding: native.country, occupation
+    OneHotEncoding: marital.status, race, relationship, sex, workclass, education
+
+As colunas foram destinadas para tal baseado se elas são numéricas (StandardScalar) e se elas tem uma complexidade alta ou baixa(TargetEncoding e OneHotEncoding respectivamente), ao aplicar uma pipeline de ColumnTransformer do Sklearn, é possível normalizar o dataset para o problema de LogisticRegression esperado. Com o target (income) sendo classificado usando pd.map() separadamente.
+
+Para cross validation, foi usado um param grid de:
+    C: 0.1, 1.0, 10.0
+    l1_ratio: lin space 0, 1 com 5 samples
+
+Para preservar o tempo de treino e uso computacional, ja que com uma search maior de parametros o custo computacional explodiria por uma melhora mínima na performance do modelo. Os resultados foram:
+    params: C: 0.1, l1_ratio: 0.0
+    f1: 0.8411
+    ce: 0.3227

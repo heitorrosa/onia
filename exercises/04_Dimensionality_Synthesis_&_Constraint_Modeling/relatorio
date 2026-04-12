@@ -1,0 +1,43 @@
+O exercicio quer prever a inferencia de cancer me pacientes usando SVC e PCA, o dataset ja está normalizado e nao precisa de ColumnTransformers para organizar os dados, porém, existem missing values que tem que ser tratados usando drop de colunas inteiramente vazias e SimpleImputer, para isso, foi escolhido o BayesianRidge, como método meio overkill, que funciona a partir de distirbuições probabilisticas, metodo muito usado em VAEs.
+
+Para obter uma espacialidade maior dos dados, foi usado PolynomialFeatures inicialmente com degree 3 para expor nao linearidades nos dados do dataset para posteriormente aplicar o pipeline desejado pelo exercicio:
+    PCA com n_components=0.95
+    SVC para poder medir a margem do hyperplano e ajudar na classificação e adaptação correta das margens entre os pontos do dataset.
+        - O kernel escolhido para o SVC foi o linear porque ao usar rbf o score da resolução sobre penalidades devido ao overfitting dos dados calcular a diferenciação espacial em infinitas dimensões feitas pelo rbf em conjunto com PolynomialFeatures.
+
+Porém, ao comparar a performance de usar outros metodos de expor nao linearidades como usar o kernel rbf para o SVC, removendo o PolynomialFeatures, é possível diminuir o noise do dataset, ajudando no scoring. Com o score saindo de:
+              precision    recall  f1-score   support
+
+           0       0.93      0.94      0.94        71
+           1       0.90      0.88      0.89        43
+
+    accuracy                           0.92       114
+   macro avg       0.92      0.91      0.92       114
+weighted avg       0.92      0.92      0.92       114
+
+para:
+              precision    recall  f1-score   support
+
+           0       0.97      0.96      0.96        71
+           1       0.93      0.95      0.94        43
+
+    accuracy                           0.96       114
+   macro avg       0.95      0.96      0.95       114
+weighted avg       0.96      0.96      0.96       114
+
+Isso permite o modelo a performar corretamente, expondo a melhoria de performance das duas approaches, ao applicar um CrossValidation usando um conjunto de parametros com foco em baixo custo computacional, é possível atingir um nível proximo de SOTA ao modelo. Com os parametros usados para Cross Validation sendo:
+
+        'gamma': np.logspace(-4, 2, 20),
+        'C': [0.1, 1, 10, 100]
+
+com seus resultados:
+
+params: {'svc__C': 1, 'svc__gamma': np.float64(0.01623776739188721)}
+              precision    recall  f1-score   support
+
+           0       0.99      0.96      0.97        71
+           1       0.93      0.98      0.95        43
+
+    accuracy                           0.96       114
+   macro avg       0.96      0.97      0.96       114
+weighted avg       0.97      0.96      0.97       114

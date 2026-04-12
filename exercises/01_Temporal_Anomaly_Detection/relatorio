@@ -1,0 +1,12 @@
+Para esse problema os seguintes problemas foram analisados:
+ - Dados nao labelados
+ - cyclic features (sin/cos)
+ - Necessidade de clsuterizar isso para detectar anormalidades
+
+Possibilidades:
+  - SVM para expor as relacoes entre eles com algo como um radial kernel
+  - Deep Learning com Autoencoders para descobrir as relacoes entre as features e clusteriza-las
+
+Escolhi a rede com Autoencoders pela sua maior interoperabilidade e possibilidade em condensar melhor as features que SVM, que precisaria depender de certa forma dos hyperparametros para sua performance, o que pode falhar tendo em vista que o problema abordado é unsupervised.
+
+- Após testes, foi verificado a melhora em performance e Loss ao usar uma estrutura de 3 -> 64 -> 32 -> 2 para os encoders, permitindo o modelo a expor propriamente as features ao distribui-las propriamente ao longo do latent space quando se expande, comprime e comprime as features. Com uma estrutura de 3 -> 64 -> 2, as features ficavam muito distribuidas e relacioná-las se tornaria uma tarefa dificil, a função de loss escolhida foi a mse onde as amostras com perda 99th percentile eram classificadas como anomalias por divergirem do padrao aprendido.
