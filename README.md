@@ -1,5 +1,5 @@
 # ONIA
-A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOIA (International Olympiad in Artificial Intelligence). This repository contain all documents and resolutions made by me during the iteration of this olympiad.
+A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOAI (International Olympiad in Artificial Intelligence). This repository contains all documents and resolutions made by me during the iteration of this olympiad.
 
 * Fase 3 Etapa 1: *20/20*
 * Fase 3 Etapa 2: ~
@@ -10,7 +10,7 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
 * [IOAI Kazakhstan Syllabus](https://ioai-official.org/wp-content/uploads/2025/10/Syllabus.pdf) 
 * [2nd ONIA Syllabus](https://www.oniabrasil.com.br/assets/files/Syllabus_da_2_ONIA.pdf) 
 
-### Related repositories
+### Related repositories and content
 * [IOAI-official/IOAI-2024](https://github.com/IOAI-official/IOAI-2024)
 * [IOAI-official/IOAI-2025](https://github.com/IOAI-official/IOAI-2025)
 * [ioai-writeup/ioai-writeup.github.io](https://github.com/ioai-writeup/ioai-writeup.github.io)
@@ -21,6 +21,10 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
 * [zHary27/machine-learning-problems](https://github.com/zHary27/machine-learning-problems)
 * [jaredliw/ioai-tsp-2025](https://github.com/jaredliw/ioai-tsp-2025)
 * [babidisrc/introducao-a-ML](https://github.com/babidisrc/introducao-a-ML)
+
+---
+* [ONIA 2025 4 Fase Etapa 1](https://www.oniabrasil.com.br/assets/files/2025_05_20_ONIA_4a_fase_1a_etapa_gabarito.pdf)
+* [ONIA 2025 4 Fase Etapa 2](https://www.oniabrasil.com.br/assets/files/Gabarito_Prova_2a_etapa_4a_fase_13jun2025.pdf)
 
 ### Compiled Study Playlist
 [Machine Learning](https://www.youtube.com/playlist?list=PLjn45pXnqU0DY8RDF2FL8PKrAHZlALK2m)
@@ -38,308 +42,279 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td rowspan="6"><b>Programming Fundamentals</b></td>
-      <td><b>Data Cleaning & EDA:</b> Use Pandas and Matplotlib to analyze a messy Titanic or Weather dataset. Handle missing values, filter outliers, and plot distributions.</td>
-      <td><a href="https://www.kaggle.com/c/titanic">Titanic Dataset</a></td>
+        <tr>
+      <td rowspan="24"><b>1. Foundational Skills & Classical Machine Learning</b></td>
+      <td><b>Temporal Anomaly Detection:</b> As an energy analyst, parse a decade of hourly power consumption data using Pandas and NumPy. Construct a feature pipeline encoding cyclic time variables (sin/cos), followed by an integrated Scikit-Learn pipeline that trains an Isolation Forest or One-Class SVM to robustly detect blackout anomalies.</td>
+      <td><a href="https://www.kaggle.com/datasets/robikscube/hourly-energy-consumption">Hourly Energy Consumption</a></td>
     </tr>
     <tr>
-      <td><b>Scikit-Learn Pipelines:</b> Build a robust preprocessing pipeline (<code>SimpleImputer</code>, <code>StandardScaler</code>, <code>OneHotEncoder</code>) using the <code>ColumnTransformer</code> on the Adult Census Income dataset.</td>
+      <td><b>High-Cardinality Target Encoding:</b> Given the Adult Income dataset featuring heavy categorical variables, implement a highly customized <code>ColumnTransformer</code>. You must seamlessly handle unseen categories during inference, group sparse nominals into an 'other' bucket with Pandas, and construct a robust Logistic Regression baseline optimized exhaustively via <code>GridSearchCV</code>.</td>
       <td><a href="https://www.kaggle.com/datasets/uciml/adult-census-income">Adult Income</a></td>
     </tr>
     <tr>
-      <td><b>Time-Series Manipulation:</b> Use Pandas to group data by month/year, handle datetime indices, and create rolling averages on a historical weather dataset.</td>
-      <td><a href="https://www.kaggle.com/datasets/rtatman/did-it-rain-in-seattle-19482017">Seattle Weather</a></td>
-    </tr>
-    <tr>
-      <td><b>NumPy Vectorization:</b> Write a script that calculates the Euclidean distance between thousands of points using standard Python <code>for</code> loops, and then rewrite it using NumPy broadcasting to compare execution times.</td>
-      <td>Synthetic Array Data</td>
-    </tr>
-    <tr>
-      <td><b>PyTorch Tensor Mastery:</b> Replicate standard NumPy operations (matrix multiplication, broadcasting, reshaping) using strictly PyTorch Tensors (<code>torch.matmul</code>, <code>torch.view</code>). Move tensors between CPU and GPU.</td>
-      <td><a href="https://pytorch.org/docs/stable/tensors.html">PyTorch Docs</a></td>
-    </tr>
-    <tr>
-      <td><b>Custom PyTorch DataLoaders:</b> Write a custom <code>torch.utils.data.Dataset</code> class to load images from a folder, apply basic transforms, and iterate through them using a <code>DataLoader</code>.</td>
-      <td><a href="https://pytorch.org/tutorials/beginner/data_loading_tutorial.html">PyTorch Tutorial</a></td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Data Science Fundamentals</b></td>
-      <td><b>The Evaluation Suite:</b> Evaluate a pre-trained classifier on a Breast Cancer dataset. Calculate Accuracy, Precision, Recall, F1-Score, and plot the ROC Curve and Confusion Matrix manually.</td>
-      <td><a href="https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data">Breast Cancer</a></td>
-    </tr>
-    <tr>
-      <td><b>Cross-Validation & Grid Search:</b> Implement K-Fold cross-validation using <code>GridSearchCV</code> to find the optimal hyperparameters (<code>max_depth</code>, <code>n_estimators</code>) for a model predicting Wine Quality.</td>
-      <td><a href="https://www.kaggle.com/datasets/yasserh/wine-quality-dataset">Wine Quality</a></td>
-    </tr>
-    <tr>
-      <td><b>Outlier Detection & Imputation:</b> Identify anomalies in a housing dataset using the IQR method and Z-scores. Test replacing them with the median vs. dropping the rows entirely.</td>
+      <td><b>Missing Data & Regularized Recovery:</b> Using the House Prices dataset, architect an iterative imputer employing Ridge Regression to cross-estimate missing property traits. Once repaired, apply a Lasso (L1) regression to dynamically collapse irrelevant features to zero, validating your sparsity constraints across an automated 10-fold cross-validation scheme.</td>
       <td><a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">House Prices</a></td>
     </tr>
     <tr>
-      <td><b>Advanced Feature Selection:</b> Use Mutual Information (<code>mutual_info_classif</code>) and Recursive Feature Elimination (RFE) to reduce a dataset of 100+ variables down to the 10 most impactful ones.</td>
-      <td><a href="https://scikit-learn.org/stable/modules/feature_selection.html">sklearn Datasets</a></td>
+      <td><b>Dimensionality Synthesis & Constraint Modeling:</b> Operating on the high-dimensional Breast Cancer dataset, synthesize non-linear interaction features utilizing <code>PolynomialFeatures</code>. Apply PCA to constrain the dimensions while retaining 95% variance, and establish an <code>SVC</code> pipeline that mathematically optimizes the hyperplane margin under strict recall requirements.</td>
+      <td><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-dataset">Breast Cancer (sklearn)</a></td>
     </tr>
     <tr>
-      <td><b>Feature Engineering:</b> Extract time-based features (day of week, month), rolling averages, and lag features from a Bike Sharing demand dataset to improve regression performance.</td>
-      <td><a href="https://www.kaggle.com/c/bike-sharing-demand">Bike Sharing</a></td>
-    </tr>
-    <tr>
-      <td><b>Handling Class Imbalance:</b> Train a model on highly imbalanced Credit Card Fraud data. Compare standard training against using SMOTE and modifying <code>class_weights</code> in PyTorch's <code>CrossEntropyLoss</code>.</td>
+      <td><b>Statistical Metric Validation Formulation:</b> Bypassing high-level mapping libraries, natively compute rigorous statistical evaluation metrics. Construct NumPy matrices deriving Confusion Matrix isolation, deriving mathematically exact mappings for Sensitivity, Specificity, Log-Loss scaling, and ROC AUC integration limits sequentially on a heavily imbalanced target arrays.</td>
       <td><a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud">Credit Card Fraud</a></td>
     </tr>
     <tr>
-      <td rowspan="6"><b>Supervised Learning</b></td>
-      <td><b>Linear & Logistic Regressions:</b> Predict Diabetes disease progression using Linear Regression with L1 (Lasso) and L2 (Ridge) regularization to observe feature coefficient shrinkage.</td>
+      <td><b>Elastic Net Feature Shrinkage & K-Fold Stratification:</b> Tasked with regressing explicit medical parameters, completely bypass <code>cross_val_score</code>. Construct a native K-Fold stratification index mapping iteratively over Elastic Net equations mathematically bounding exactly L1 vs L2 regularization shrinkage thresholds mapping explicit coefficient paths decaying visually over loop trajectories.</td>
       <td><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset">Diabetes (sklearn)</a></td>
     </tr>
     <tr>
-      <td><b>Elastic Net Regression:</b> Combine L1 and L2 penalties using Elastic Net. Perform a grid search to find the optimal <code>l1_ratio</code> on a dataset with highly correlated features.</td>
-      <td><a href="https://scikit-learn.org/stable/datasets/real_world.html#california-housing-dataset">CA Housing</a></td>
+      <td><b>Bayesian Probabilities & Textual Priors:</b> Given a corpus of Spam SMS text, transform raw vocabulary via <code>TfidfVectorizer</code> into sparse matrices. Architect a <code>MultinomialNB</code> model mapping explicit Bayesian priors systematically to counteract severe class imbalances, validating specific probability scores outputted iteratively per class.</td>
+      <td><a href="https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset">SMS Spam Collection</a></td>
     </tr>
     <tr>
-      <td><b>K-NN & SVM Decision Boundaries:</b> Classify Penguin species. Train SVMs with different kernels (Linear, RBF, Poly) and plot their 2D decision boundaries using PCA-reduced features.</td>
-      <td><a href="https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data">Palmer Penguins</a></td>
+      <td><b>Tree Entropy Matrix Calculations:</b> Leveraging the Wine dataset, implement a rigorous Scikit-Learn <code>DecisionTreeClassifier</code>. However, to structurally validate the API, you must mathematically calculate the Gini Impurity and Shannon Entropy of the raw root split using pure Python loops, ensuring your matrix calculations match Scikit-Learn's explicit feature importances.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html">Wine Dataset</a></td>
     </tr>
     <tr>
-      <td><b>Trees to Forests:</b> Predict Heart Disease risk. Compare a single overfitted Decision Tree against a Random Forest ensemble to visualize the reduction in variance.</td>
+      <td><b>Ensemble Architectures (Voting Classifiers):</b> Working on complex tabular multi-class arrays, construct a heterogeneous <code>VotingClassifier</code> combining Logistic Regression, KNN constraints, and SVM architectures. Rigorously map predicted probability distributions natively when switching between "hard" voting constraints versus uncalibrated "soft" integrations.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html">Synthetic Classification</a></td>
+    </tr>
+    <tr>
+      <td><b>Polynomial Dimensionality & Bias-Variance Validation:</b> Map explicit multi-degree relationships on an auto-mpg scalar array. Systematically loop polynomial expansions scaling linearly through degree arrays using <code>PolynomialFeatures</code> combined with Ridge regression, graphing explicitly validation vs training error to mathematically isolate optimal Bias-Variance constraints.</td>
+      <td><a href="https://archive.ics.uci.edu/ml/datasets/auto+mpg">Auto MPG</a></td>
+    </tr>
+    <tr>
+      <td><b>Multi-Layered Stacking Regressors:</b> Given explicit dimensional configurations of real estate valuation, project heterogeneous base meta-models mapping explicit Ridge constraints and Tree-based leaf optimizations. Aggregate the subsequent scalar outputs into a final <code>StackingRegressor</code> terminating using Lasso L1 sparsity matrices.</td>
+      <td><a href="https://www.kaggle.com/datasets/quantbruce/real-estate-price-prediction">Real Estate Valuation</a></td>
+    </tr>
+    <tr>
+      <td><b>Support Vector Tube Extrapolations:</b> Using dense sequential historical data mapping temperature variations, architect sequential <code>SVR</code> pipelines predicting non-linear extrapolations. Radically configure the structural epsilon-tube values mapping exact matrix thresholds separating zero-penalty errors from structural margin boundary violations natively in Scikit-Learn.</td>
+      <td><a href="https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data">Daily Climate</a></td>
+    </tr>
+    <tr>
+      <td><b>Iterative Gradient Boosting & Custom Losses:</b> For a medical diagnostics pipeline using Heart Disease data, the cost of false negatives is extreme. Construct a <code>GradientBoostingClassifier</code> utilizing <code>staged_predict()</code>. You must formulate an approach to wrap the objective function to penalize false negatives severely, combined with an epoch-based early stopping loop.</td>
       <td><a href="https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset">Heart Disease</a></td>
     </tr>
     <tr>
-      <td><b>Voting & Stacking Ensembles:</b> Combine a Logistic Regression, a Support Vector Machine, and a Random Forest using <code>VotingClassifier</code> and <code>StackingClassifier</code> to beat the performance of any single model.</td>
-      <td><a href="https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data">Breast Cancer</a></td>
+      <td><b>XGBoost Hardware Awareness & Sparsity:</b> Deployed in a low-latency anti-fraud environment on imbalanced Credit Card Fraud data. Assemble an XGBoost pipeline natively exploiting memory sparsity. Calibrate <code>scale_pos_weight</code> and extensively tune the tree depth and sub-sampling parameters continuously via <code>RandomizedSearchCV</code>.</td>
+      <td><a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud">Credit Card Fraud</a></td>
     </tr>
     <tr>
-      <td><b>Gradient Boosting Mastery:</b> Use XGBoost or LightGBM to predict advanced House Prices. Focus on handling complex categorical variables and using early stopping.</td>
-      <td><a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">House Prices</a></td>
+      <td><b>Staged Ensemble Aggregation:</b> Utilizing the Teleco Customer Churn data, structurally design an ensemble. Your objective is to formulate a Scikit-Learn estimator that leverages <code>warm_start=True</code> on a Random Forest to incrementally append estimators, actively halting when the validation log-loss stabilizes computed iteratively via NumPy.</td>
+      <td><a href="https://www.kaggle.com/datasets/blastchar/telco-customer-churn">Telco Customer Churn</a></td>
     </tr>
     <tr>
-      <td rowspan="6"><b>Unsupervised Learning</b></td>
-      <td><b>K-Means Segmentation:</b> Perform customer segmentation on a Mall Customers dataset based on spending scores and income. Use the Elbow method to find the optimal 'K'.</td>
+      <td><b>Native Categorical Handling Challenge:</b> Tasked with forecasting Flight Delays, directly process string and mixed-type categorical columns without manual One-Hot Encoding. Implement a sophisticated pipeline deploying <code>HistGradientBoostingClassifier</code> or XGBoost's native categorical support, benchmarking memory footprints and execution latency.</td>
+      <td><a href="https://www.kaggle.com/datasets/usdot/flight-delays">Flight Delays</a></td>
+    </tr>
+    <tr>
+      <td><b>SVM Kernel Subspace Projections:</b> Working with complex spatial distribution clusters, architect parallel Support Vector Machines matrices. Compare native boundary mappings between Polynomial Kernel shifts and deep Radial Basis Function (RBF) projections mathematically via localized decision matrices outputted to Pandas dataframes.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_circles.html">Synthetic Circles</a></td>
+    </tr>
+    <tr>
+      <td><b>Lazy Learning Matrix Validations (KNN):</b> Predict classification mappings across a densely noisy biological feature array. Construct a <code>KNeighborsClassifier</code> isolating explicit mathematical validation through an active `BallTree` algorithm optimization sequence, tracking inference decay times under varying sample constraints.</td>
+      <td><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset">Iris Dataset</a></td>
+    </tr>
+    <tr>
+      <td><b>Manifold Discovery in Consumer Data:</b> As a marketing proxy analyzing Mall Customers, you must isolate hidden consumer sub-segments. Discard naive K-Means; construct a pipeline channeling data through t-SNE for 2D topological mapping, heavily utilizing NumPy distance matrices, followed by HDBSCAN to capture core dense clusters accurately.</td>
       <td><a href="https://www.kaggle.com/datasets/vjchoudhary7/customer-segmentation-tutorial-in-python">Mall Customers</a></td>
     </tr>
     <tr>
-      <td><b>Hierarchical Clustering & Dendrograms:</b> Apply Agglomerative Clustering on the same Mall dataset and plot a Dendrogram using SciPy to visually verify the optimal number of clusters.</td>
-      <td><a href="https://www.kaggle.com/datasets/vjchoudhary7/customer-segmentation-tutorial-in-python">Mall Customers</a></td>
+      <td><b>Dimensionality-Constrained Dictionary Learning:</b> Using the MNIST visual dataset, bypass deep layer reliance by synthesizing a sparse PCA pipeline intersecting with a Dictionary Learning reconstructor defined in Scikit-Learn. Optimize the dictionary size explicitly to reconstruct and denoise digits corrupted by heavy simulated Gaussian noise.</td>
+      <td><a href="https://www.kaggle.com/competitions/digit-recognizer">MNIST</a></td>
     </tr>
     <tr>
-      <td><b>Gaussian Mixture Models (GMM):</b> Fit a GMM to an overlapping dataset and extract the probabilities of each point belonging to a specific cluster (Soft Clustering).</td>
-      <td>Synthetic Clusters</td>
+      <td><b>Probabilistic GMM Density Estimation:</b> Given the Wine Quality array, map the multidimensional chemical distributions applying Gaussian Mixture Models (GMM) with variable covariance types. Generate synthetic wine profiles querying the learned continuous probability distributions natively, bounding outliers using probability thresholds.</td>
+      <td><a href="https://www.kaggle.com/datasets/yasserh/wine-quality-dataset">Wine Quality</a></td>
     </tr>
     <tr>
-      <td><b>PCA Dimension Reduction:</b> Apply PCA on the MNIST dataset. Plot the cumulative explained variance and train a Logistic Regression model on the reduced dimensions vs. the raw pixels.</td>
+      <td><b>Hierarchical Feature Agglomeration:</b> Operating on highly multicollinear sensory data, compute the Spearman rank-order correlations systematically in Pandas/SciPy. Apply Scikit-Learn's Feature Agglomeration to hierarchically fuse tightly correlated features before initiating training, preserving signal-to-noise ratios precisely.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html">Synthetic Classification</a></td>
+    </tr>
+    <tr>
+      <td><b>Spatial Density Isolation Validation:</b> Process geolocation coordination matrices combining structural `DBSCAN` logic heavily mapped over a pre-processing `UMAP` structural reduction layer. Enforce parameters that reject strict spherical topology structures to isolate arbitrary shaped geographical routing matrices.</td>
+      <td><a href="https://www.kaggle.com/datasets/ahmedmohammad2003/uber-trip-data">Uber Coordinates</a></td>
+    </tr>
+    <tr>
+      <td><b>Eigendecomposition & Principal Component Projections:</b> Working directly within Numpy dimensional matrices, natively scale a raw pixel feature array. Construct entirely customized functions calculating the raw Covariance Matrix deriving direct Eigenvalues actively sorting orthogonal Eigenvectors mapping direct dimensional mappings reconstructing 98% array variances strictly isolated from `sklearn.decomposition`.</td>
       <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST</a></td>
     </tr>
     <tr>
-      <td><b>DBSCAN Anomaly Detection:</b> Use DBSCAN to identify spatial clusters and noisy anomalies in a geospatial dataset (like NYC Taxi drop-offs).</td>
-      <td><a href="https://www.kaggle.com/c/nyc-taxi-trip-duration">NYC Taxi Data</a></td>
+      <td rowspan="12"><b>2. Neural Networks & Deep Learning</b></td>
+      <td><b>Mathematical Backpropagation Validation:</b> Operating purely in NumPy, reconstruct a 3-layer Multi-Layer Perceptron without deep learning APIs. Derive the explicit chain-rule gradients manually for ReLU activations and Cross-Entropy loss mapping over the Synthetic Moons dataset, validating weight stability numerically against PyTorch's <code>autograd</code> tensors.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">Synthetic Moons</a></td>
     </tr>
     <tr>
-      <td><b>Manifold Learning:</b> Compare t-SNE and UMAP on the Fashion-MNIST dataset. Observe how UMAP preserves global structure better than t-SNE while reducing dimensions to 2D.</td>
+      <td><b>Dynamic Learning Rate Interventions:</b> Tasked with the continuous classification of Fashion MNIST tensors, architecture a rigid PyTorch training loop. Integrate AdamW decay alongside a customized OneCycleLR parameter scheduling, embedding dynamic early stopping condition evaluation stored iteratively inside a Pandas DataFrame tracker.</td>
       <td><a href="https://www.kaggle.com/datasets/zalando-research/fashionmnist">Fashion MNIST</a></td>
     </tr>
     <tr>
-      <td rowspan="6"><b>Neural Networks (PyTorch)</b></td>
-      <td><b>Backprop from Scratch:</b> Build a simple 2-layer Perceptron in pure NumPy to solve a synthetic XOR dataset, implementing gradient descent and the chain rule manually.</td>
-      <td>Synthetic (XOR)</td>
-    </tr>
-    <tr>
-      <td><b>First PyTorch MLP:</b> Port the NumPy logic to PyTorch using <code>nn.Sequential</code>. Train a regression model on the California Housing dataset using <code>nn.MSELoss()</code>.</td>
+      <td><b>Custom Topologies & Gradient Scaling:</b> Leveraging California Housing regressions, design a PyTorch framework predicting absolute spatial costs. The business constraint demands logarithmic error penalization (RMSLE). Implement this loss natively ensuring zero gradient explosions, coupled directly with multi-head Dropout strategies stopping local topology collapse.</td>
       <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html">CA Housing</a></td>
     </tr>
     <tr>
-      <td><b>Custom Loss Functions:</b> Implement a custom Huber Loss function (Smooth L1 Loss) in PyTorch to train a model that is robust against extreme outliers in the target variable.</td>
-      <td><a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">House Prices</a></td>
+      <td><b>Tensor Broadcasting Constraints:</b> Orchestrating an attention routing mechanism for raw embedded indices, exclusively leverage PyTorch tensor properties (via <code>torch.einsum</code> or <code>matmul</code>) to output the scaled dot-product attention mapping. Forbid <code>for</code> loops actively, pushing aggressive computational broadcasting constraints across the GPU.</td>
+      <td><a href="https://pytorch.org/docs/stable/tensors.html">PyTorch Tensor Docs</a></td>
     </tr>
     <tr>
-      <td><b>Activations Exploration:</b> Build a multi-class PyTorch classifier. Experiment by swapping ReLU, LeakyReLU, Tanh, and Sigmoid activations to observe dead neurons and saturation.</td>
-      <td><a href="https://www.kaggle.com/datasets/zalando-research/fashionmnist">Fashion MNIST</a></td>
+      <td><b>Activation Gradients & Loss Surface Mapping:</b> Rigorously swap PyTorch network topology internal mapping equations transitioning ReLU, Sigmoid, and Tanh constraint networks tracking performance across identical classification boundaries mapping structural Mean Squared Error (MSE) integrations against Binary Cross Entropy (BCE) constraints visually.</td>
+      <td><a href="https://www.kaggle.com/c/titanic">Titanic</a></td>
     </tr>
     <tr>
-      <td><b>The Optimizer Battle:</b> Train a deep network. Compare convergence speed and test accuracy over 50 epochs using SGD, SGD with Momentum, Adam, and AdamW.</td>
-      <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST</a></td>
-    </tr>
-    <tr>
-      <td><b>Learning Rate Schedulers:</b> Train an MLP using <code>optim.lr_scheduler.StepLR</code> and <code>CosineAnnealingLR</code>. Plot the learning rate decay over epochs and observe how it helps escape local minima.</td>
-      <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST</a></td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Deep Learning & Regularization</b></td>
-      <td><b>Overfitting Baseline:</b> Intentionally overfit a deep, unregularized PyTorch model on a small subset of training data (e.g., 500 images of MNIST) until training accuracy is 100% but validation is poor.</td>
-      <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST (Subset)</a></td>
-    </tr>
-    <tr>
-      <td><b>Weight Initialization Study:</b> Initialize network weights using purely random normals vs. <code>nn.init.xavier_uniform_</code> and <code>nn.init.kaiming_normal_</code> (He init). Track the gradient norms in the first layer to visualize vanishing/exploding gradients.</td>
-      <td><a href="https://www.kaggle.com/datasets/zalando-research/fashionmnist">Fashion MNIST</a></td>
-    </tr>
-    <tr>
-      <td><b>Dropout Ablation:</b> Add <code>nn.Dropout</code> layers to your overfitted network. Experiment with dropout rates (0.2, 0.5, 0.8) and analyze the impact on the validation loss curve.</td>
-      <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST (Subset)</a></td>
-    </tr>
-    <tr>
-      <td><b>L2 Regularization (Weight Decay):</b> Instead of Dropout, apply Weight Decay directly in the PyTorch Optimizer (e.g., <code>Adam(weight_decay=1e-4)</code>). Compare the final parameter histogram to a non-regularized model.</td>
-      <td><a href="https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data">Breast Cancer</a></td>
-    </tr>
-    <tr>
-      <td><b>Batch Norm vs Layer Norm:</b> Implement <code>nn.BatchNorm1d</code> and compare its training speed/stability against <code>nn.LayerNorm</code> on a dataset with highly varying feature scales.</td>
-      <td><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset">Diabetes (sklearn)</a></td>
-    </tr>
-    <tr>
-      <td><b>Early Stopping Callback:</b> Write a custom Python class that monitors <code>val_loss</code> during the PyTorch training loop and saves the <code>state_dict</code> (best model weights), stopping training if the metric doesn't improve for <i>N</i> epochs.</td>
-      <td>Any Dataset</td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Computer Vision Fundamentals</b></td>
-      <td><b>Hello World CV:</b> Build a Convolutional Neural Network (CNN) in PyTorch to identify hand-drawn digits (0-9).</td>
+      <td><b>ELBO Matrix Optimization (VAE):</b> Assemble fundamental Variational Autoencoder matrices. Systematically derive PyTorch loss blocks mapping explicit mathematical properties evaluating explicit Evidence Lower Bound (ELBO) integration separating reconstruction boundaries actively off heavily restricted Kullback-Leibler divergence calculations natively.</td>
       <td><a href="https://www.kaggle.com/competitions/digit-recognizer">MNIST</a></td>
     </tr>
     <tr>
-      <td><b>Natural Scene Classification:</b> Train a CNN to distinguish between 6 categories of landscapes (buildings, forests, glaciers, mountains, sea, streets).</td>
-      <td><a href="https://www.kaggle.com/datasets/puneet6060/intel-image-classification">Intel Image</a></td>
-    </tr>
-    <tr>
-      <td><b>Image Augmentation Pipeline:</b> Build a robust <code>torchvision.transforms</code> pipeline (rotation, color jitter, cropping) to drastically improve a baseline CNN's accuracy.</td>
-      <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
-    </tr>
-    <tr>
-      <td><b>Satellite Poverty Map:</b> Train a CNN to classify satellite images of regions into different wealth brackets as a proxy for economic indicators.</td>
-      <td><a href="https://www.kaggle.com/datasets/sandeshbhat/satellite-images-to-predict-povertyafrica">Satellite Images</a></td>
-    </tr>
-    <tr>
-      <td><b>Transfer Learning Baseline:</b> Use a pre-trained ResNet18 model, freeze its early layers, and replace the final classifier head to classify Dogs vs Cats.</td>
-      <td><a href="https://www.kaggle.com/c/dogs-vs-cats">Dogs vs Cats</a></td>
-    </tr>
-    <tr>
-      <td><b>CNN Filter Visualization:</b> Extract the weights from the first convolutional layer of a trained network and plot them as images to visualize the learned "edge detectors".</td>
-      <td><a href="https://pytorch.org/tutorials/beginner/introyt/modelsyt_tutorial.html">PyTorch Models</a></td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Advanced Vision</b></td>
-      <td><b>Traffic Sign Detection:</b> Use a pre-trained YOLO model (Ultralytics) to identify and locate various traffic signs in diverse street scenes with bounding boxes.</td>
-      <td><a href="https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign">GTSRB</a></td>
-    </tr>
-    <tr>
-      <td><b>Urban Scene Segmentation:</b> Implement a U-Net to perform pixel-level segmentation on city street images, separating "road," "sidewalk," and "car."</td>
-      <td><a href="https://www.kaggle.com/datasets/dansbecker/cityscapes-image-pairs">Cityscapes</a></td>
-    </tr>
-    <tr>
-      <td><b>Realistic Face Generation:</b> Code a Deep Convolutional GAN (DCGAN) to generate high-resolution synthetic faces from random noise vectors.</td>
-      <td><a href="https://www.kaggle.com/datasets/jessicali9530/celeba-dataset">CelebA</a></td>
-    </tr>
-    <tr>
-      <td><b>Self-Supervised Vision:</b> Implement a basic Contrastive Learning setup (SimCLR inspired) using augmentations to learn representations without any labels.</td>
-      <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
-    </tr>
-    <tr>
-      <td><b>Instance Segmentation:</b> Use a pre-trained Mask R-CNN from <code>torchvision</code> to both detect objects with bounding boxes and generate pixel-perfect masks for each instance.</td>
-      <td><a href="https://cocodataset.org/">COCO Dataset</a></td>
-    </tr>
-    <tr>
-      <td><b>Neural Style Transfer:</b> Combine the content of one image with the artistic style of another by minimizing feature map differences across layers of a pre-trained VGG-19 network.</td>
-      <td>Any Two Images</td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Vision-Text & Generative</b></td>
-      <td><b>Descriptive Image Search:</b> Use OpenAI's CLIP model to find images in a large collection by typing natural language queries (e.g., "a dog catching a frisbee").</td>
-      <td><a href="https://www.kaggle.com/datasets/adityajn105/flickr8k">Flickr8k</a></td>
-    </tr>
-    <tr>
-      <td><b>Automatic Image Captioning:</b> Combine a vision encoder (like ResNet) with an RNN text decoder to generate a one-sentence description of an image.</td>
-      <td><a href="https://www.kaggle.com/datasets/adityajn105/flickr8k">Flickr8k</a></td>
-    </tr>
-    <tr>
-      <td><b>Weather-Adaptive Diffusion:</b> Use an Image-to-Image Diffusion Model to generate "rainy" or "foggy" versions of clear-weather driving images.</td>
-      <td><a href="https://www.kaggle.com/datasets/yessicatuteja/foggy-cityscapes-image-dataset">Foggy Cityscapes</a></td>
-    </tr>
-    <tr>
-      <td><b>Stable Diffusion Intro:</b> Use the HuggingFace <code>diffusers</code> library to generate images from text prompts, experimenting with different CFG scales and inference steps.</td>
-      <td>HuggingFace API</td>
-    </tr>
-    <tr>
-      <td><b>Visual Question Answering (VQA):</b> Use a pre-trained multimodal model (like BLIP) to pass an image and a text question (e.g., "What color is the car?") and output a text answer.</td>
-      <td>HuggingFace API</td>
-    </tr>
-    <tr>
-      <td><b>ControlNet Generation:</b> Use ControlNet alongside Stable Diffusion to generate an image that perfectly follows the pose of a human skeleton or the edges of a Canny map.</td>
-      <td>HuggingFace API</td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Natural Language Processing</b></td>
-      <td><b>Headline Sentiment Scorer:</b> Use standard Text Classification techniques (TF-IDF + Logistic Regression) to label news headlines as "Positive" or "Negative."</td>
-      <td><a href="https://www.kaggle.com/datasets/sbatti/financial-sentiment-analysis">Financial Sentiment</a></td>
-    </tr>
-    <tr>
-      <td><b>News Category Classifier:</b> Fine-tune a pre-trained BERT (Encoder) model to categorize news articles into categories like "Tech," "Sports," and "Politics."</td>
-      <td><a href="https://www.kaggle.com/datasets/shivamkushwaha/bbc-full-text-document-classification">BBC News</a></td>
-    </tr>
-    <tr>
-      <td><b>Extractive Document Summarizer:</b> Build a Seq2Seq (Encoder-Decoder) model to take long articles and generate a concise summary of the key points.</td>
-      <td><a href="https://www.kaggle.com/datasets/gowrishankarp/newspaper-text-summarization-cnn-dailymail">CNN/DailyMail</a></td>
-    </tr>
-    <tr>
-      <td><b>Prompt Engineering & RAG:</b> Build a Retrieval-Augmented Generation pipeline using an open-source LLM (Llama or Mistral) and LangChain to chat with a PDF document.</td>
-      <td>Custom PDF Documents</td>
-    </tr>
-    <tr>
-      <td><b>Word Embeddings Math:</b> Train Word2Vec on a custom text corpus. Write a script to visualize cosine similarity and perform vector math (e.g., King - Man + Woman = Queen).</td>
-      <td>Any Text Corpus</td>
-    </tr>
-    <tr>
-      <td><b>Named Entity Recognition (NER):</b> Fine-tune a lightweight transformer model (DistilBERT) to extract and classify person names, locations, and dates from raw paragraphs.</td>
-      <td><a href="https://www.kaggle.com/datasets/abhinavwalia95/entity-annotated-corpus">Kaggle NER</a></td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Audio Processing</b></td>
-      <td><b>Spoken Command Recognition:</b> Convert audio <code>.wav</code> files into Mel Spectrograms and use a CNN to classify spoken digits (0-9).</td>
-      <td><a href="https://www.kaggle.com/datasets/joserzapata/free-spoken-digit-dataset-fsdd">FSDD</a></td>
-    </tr>
-    <tr>
-      <td><b>Automated Transcriber:</b> Use the pre-trained OpenAI Whisper model to transcribe audio clips of various speakers into accurate text.</td>
-      <td><a href="https://www.kaggle.com/datasets/pypiahmad/librispeech-asr-corpus">LibriSpeech</a></td>
-    </tr>
-    <tr>
-      <td><b>Multimodal Emotion Recognition:</b> Build a model that takes both audio (tone, pitch) and text (words used) to identify a speaker's emotional state (happy, angry, etc.).</td>
-      <td><a href="https://www.kaggle.com/datasets/uwrfkaggler/ravdess-emotional-speech-audio">RAVDESS</a></td>
-    </tr>
-    <tr>
-      <td><b>Zero-Shot Audio Classification:</b> Use a pre-trained Audio-Text model (like CLAP) to classify environmental sounds without any fine-tuning.</td>
-      <td><a href="https://www.kaggle.com/datasets/mmoreaux/environmental-sound-classification-50">ESC-50</a></td>
-    </tr>
-    <tr>
-      <td><b>Music Genre Classification:</b> Extract Mel-Frequency Cepstral Coefficients (MFCCs) from raw audio tracks and train a Random Forest to classify them into 10 musical genres.</td>
-      <td><a href="https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification">GTZAN Dataset</a></td>
-    </tr>
-    <tr>
-      <td><b>Text-to-Speech (TTS) Pipeline:</b> Use an open-source HuggingFace model (like VITS or Bark) to build a pipeline that takes raw strings of text and generates human-like audio `.wav` files.</td>
-      <td>HuggingFace API</td>
-    </tr>
-    <tr>
-      <td rowspan="6"><b>Generative AI & LLMs</b></td>
-      <td><b>Prompt Engineering & Jailbreaks:</b> Use a free API (like Groq or Gemini) to write a script that tests various Prompt Engineering techniques (Few-Shot, Chain-of-Thought). Then, attempt to safely "jailbreak" a local model to understand vulnerability testing.</td>
-      <td>API / Local LLM</td>
-    </tr>
-    <tr>
-      <td><b>RAG (Retrieval-Augmented Generation) from Scratch:</b> Build a local RAG pipeline without expensive vector databases. Use <code>sentence-transformers</code> to embed a PDF of the ONIA Syllabus, store it in a local FAISS index, and use an LLM API to answer questions about it.</td>
-      <td><a href="https://www.oniabrasil.com.br/assets/files/Syllabus_da_2_ONIA.pdf">ONIA Syllabus PDF</a></td>
-    </tr>
-    <tr>
-      <td><b>Toy VAE (Variational Autoencoder):</b> Build a VAE in PyTorch to generate new, synthetic handwritten digits. Plot the 2D latent space to see how the model transitions smoothly from a "1" to a "7". Runs in 5 minutes on a CPU.</td>
-      <td><a href="https://www.kaggle.com/competitions/digit-recognizer">MNIST</a></td>
-    </tr>
-    <tr>
-      <td><b>Micro-GAN for Synthetic Data:</b> Train a Deep Convolutional GAN (DCGAN) on the Fashion-MNIST dataset to generate pictures of synthetic clothes. This teaches the "Adversarial" generator/discriminator loop without needing heavy compute.</td>
-      <td><a href="https://www.kaggle.com/datasets/zalando-research/fashionmnist">Fashion MNIST</a></td>
-    </tr>
-    <tr>
-      <td><b>LoRA Fine-Tuning (PEFT):</b> Use the Hugging Face <code>peft</code> and <code>trl</code> libraries on a free Google Colab T4 GPU. Fine-tune a small model (like <code>GPT-2</code> or <code>TinyLlama 1.1B</code>) on a dataset of Medical Q&A using 4-bit quantization (QLoRA) so it fits in memory.</td>
+      <td><b>Low-Rank Tensor Approximations (PEFT):</b> Process heavy generative pre-trained architectures mapping explicitly a customized LoRA layer configuration matrices structuring explicit frozen topological states appending strictly updated low-rank structures significantly controlling validation loss gradients preventing destructive matrix catastrophic failures dynamically.</td>
       <td><a href="https://www.kaggle.com/datasets/nimitmak/medical-qa-dataset">Medical Q&A</a></td>
     </tr>
     <tr>
-      <td><b>LLM Output Fact-Checker:</b> Create an automated evaluation pipeline. Use a small local LLM to extract factual claims from a generated text, and cross-reference them against a reliable Wikipedia search API to flag "hallucinations" (crucial for ONIA Eixo 8).</td>
-      <td>Wikipedia API</td>
+      <td><b>Bellman Equation State Traversal:</b> Formulate sophisticated array matrices mapping dynamically across Markov framework states organizing strict tabular Q-Learning routing frameworks mapping explicitly reward mappings actively scaling dimensional matrices into a generalized PyTorch deep Neural Network processing explicit pixel data constraints evaluating explicitly temporal discounting algorithms.</td>
+      <td>OpenAI Gym (CartPole)</td>
+    </tr>
+    <tr>
+      <td><b>Proximal Policy Human Alignment:</b> Establish rigid structural optimization parameters mapping RLHF processes tracking explicit mathematical frameworks combining reward mappings systematically mapping policy gradient bounding scaling explicitly restricting structural catastrophic drift mapping complex loss bounding limits validating dynamic output parameters rigorously testing mathematical optimization boundaries.</td>
+      <td>Theoretical Exercise</td>
+    </tr>
+    <tr>
+      <td><b>Generative Entropy Stochastic Mapping:</b> Manipulate generative frameworks tracking generative configurations adjusting explicitly mapped logit parameters parsing outputs recursively applying structural constraint formulas evaluating parameter stability dynamically tracking Top-K limitations vs Top-P boundaries establishing strict mapping behaviors via explicit Python looping thresholds natively extracting stochastic variations mathematically tracking outputs continuously.</td>
+      <td>API / Local LLM</td>
+    </tr>
+    <tr>
+      <td><b>Prompt Engineering Optimization Pipeline:</b> Build an explicit automated testing suite iterating LLM prompt variations mathematically. Script structural benchmarks assessing Zero-Shot, Few-Shot, Chain-of-Thought, and Meta-Prompting accuracy variances executing dynamic validations comparing contextual bounds natively isolating exactly which methodology retrieves optimal parameter stability across complex text arrays.</td>
+      <td>HuggingFace API / Local LLM</td>
+    </tr>
+    <tr>
+      <td><b>Transfer Learning Freezing Limits:</b> Given massive network limits traversing pre-trained arrays isolating exact weight bindings. Extract structural fine-tuning bounds freezing explicit mathematical arrays tracking strictly appended customized mapping modules iterating backpropagation strictly targeting exclusively novel neural mappings analyzing specifically computational parameter variances avoiding topological collapse.</td>
+      <td><a href="https://huggingface.co/models">HuggingFace Models</a></td>
+    </tr>
+    <tr>
+      <td rowspan="6"><b>3. Computer Vision</b></td>
+      <td><b>Architectural Bypass via Skip Connections:</b> Confronting the CIFAR-10 challenge matrix, program a customized ResNet topography from bare PyTorch modules. Project custom residual blocking structures processing dimensional adjustments through 1x1 spatial convolutions, enforcing fluid gradient mapping over 15 un-frozen network sub-layers.</td>
+      <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
+    </tr>
+    <tr>
+      <td><b>Semantic Masking & Region Isolation:</b> Targeting industrial navigation on Cityscapes sequences, define a structural U-Net layout. Enforce expanding and contracting paths alongside matching symmetrical skip linkages. Compute a customized Intersection-over-Union (IoU) differentiable framework guiding the spatial optimization loop.</td>
+      <td><a href="https://www.kaggle.com/datasets/dansbecker/cityscapes-image-pairs">Cityscapes</a></td>
+    </tr>
+    <tr>
+      <td><b>Self-Supervised Contrastive Formulations:</b> Provided unlabelled patches sourced from ImageNet subsets, formalize a fundamental SimCLR logic layer in PyTorch. Combine randomized geometrical transformations via <code>torchvision</code> translating directly towards an InfoNCE theoretical contrastive loss gradient formulation.</td>
+      <td><a href="https://www.kaggle.com/c/imagenet-object-localization-challenge">ImageNet (Subset)</a></td>
+    </tr>
+    <tr>
+      <td><b>Multi-Scale Structural Proposals (mAP):</b> Evaluate complex structural arrays contrasting YOLO localized detection regressions dynamically opposed to Mask R-CNN topological instance logic mappings. Actively formulate an analytical evaluation script tracing mathematical Mean Average Precision (mAP) metrics processing explicitly under spatial intersection thresholds.</td>
+      <td><a href="https://cocodataset.org/">COCO Dataset</a></td>
+    </tr>
+    <tr>
+      <td><b>Bipartite Matching Structural Detections:</b> Overhauling traditional anchoring methods map natively a complete DETR layout mechanism structure implementing direct array matching functions deriving exact Hungarian algorithm matching algorithms across fixed multi-label token mappings mapping bounding parameter regressions efficiently.</td>
+      <td><a href="https://www.kaggle.com/datasets/robikscube/pascal-voc-2012">PASCAL VOC</a></td>
+    </tr>
+    <tr>
+      <td><b>Generative Adversarial Regularizations:</b> Provided the CelebA landscape, organize a DCGAN integration. Combat persistent mode collapse by designing single-sided label smoothing algorithms paired dynamically with Gaussian noise interference fed aggressively into the localized Discriminator topologies evaluating Inception Scores manually.</td>
+      <td><a href="https://www.kaggle.com/datasets/jessicali9530/celeba-dataset">CelebA</a></td>
+    </tr>
+    <tr>
+      <td rowspan="12"><b>4. Natural Language Processing & Audio</b></td>
+      <td><b>Recurrent State Memory Matrices:</b> For processing variable-length financial sentiments, transform text arrays into tightly packed sequential data batches. Enact an LSTM model processing directly utilizing <code>pack_padded_sequence</code> in PyTorch, dynamically stripping explicit padding tokens, feeding strictly final embedded memory vectors outward to a classification head.</td>
+      <td><a href="https://www.kaggle.com/datasets/sbatti/financial-sentiment-analysis">Financial Sentiment</a></td>
+    </tr>
+    <tr>
+      <td><b>Attention Mechanism Decoding Frameworks:</b> Intersecting bilingual text translations across Europarl strings, align a raw Seq2Seq framework isolating transformer blocks completely. Execute mathematical blueprints for multiplicative (Luong) alignment weights iteratively computing the temporal focus matrix mappings via Numpy indexing during real-time generation.</td>
+      <td><a href="https://www.statmt.org/europarl/">Europarl</a></td>
+    </tr>
+    <tr>
+      <td><b>Transformer Encoder Block Distillation:</b> Instructed to forge a solo bidirectional BERT-style computational layer from base PyTorch operations. Formulate explicit queries, keys, and values matrices to project Multi-Head dimensions identically, cascading matrices strictly down layer normalizations probing parameter weight capacity stability directly.</td>
+      <td><a href="https://huggingface.co/models">HuggingFace Models</a></td>
+    </tr>
+    <tr>
+      <td><b>Tokenization & Byte-Pair Analytics:</b> Completely eliminating tokenizer library APIs, intake an unstructured sequence text via Pandas operations. Architect a definitive Byte-Pair Encoding (BPE) process operating entirely in naive Python loops recursively mapping consecutive pairing frequencies up towards an explicit maximum token dimension restraint.</td>
+      <td><a href="https://www.kaggle.com/datasets/PromptCloudHQ/amazon-reviews-unlocked-mobile-phones">Amazon Reviews Corpus</a></td>
+    </tr>
+    <tr>
+      <td><b>Continuous Autoregressive Decoding Protocols:</b> Configure a mathematically rigorous Decoder-only GPT sub-block framework routing causal mappings sequentially. Enforce zero attention leakage enforcing masking mechanisms recursively, testing output variability mapping Top-P and Temperature scaling algorithms natively via logits.</td>
+      <td><a href="https://www.kaggle.com/datasets/Cornell-University/arxiv">arXiv Summaries</a></td>
+    </tr>
+    <tr>
+      <td><b>Continuous Bag-of-Words (CBOW) Spatial Mappings:</b> Tasked with mapping vast unstructured tokens, reconstruct a native Word2Vec architecture purely iterating inside PyTorch neural boundaries. Calculate localized vocabulary contexts defining explicitly embedded lookup properties computing Cosine Similarity matrix projections mapping word boundaries algebraically avoiding GenSim pipelines.</td>
+      <td>Any Text Corpus</td>
+    </tr>
+    <tr>
+      <td><b>Frequency Domain Topologies:</b> Transcribe unstructured raw waveform signals compiling structurally mapped Mel Spectrogram arrays utilizing librosa/SciPy configurations mapping strictly optimized frame layers. Vectorize outputs cascading deeply across Conv2D mapping structures computing explicit multi-class categorical arrays precisely.</td>
+      <td><a href="https://www.kaggle.com/datasets/joserzapata/free-spoken-digit-dataset-fsdd">FSDD</a></td>
+    </tr>
+    <tr>
+      <td><b>Contrastive Speech Quantization Masks:</b> Incorporating massive unstructured recording structures, build a Wav2Vec2 mapping structure formulating contrastive topological representations structurally resolving masked hidden boundaries parsing raw wave embeddings mapping mathematically towards optimal signal loss convergences.</td>
+      <td><a href="https://www.kaggle.com/datasets/pypiahmad/librispeech-asr-corpus">LibriSpeech</a></td>
+    </tr>
+    <tr>
+      <td><b>Weakly Supervised Acoustic Mapping:</b> Investigate weak spatial parameters structurally leveraging Whisper transcription logic configurations tracking dynamic contextual text representations generating multi-dimensional attention states natively binding noise reduction filtering parameters recursively mapping language translation.</td>
+      <td>HuggingFace API</td>
+    </tr>
+    <tr>
+      <td><b>Multimodal Natural Sound Topologies:</b> Organize structural Qwen-Audio analytical scripts configuring explicitly complex prompt inputs compiling structural language instructions aligning heavily with acoustic spatial vectors extracting non-verbal classification representations rigorously formatting categorical mapping matrices.</td>
+      <td>HuggingFace Models</td>
+    </tr>
+    <tr>
+      <td><b>Temporal Sequence Alignment (DTW):</b> Operating entirely under raw sequential Numpy structures computing localized auditory matrices tracking Dynamic Time Warping operations. Align differing frequency lengths evaluating pure boundary distances optimizing global alignment bounds natively strictly bounded algorithmically offline.</td>
+      <td><a href="https://www.kaggle.com/datasets/joserzapata/free-spoken-digit-dataset-fsdd">FSDD</a></td>
+    </tr>
+    <tr>
+      <td><b>Recurrent Acoustic Isolation Sequences:</b> Synthesize basic auditory mapping inputs projecting dimensional matrices traversing Recurrent Neural Network sequences directly. Implement pure linear transformations calculating sequential signal variances matching classification loss functions minimizing noise distributions heavily via mapped states tracking explicitly frame by frame.</td>
+      <td><a href="https://www.kaggle.com/datasets/pypiahmad/librispeech-asr-corpus">LibriSpeech</a></td>
     </tr>
   </tbody>
 </table>
+
+* Output the following prompt in some LLM, preferably in your IDE, to create a detailed `.md` file for each exercise.
+
+<pre>
+You are an expert AI Educator and a Problem Setter for the International Olympiad in Artificial Intelligence (IOAI) and the Olimpíada Nacional de Inteligência Artificial (ONIA). Your task is to take a brief exercise description and expand it into a full, rigorous, "Olympiad-style" problem statement in Markdown (.md) format.
+
+I will provide you with a brief [EXERCISE DESCRIPTION] and a [DATASET REFERENCE].
+
+Your output must be a comprehensive Markdown file that strictly follows this structure:
+
+# [Creative and Formal Problem Title]
+**Difficulty Level:** [Estimate: Phase 3 (Intermediate) or Phase 4 (Advanced)] | **Time Limit:** [Estimate, e.g., 2 Hours]
+
+## 1. Background / Scenario
+Create a brief, engaging real-world scenario that contextualizes the problem structurally. Olympiad problems always have a complex dynamic narrative (e.g., "You are the chief data engineer handling structural failure predictions in deep-ocean pipelines...").
+
+## 2. Problem Statement
+Clearly and formally define the robust operational algorithms and modeling systems the student must construct. Replace generic phrasing with specific parameter expectations.
+
+## 3. Dataset Description
+Describe the dataset based on the provided link/context. Mention the explicit feature properties matrices, expected schema quirks, and statistical properties to be accommodated (e.g., "contains zero-inflated arrays in target columns").
+
+## 4. Subtasks & Point Distribution
+Break the underlying structure into 3 to 4 hyper-specific systematic subtasks. 
+* **Task 4.1: [Name] (XX pts):** Define precise matrix manipulations / preprocessing pipelines. 
+* **Task 4.2: [Name] (XX pts):** Detail the exact modeling layers / hyperparameter bounds.
+* **Task 4.3: [Name] (XX pts):** Explain the rigid validation / scoring constraint integration.
+(Ensure the tasks directly align with high-level optimization parameters referenced conceptually in the prompt).
+
+## 5. Constraints & Technical Rules
+List severe parameters and computational thresholds that scale complexity constraints.
+* Allowed/Disallowed libraries (e.g., "You are strictly permitted to deploy Pandas, Scikit-Learn, and NumPy arrays for this constraint, isolating external PyTorch dependencies completely unless mapped mathematically backward").
+* Execution constraints (e.g., "Must complete matrix transformations under 5 minutes utilizing strictly vectorized mathematical operators").
+* **Scikit-Learn, XGBoost & Tooling Constraints (CRITICAL):** If the domain intersects tree-based or standard modeling implementations, mandate sophisticated tracking. The implementation MUST systematically feature arrays scaling with `Pipeline`, `ColumnTransformer`, custom loss overrides, or advanced structural metrics like `warm_start=True` or `staged_predict()`. Handling epochs iteration dynamically using partial fitting, tracked structurally using NumPy and Pandas properties.
+
+## 6. Evaluation Criteria
+Explain the rigid structural tests deployed. (e.g. penalized F1-weighted variance, bounded Mean Absolute Error via logarithm mapping, execution footprint). Specify how automated tests analyze validation leakage implicitly.
+
+## 7. Deliverables
+State exactly what elements construct the final package output structure natively (e.g., `pipeline.py`, `inference_script.ipynb`, and analytical vector mapping plots).
+
+---
+CRITICAL INSTRUCTIONS:
+- DO NOT output direct model code or pure Python. This represents the explicit structural exam for an olympiad student to interpret and compile interactively.
+- Leverage severe, professional mathematical Markdown.
+- Design the problem mathematically robustly, reflecting a high-tier advanced programming competition matrix architecture limit.
+
+Here is the input:
+[EXERCISE DESCRIPTION]: 
+[DATASET REFERENCE]: 
+</pre>
 
 ## License
 This repository is under the GPL 3.0 License from June, 29th 2007.

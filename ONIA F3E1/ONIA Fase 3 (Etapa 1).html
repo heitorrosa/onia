@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2ª ONIA - 3ª Fase - Alunos [8º ano EF ao 3º ano do EM]</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #000;
+            background: #fff;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+            }
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 11pt;
+            font-style: italic;
+        }
+        
+        .welcome {
+            text-align: justify;
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #333;
+            background: #fafafa;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            font-size: 13pt;
+            margin-bottom: 8px;
+        }
+        
+        .question-text {
+            text-align: justify;
+            margin-bottom: 12px;
+        }
+        
+        .question-text p {
+            margin-bottom: 8px;
+        }
+        
+        .code-block {
+            font-family: "Courier New", monospace;
+            font-size: 10pt;
+            background: #f5f5f5;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .option {
+            margin-bottom: 6px;
+        }
+        
+        .option-letter {
+            font-weight: bold;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 25px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 10pt;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+        
+        .roman-list {
+            list-style-type: lower-roman;
+            margin-left: 25px;
+        }
+        
+        .bold {
+            font-weight: bold;
+        }
+        
+        .italic {
+            font-style: italic;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        th {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>2ª ONIA - 3ª Fase - Alunos</h1>
+        <p class="subtitle">[8º ano EF ao 3º ano do EM]</p>
+    </div>
+    
+    <div class="welcome">
+        <p><span class="bold">SEJA MUITO BEM-VINDO(A)!</span> A 2ª edição da Olimpíada Nacional de Inteligência Artificial (ONIA) é um evento aberto e gratuito voltado para jovens e dividido em três categorias. Consiste em uma ação exclusivamente cultural e recreativa, sendo a participação voluntária e desvinculada da aquisição de qualquer bem, serviço ou direito.</p>
+        <br>
+        <p>Esta prova de 3ª fase é individual, online, mas sem consulta livre. Siga nossas redes sociais. www.instagram.com/oniabrasil</p>
+        <br>
+        <p>Você precisará consultar as redes sociais para acompanhar a divulgação de resultados e dos polos de aplicação das fases presenciais. Os certificados usarão este nome na emissão. Indique também corretamente cidade, escola e estado. Você consegue editar teus dados, para que a gente consiga saber sua escola e sua cidade. Boa prova!</p>
+    </div>
+    
+    <div class="question">
+        <p class="question-number">Questão 1</p>
+        <div class="question-text">
+            <p>Uma escola deseja desenvolver um sistema para ajudar alunos a organizarem seus estudos antes das provas finais. O desafio é que muitos estudantes relatam sentir que "há conteúdo demais" e não sabem por onde começar.</p>
+            <br>
+            <p>Ao projetar o sistema, a equipe decide que ele deverá:</p>
+            <ul>
+                <li>Primeiro, listar todas as disciplinas com prova marcada.</li>
+                <li>Depois, dividir cada disciplina em tópicos menores (por exemplo: em Matemática -> funções, geometria, estatística).</li>
+                <li>Em seguida, estimar o tempo médio necessário para revisar cada tópico.</li>
+                <li>Por fim, distribuir esses blocos de estudo ao longo dos dias disponíveis até a prova.</li>
+            </ul>
+            <br>
+            <p>Durante os testes, a equipe percebe que os alunos passam a visualizar melhor o volume real de conteúdo e conseguem cumprir o cronograma com mais consistência.</p>
+            <br>
+            
+            <br>
+            <p class="bold">Qual é a principal razão pela qual essa estratégia torna o problema mais administrável para os alunos?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) Porque o sistema utiliza inteligência artificial para prever as notas finais.</p>
+            <p class="option">B) Porque transforma um problema amplo e abstrato em unidades menores.</p>
+            <p class="option">C) Porque elimina automaticamente os tópicos mais difíceis do cronograma.</p>
+            <p class="option">D) Porque reduz a quantidade total de conteúdo exigido nas provas.</p>
+            <p class="option">E) Porque substitui completamente a necessidade de planejamento individual.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 2</p>
+        <div class="question-text">
+            <p>Um estudante de Ciência de Dados escreveu um algoritmo em Python para avaliar o desempenho de um modelo de Inteligência Artificial logo após o treinamento. Ele extraiu os valores de uma Matriz de Confusão, mas ao criar a função, esqueceu de nomear corretamente as variáveis das métricas, chamando-as apenas de metrica_X, metrica_Y e metrica_Z.</p>
+            <br>
+            <p>Analise o trecho de código abaixo:</p>
+        </div>
+        <div class="code-block">def avaliar_modelo(TP, TN, FP, FN):
+    # TP: Verdadeiros Positivos | TN: Verdadeiros Negativos
+    # FP: Falsos Positivos      | FN: Falsos Negativos
+    
+    metrica_X = TP / (TP + FP)
+
+    metrica_Y = TP / (TP + FN)
+    
+    metrica_Z = 2 * (metrica_X * metrica_Y) / (metrica_X + metrica_Y)
+    
+    return metrica_X, metrica_Y, metrica_Z
+
+    # Resultados extraídos do teste do modelo:
+    TP = 30
+    TN = 80
+    FP = 20
+    FN = 70
+
+    x, y, z = avaliar_modelo(TP, TN, FP, FN)</div>
+        <p class="question-text">Realizando o teste de mesa (cálculo passo a passo) do código acima, qual das alternativas a seguir indica corretamente os valores numéricos impressos nas variáveis x, y e z e os respectivos nomes teóricos que essas métricas recebem na área de Machine Learning?</p>
+        <div class="options">
+            <p class="option">A) x = 0.60 (Precisão), y = 0.30 (Recall), z = 0.40 (F1-Score).</p>
+            <p class="option">B) x = 0.60 (Recall), y = 0.30 (Precisão), z = 0.40 (F1-Score).</p>
+            <p class="option">C) x = 0.60 (Precisão), y = 0.30 (Recall), z = 0.55 (Acurácia).</p>
+            <p class="option">D) x = 0.30 (Precisão), y = 0.60 (Recall), z = 0.45 (F1-Score).</p>
+            <p class="option">E) x = 0.55 (Acurácia), y = 0.30 (Recall), z = 0.40 (Precisão).</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 3</p>
+        <div class="question-text">
+            <p>Um hospital universitário está desenvolvendo um modelo de IA para auxiliar na detecção precoce de uma doença genética rara, que afeta aproximadamente 1% da população.</p>
+            <br>
+            <p>Após os testes iniciais, a equipe obtém os seguintes resultados no conjunto de validação:</p>
+            <ul>
+                <li>Precisão (Precision): 92%</li>
+                <li>Sensibilidade (Recall): 28%</li>
+            </ul>
+            <br>
+            <p>Os médicos percebem que o sistema quase nunca acusa a doença quando o paciente está saudável. No entanto, muitos pacientes que realmente possuem a condição não são identificados pelo modelo.</p>
+            <br>
+            <p>Considerando as definições formais das métricas:</p>
+            <ul>
+                <li>Precisão = entre os casos previstos como positivos, quantos realmente são positivos.</li>
+                <li>Recall = entre os casos realmente positivos, quantos foram corretamente identificados.</li>
+            </ul>
+            <br>
+            <p class="bold">Qual interpretação é mais adequada para esse cenário?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) O modelo identifica corretamente a maioria dos pacientes doentes, mas apresenta muitos falsos positivos.</p>
+            <p class="option">B) O modelo raramente classifica pacientes saudáveis como doentes, porém deixa de identificar grande parte dos casos reais da doença.</p>
+            <p class="option">C) O modelo apresenta equilíbrio adequado entre falsos positivos e falsos negativos, sendo apropriado para triagem populacional.</p>
+            <p class="option">D) O modelo está superajustado aos dados de treino, o que explica a discrepância entre precisão e recall.</p>
+            <p class="option">E) O modelo apresenta alta variância estatística, indicando instabilidade na predição de ambas as classes.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 4</p>
+        <div class="question-text">
+            <p>Após o treinamento inicial, modelos de linguagem (LLMs) podem ser refinados utilizando Aprendizado por Reforço (RL). Uma técnica popular é o GRPO (Group Relative Policy Optimization), que funciona da seguinte forma simplificada:</p>
+            <ol>
+                <li>Para cada pergunta, o modelo gera K respostas diferentes (amostras).</li>
+                <li>Cada resposta recebe uma recompensa (reward) com base em algum critério de qualidade.</li>
+                <li>O modelo é atualizado para aumentar a probabilidade de gerar respostas com alta recompensa e diminuir a probabilidade de gerar respostas com baixa recompensa.</li>
+            </ol>
+            <br>
+            <p>Um conceito importante nesse processo é o reward hacking (exploração da recompensa): o modelo pode aprender a maximizar a recompensa de maneiras não intencionais, encontrando "atalhos" que satisfazem o critério de recompensa sem realmente melhorar a qualidade geral das respostas.</p>
+            <br>
+            <p>Uma forma de controlar esse comportamento, é usar um parâmetro de divergência KL, que penaliza o modelo quando ele se afasta demais do modelo original (referência), evitando mudanças drásticas no comportamento.</p>
+            <br>
+            <p>Considere a seguinte situação: um engenheiro tem um LLM que frequentemente responde no idioma errado (por exemplo, responde em inglês quando o usuário pergunta em português). Ele decide aplicar RL com GRPO usando a seguinte função de recompensa:</p>
+            <ul>
+                <li>+1 se a resposta está no idioma correto</li>
+                <li>-1 se a resposta está no idioma errado</li>
+            </ul>
+            <br>
+            <p>Após o treinamento, o modelo passa a responder consistentemente no idioma correto. Porém, a precisão das respostas caiu drasticamente — o conteúdo das respostas ficou muito pior.</p>
+            <br>
+            <p class="bold">O que explica esse resultado e qual seria a melhor forma de mitigá-lo?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) O modelo não teve dados suficientes para aprender a responder no idioma correto. A solução é gerar mais amostras (aumentar K) durante o treinamento de RL.</p>
+            <p class="option">B) O modelo aprendeu a priorizar respostas no idioma correto independentemente de estarem certas. Para mitigar, pode-se usar uma função de recompensa que também avalie acurácia e/ou aumentar o peso da penalidade de divergência KL.</p>
+            <p class="option">C) O problema é que GRPO não é adequado para tarefas de linguagem. A solução seria usar exclusivamente fine-tuning supervisionado (SFT) com dados no idioma correto.</p>
+            <p class="option">D) A recompensa negativa (-1) causou instabilidade numérica no treinamento. A solução é usar apenas recompensas positivas (por exemplo, +1 para idioma correto e 0 para idioma errado).</p>
+            <p class="option">E) O modelo sofreu overfitting nos dados de treinamento de RL. A solução é reduzir o número de épocas de treinamento até encontrar o equilíbrio entre idioma e precisão.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 5</p>
+        <div class="question-text">
+            <p>Modelos de linguagem (LLMs) geram texto token por token. A cada passo, o modelo calcula uma pontuação (chamada logit) para cada token do vocabulário, indicando quão provável ele é como próximo token. Essas pontuações são convertidas em probabilidades usando a função softmax.</p>
+            <br>
+            <p>Um parâmetro chamado temperatura (T) pode ser aplicado antes do softmax para controlar a "criatividade" do modelo.</p>
+            <br>
+            <p>Para ilustrar, considere que o modelo está gerando a próxima palavra após "O gato subiu na" e os três tokens mais prováveis têm os seguintes logits:</p>
+        </div>
+        <center><img src="assets/5.png" alt="Questão 5" style="max-width: 300px; height: auto;"></center>
+        <table>
+            <thead>
+                <tr>
+                    <th>Token</th>
+                    <th>Logit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>árvore</td>
+                    <td>5.0</td>
+                </tr>
+                <tr>
+                    <td>mesa</td>
+                    <td>3.0</td>
+                </tr>
+                <tr>
+                    <td>parede</td>
+                    <td>1.0</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="question-text">Baseado na tabela acima e no conceito de temperatura, qual afirmação é <span class="bold">INCORRETA</span>?</p>
+        <div class="options">
+            <p class="option">A) Com temperatura baixa (T -> 0), a distribuição de probabilidade se torna mais "pontiaguda", concentrando quase toda a probabilidade no token com maior logit. O modelo se torna mais determinístico e previsível.</p>
+            <p class="option">B) Com temperatura alta (T -> ∞), a distribuição se torna mais uniforme, aproximando-se de probabilidades iguais para todos os tokens. O modelo se torna mais "criativo" mas também mais imprevisível e propenso a gerar texto sem sentido.</p>
+            <p class="option">C) Temperatura T = 1.0 corresponde ao comportamento padrão do modelo, sem nenhuma modificação na distribuição de probabilidade.</p>
+            <p class="option">D) A temperatura modifica os pesos internos do modelo a cada inferência, recalibrando as camadas de atenção para produzir respostas mais ou menos criativas.</p>
+            <p class="option">E) Uma estratégia comum é usar temperatura baixa para tarefas que exigem precisão (como código ou matemática) e temperatura alta para tarefas criativas (como escrita de ficção ou brainstorming).</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 6</p>
+        <div class="question-text">
+            <p>Modelos de linguagem (LLMs) não "leem" texto diretamente: eles primeiro transformam o texto em tokens usando um tokenizador (por exemplo, BPE/WordPiece/Unigram). Em geral, quanto mais tokens um texto vira, maior o custo de treino e inferência (mais passos de atenção, mais memória e tempo), e maior a chance de "estourar" o limite de contexto.</p>
+            <br>
+            <p>Um pesquisador compara dois tokenizadores para treinar um modelo voltado ao português:</p>
+            <ul>
+                <li><span class="bold">Tokenizador A (multilíngue):</span> treinado em muitos idiomas, com um vocabulário compartilhado.</li>
+                <li><span class="bold">Tokenizador B (dedicado ao português):</span> treinado majoritariamente em corpora em português, com o mesmo tamanho de vocabulário do A.</li>
+            </ul>
+            <br>
+            <p>Ele faz um teste em textos em português e observa:</p>
+            <ul>
+                <li>O Tokenizador A gera, em média, 30% mais tokens por texto do que o Tokenizador B.</li>
+                <li>O modelo treinado com o Tokenizador A tem custo de inferência maior e, em prompts longos, parece "perder" detalhes mais cedo.</li>
+            </ul>
+            <br>
+            <p>Considere as afirmações:</p>
+            <ol class="roman-list">
+                <li>É esperado que um tokenizador dedicado ao português produza menos tokens em textos em português, pois tende a aprender subpalavras mais frequentes e adequadas ao idioma (ex.: "ção", "mente", "nh", "lh"), reduzindo fragmentação.</li>
+                <li>Se o tokenizador A gera 30% mais tokens em média, então, mantendo o mesmo comprimento máximo de contexto (por exemplo, 4096 tokens), o modelo com A consegue "ver" menos conteúdo em caracteres/palavras do que com B, o que pode afetar desempenho em tarefas que dependem de contexto longo.</li>
+                <li>A melhor forma de resolver isso é aumentar o tamanho do vocabulário do tokenizador multilíngue indefinidamente, porque isso sempre reduz o número de tokens sem nenhum custo ou efeito colateral.</li>
+                <li>Em modelos Transformer, reduzir o número de tokens de entrada pode melhorar a eficiência de inferência: com menos tokens, geralmente há menos operações e menos uso de memória (especialmente no mecanismo de atenção), podendo reduzir latência e aumentar throughput — embora o ganho exato dependa da implementação e do comprimento do contexto.</li>
+            </ol>
+            <br>
+            <p class="bold">A alternativa correta é:</p>
+        </div>
+        <div class="options">
+            <p class="option">A) Somente I e IV.</p>
+            <p class="option">B) Somente II e III.</p>
+            <p class="option">C) I, II e IV.</p>
+            <p class="option">D) I, II, III e IV.</p>
+            <p class="option">E) Somente III.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 7</p>
+        <div class="question-text">
+            <p>Um grupo de pesquisa compara dois datasets para treinar um modelo de classificação médica:</p>
+            <ul>
+                <li>Dataset A: 5 milhões de exemplos, 20% das labels possuem ruído.</li>
+                <li>Dataset B: 800 mil exemplos, com labels revisadas por especialistas (ruído praticamente zero).</li>
+            </ul>
+            <br>
+            <p>Após treinamento com o mesmo orçamento computacional, o modelo treinado com o Dataset B apresenta melhor desempenho no conjunto de teste limpo.</p>
+            <br>
+            <p class="bold">Qual é a explicação mais tecnicamente consistente?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) O modelo treinado com menos dados sempre generaliza melhor.</p>
+            <p class="option">B) O Dataset A sofreu underfitting por ser muito grande.</p>
+            <p class="option">C) O tamanho do dataset não influencia desempenho quando se usa Transformer.</p>
+            <p class="option">D) O ruído nas labels reduz a eficiência amostral e pode introduzir gradientes inconsistentes durante o treinamento.</p>
+            <p class="option">E) O problema decorre exclusivamente da escolha da função de ativação.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 8</p>
+        <div class="question-text">
+            <p>Na área de Machine Learning, a técnica conhecida como Máquina de Vetores de Suporte (SVM – do Inglês Support Vector Machines) tenta encontrar a melhor "reta" (hiperplano de separação) para separar duas classes de dados, buscando a "rua" mais larga possível entre elas. Na figura acima, os três pontos destacados que tocam os limites dessa "rua" tracejada recebem o nome especial de Vetores Suporte. Se você deletasse do gráfico todos os outros pontos que não estão destacados e treinasse o algoritmo novamente, o que aconteceria com a reta separadora?</p>
+        </div>
+        <center><img src="assets/8.png" alt="Questão 8" style="max-width: 400px; height: auto;"></center>
+        <div class="options">
+            <p class="option">A) A reta desapareceria, pois o algoritmo precisa de muitos dados espalhados para conseguir calcular qualquer reta.</p>
+            <p class="option">B) A reta separadora ficaria exatamente no mesmo lugar, pois apenas os vetores suporte são necessários para defini-la.</p>
+            <p class="option">C) A reta mudaria de inclinação drasticamente, pois os pontos mais distantes são os que mais atraem a reta.</p>
+            <p class="option">D) O modelo daria um erro, pois os vetores de suporte são, na verdade, os ruídos (dados incorretos) que devem ser apagados.</p>
+            <p class="option">E) A reta se transformaria em um círculo para tentar englobar os três pontos restantes.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 9</p>
+        <div class="question-text">
+            <p>Na arquitetura Transformer, cada bloco é composto por subcamadas como Self-Attention (autoatenção) e FFN (rede feed-forward). Um detalhe importante do design é que, em cada subcamada, a entrada original é somada à saída da subcamada antes de passar adiante. Ou seja, se a entrada de uma subcamada é <em>x</em> e a subcamada computa uma função <em>F(x)</em>, o resultado final dessa etapa não é simplesmente <em>F(x)</em>, mas sim:</p>
+            <p class="bold" style="text-align: center; margin: 15px 0;">saída = <em>x + F(x)</em></p>
+            <p>Essa operação é chamada de conexão residual (residual connection) ou skip connection.</p>
+            <center><img src="assets/9.png" alt="Questão 9" style="max-width: 400px; height: auto;"></center>
+            <br>
+            <p class="bold">Por que essa técnica é fundamental para treinar Transformers com muitas camadas?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) A conexão residual serve para aumentar a dimensionalidade dos vetores, permitindo que o modelo represente informações mais complexas a cada camada.</p>
+            <p class="option">B) A conexão residual é usada para implementar regularização (como dropout), evitando overfitting durante o treinamento.</p>
+            <p class="option">C) A conexão residual melhora o fluxo de gradientes durante a backpropagation.</p>
+            <p class="option">D) A conexão residual é necessária porque a subcamada de Self-Attention destrói a informação original da entrada, e sem a soma o modelo perderia todo o conteúdo semântico dos tokens.</p>
+            <p class="option">E) A conexão residual é uma técnica opcional que melhora levemente o desempenho, mas Transformers profundos podem ser treinados sem ela sem grandes problemas.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 10</p>
+        <div class="question-text">
+            <p>Em redes neurais, as funções de ativação são responsáveis por transformar os valores de saída de uma camada. Duas funções muito conhecidas produzem valores entre 0 e 1:</p>
+        </div>
+        <center><img src="assets/10.png" alt="Questão 10" style="max-width: 400px; height: auto;"></center>
+        <table>
+            <thead>
+                <tr>
+                    <th>Função</th>
+                    <th>Fórmula</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sigmoid</td>
+                    <td>σ(x) = 1 / (1 + e⁻ˣ)</td>
+                </tr>
+                <tr>
+                    <td>Softmax</td>
+                    <td>σ(x)ᵢ = eˣᵢ / Σⱼ eˣʲ</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="question-text">Considere dois problemas de classificação de imagens:</p>
+        <ul>
+            <li><span class="bold">Problema A:</span> Dada uma foto, classificar o animal como gato, cachorro ou pássaro (a imagem contém exatamente um animal).</li>
+            <li><span class="bold">Problema B:</span> Dada uma foto, identificar quais objetos estão presentes entre: pessoa, carro, árvore (a imagem pode conter vários objetos ao mesmo tempo).</li>
+        </ul>
+        <br>
+        <p>Analise as afirmações:</p>
+        <ol class="roman-list">
+            <li>No Problema A, devemos usar softmax na camada de saída, pois as classes são mutuamente exclusivas e precisamos de uma distribuição de probabilidade válida que some 1.</li>
+            <li>No Problema B, devemos usar sigmoid na camada de saída de forma independente.</li>
+            <li>Substituir softmax por sigmoid no Problema A seria aceitável sem consequências, pois ambas as funções produzem valores entre 0 e 1.</li>
+        </ol>
+        <br>
+        <p class="bold">A alternativa correta é:</p>
+        <div class="options">
+            <p class="option">A) Somente I.</p>
+            <p class="option">B) Somente III.</p>
+            <p class="option">C) I e II.</p>
+            <p class="option">D) II e III.</p>
+            <p class="option">E) I, II e III.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 11</p>
+        <div class="question-text">
+            <p>Árvores de decisão são construídas a partir do quão relevante é um atributo ou <em>feature</em> para a tomada de <strong>decisão final</strong>, nesse sentido, quão mais próximo da raíz, mais informações aquele atributo fornece. Em outras palavras, o atributo de maior qualidade decisiva detém o maior ganho de informação.</p>
+            <br>
+            <p>Na figura abaixo, entre os atributos <em>Raining</em>, <em>Hungry</em> e <em>WaitEstimate</em>, qual é o atributo, respectivamente, de maior e o de menor ganho de informação?</p>
+        </div>
+        <center><img src="assets/11.png" alt="Questão 11" style="max-width: 400px; height: auto;"></center>
+        <div class="options">
+            <p class="option">A) WaitEstimate e Alternate</p>
+            <p class="option">B) WaitEstimate e Raining</p>
+            <p class="option">C) Alternate e Raining</p>
+            <p class="option">D) Raining e WaitEstimate</p>
+            <p class="option">E) Raining e Alternate</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 12</p>
+        <div class="question-text">
+            <p>O problema é que fazer esse mapeamento para espaços de dimensão muito alta consome um poder computacional gigantesco. Para contornar esse obstáculo, o algoritmo faz uso do chamado Truque do Núcleo (mais conhecido pelo termo em inglês "<em>Kernel Trick</em>"). O que esse "truque" faz?</p>
+        </div>
+        <center><img src="assets/12.png" alt="Questão 12" style="max-width: 400px; height: auto;"></center>
+        <div class="options">
+            <p class="option">A) Ele apaga todas as dimensões do problema, transformando o gráfico 3D em uma linha de texto (1D) para economizar espaço de armazenamento.</p>
+            <p class="option">B) Ele calcula a distância (produto escalar) entre os pontos como se eles estivessem na dimensão superior, sem precisar realmente desenhá-los ou transportá-los para essa nova dimensão.</p>
+            <p class="option">C) Ele treina várias redes neurais profundas ao mesmo tempo e depois tira a média dos resultados para descobrir onde a curva deve ser desenhada.</p>
+            <p class="option">D) Ele corta o gráfico original em formato de pizza, separando os dados por pedaços menores para desenhar dezenas de pequenas retas 2D em vez de ir para o 3D.</p>
+            <p class="option">E) Ele pede a interferência de um usuário humano na tela para circular com o mouse onde está o grupo central e, assim, ensina a máquina.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 13</p>
+        <div class="question-text">
+            <p>Às vezes, os dados estão misturados de tal forma que nenhuma linha reta consegue separá-los (problema não-linearmente separável). O 'Truque do Kernel' (Kernel Trick) resolve isso de forma elegante. O que ele faz essencialmente?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) Ele projeta os dados em uma dimensão maior onde uma separação linear é possível.</p>
+            <p class="option">B) Ele transforma a SVM em uma Rede Neural de várias camadas.</p>
+            <p class="option">C) Ele reduz a quantidade de dimensões para simplificar o problema.</p>
+            <p class="option">D) Ele troca os rótulos das classes para facilitar o acerto.</p>
+            <p class="option">E) Ele apaga os pontos que estão atrapalhando a separação.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 14</p>
+        <div class="question-text">
+            <p>Modelos de linguagem (LLMs) não "leem" texto diretamente: eles primeiro transformam o texto em <strong>tokens</strong> usando um <strong>tokenizador</strong> (por exemplo, BPE/WordPiece/Unigram). Em geral, quanto <strong>mais tokens</strong> um texto vira, maior o custo de <strong>treino</strong> e <strong>inferência</strong> (mais passos de atenção, mais memória e tempo), e maior a chance de "estourar" o limite de contexto.</p>
+            <br>
+            <p>Um pesquisador compara dois tokenizadores para treinar um modelo voltado ao <strong>português</strong>:</p>
+            <ul>
+                <li><span class="bold">Tokenizador A (multilíngue):</span> treinado em muitos idiomas, com um vocabulário compartilhado.</li>
+                <li><span class="bold">Tokenizador B (dedicado ao português):</span> treinado majoritariamente em corpora em português, com o mesmo tamanho de vocabulário do A.</li>
+            </ul>
+            <br>
+            <p>Ele faz um teste em textos em português e observa:</p>
+            <ul>
+                <li>O Tokenizador A gera, em média, <strong>30% mais tokens</strong> por texto do que o Tokenizador B.</li>
+                <li>O modelo treinado com o Tokenizador A tem custo de inferência maior e, em prompts longos, parece "perder" detalhes mais cedo.</li>
+            </ul>
+            <br>
+            <p>Considere as afirmações:</p>
+            <ol class="roman-list">
+                <li>É esperado que um tokenizador dedicado ao português produza menos tokens em textos em português, pois tende a aprender subpalavras mais frequentes e adequadas ao idioma (ex.: "ção", "mente", "nh", "lh"), reduzindo fragmentação.</li>
+                <li>Se o tokenizador A gera 30% mais tokens em média, então, mantendo o mesmo comprimento máximo de contexto (por exemplo, 4096 tokens), o modelo com A consegue "ver" menos conteúdo em caracteres/palavras do que com B, o que pode afetar desempenho em tarefas que dependem de contexto longo.</li>
+                <li>A melhor forma de resolver isso é <strong>aumentar o tamanho do vocabulário</strong> do tokenizador multilíngue indefinidamente, porque isso sempre reduz o número de tokens sem nenhum custo ou efeito colateral.</li>
+                <li>Em modelos Transformer, reduzir o número de tokens de entrada pode melhorar a eficiência de inferência: com menos tokens, geralmente há menos operações e menos uso de memória (especialmente no mecanismo de atenção), podendo reduzir latência e aumentar throughput — embora o ganho exato dependa da implementação e do comprimento do contexto.</li>
+            </ol>
+            <br>
+            <p class="bold">A alternativa correta é:</p>
+        </div>
+        <div class="options">
+            <p class="option">A) Somente I e IV.</p>
+            <p class="option">B) Somente II e III.</p>
+            <p class="option">C) I, II e IV.</p>
+            <p class="option">D) I, II, III e IV.</p>
+            <p class="option">E) Somente III.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 15</p>
+        <div class="question-text">
+            <p>Um Perceptron calcula sua saída de forma direta: ele multiplica cada valor de entrada pelo seu respectivo peso, soma todos esses resultados junto com um valor fixo chamado viés (bias) e passa o total por uma função de ativação.</p>
+            <br>
+            <p>Imagine que um neurônio de um sistema antifraude de um banco está avaliando uma transação suspeita baseando-se em 5 características numéricas. Os valores de entrada (x) recebidos e os pesos (w) definidos pela rede são:</p>
+            <ul>
+                <li>Entrada 1 (x₁): 1 | Peso 1 (w₁): 2</li>
+                <li>Entrada 2 (x₂): 2 | Peso 2 (w₂): 1</li>
+                <li>Entrada 3 (x₃): 1 | Peso 3 (w₃): -3</li>
+                <li>Entrada 4 (x₄): 3 | Peso 4 (w₄): -2</li>
+                <li>Entrada 5 (x₅): 0 | Peso 5 (w₅): 4</li>
+                <li>O <strong>viés (bias)</strong> programado para esse neurônio é <strong>2</strong>.</li>
+            </ul>
+            <br>
+            <p>Para decidir o valor final, o neurônio utiliza a função de ativação <strong>ReLU</strong> (Rectified Linear Unit), definida como:</p>
+            <p class="bold" style="text-align: center; margin: 10px 0;">ReLU(z) = max(0, z)</p>
+            <center><img src="assets/15.png" alt="Questão 15" style="max-width: 400px; height: auto;"></center>
+            <br>
+            <p class="bold">Qual será o resultado final (saída) gerado por esse neurônio?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) -3</p>
+            <p class="option">B) -2</p>
+            <p class="option">C) -5</p>
+            <p class="option">D) 1</p>
+            <p class="option">E) 0</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 16</p>
+        <div class="question-text">
+            <p>Um pesquisador está treinando uma rede neural profunda com 20 camadas ocultas totalmente conectadas para classificar imagens médicas. A arquitetura utiliza:</p>
+            <ul>
+                <li>Inicialização padrão dos pesos</li>
+                <li>Função de ativação <strong>sigmoid</strong> em todas as camadas ocultas</li>
+                <li>Otimizador baseado em gradiente descendente</li>
+                <li>Backpropagation</li>
+            </ul>
+            <br>
+            <p>Durante o treinamento, ele observa que:</p>
+            <ul>
+                <li>As últimas camadas apresentam atualizações de peso significativas.</li>
+                <li>As primeiras camadas quase não sofrem atualização.</li>
+                <li>A norma dos gradientes decresce exponencialmente à medida que retropropaga pelas camadas.</li>
+                <li>O erro de treino estagna rapidamente.</li>
+            </ul>
+            <br>
+            <p>Após análise matemática, ele conclui que o problema está relacionado ao fato de que a derivada da função sigmoid está limitada ao intervalo (0, 0.25), o que, ao ser multiplicado repetidamente ao longo de muitas camadas, leva a gradientes extremamente pequenos.</p>
+            <br>
+            <p class="bold">Qual modificação arquitetural é mais adequada para mitigar esse problema mantendo a profundidade da rede?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) Substituir a função sigmoid por ReLU ou variantes, reduzindo a saturação e preservando gradientes maiores em regiões ativas.</p>
+            <p class="option">B) Aumentar significativamente a taxa de aprendizado para compensar a diminuição da magnitude dos gradientes.</p>
+            <p class="option">C) Remover os termos de viés (bias), reduzindo a complexidade paramétrica da rede.</p>
+            <p class="option">D) Aumentar o tamanho do dataset de forma com que dado um número suficiente de épocas, o modelo irá convergir corretamente.</p>
+            <p class="option">E) Reduzir o número de camadas da rede para evitar a perda de informação devido à redução da representatividade numérica.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 17</p>
+        <div class="question-text">
+            <p>Uma fintech desenvolveu um modelo usando 300 variáveis comportamentais para prever fraude em cartões de crédito. O modelo foi treinado em 50.000 transações e testado em 10.000 novas transações. Classe positiva = fraude.</p>
+            <br>
+            <p>Os resultados estão representados nos gráficos a seguir:</p>
+            <center><img src="assets/17.png" alt="Questão 17" style="max-width: 100%; height: auto;"></center>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Treinamento</th>
+                        <th>Teste</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Recall</td>
+                        <td>2000</td>
+                        <td>120</td>
+                    </tr>
+                    <tr>
+                        <td>Precisão</td>
+                        <td>10</td>
+                        <td>380</td>
+                    </tr>
+                    <tr>
+                        <td>Acurácia</td>
+                        <td>47975</td>
+                        <td>9100</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="bold">Qual alternativa descreve melhor o modelo?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) O modelo está pronto para produção, pois a acurácia no teste é superior a 92%.</p>
+            <p class="option">B) O modelo apresenta overfitting devido à grande diferença entre recall no treino e no teste.</p>
+            <p class="option">C) O modelo apresenta alta capacidade de generalização, pois o desempenho no teste permanece elevado mesmo com 300 variáveis.</p>
+            <p class="option">D) O modelo apresenta apenas problema de threshold.</p>
+            <p class="option">E) O modelo apresenta precisão no teste superior a 50%.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 18</p>
+        <div class="question-text">
+            <p>Em Machine Learning, após o computador desenhar a fronteira de decisão de um SVM usando os dados de treinamento e os vetores de suporte (em preto, que definem as margens de separação), nós precisamos medir se essa reta é realmente boa para prever novos eventos. Para isso, apresentamos dados inéditos (os dados de teste coloridos em vermelho e azul) e observamos de que lado da reta eles caíram.</p>
+            <br>
+            <p>Para resumir os acertos e erros do modelo, os cientistas utilizam uma ferramenta chamada Matriz de Confusão.</p>
+            <br>
+            <p>Neste problema, vamos considerar que o objetivo (<strong>Classe Positiva</strong>) era encontrar os elementos da Classe A (<strong>círculos vermelhos</strong>). Assim, qualquer dado de teste que caia no lado esquerdo da reta recebe uma "Predição Positiva", e qualquer dado no lado direito recebe uma "Predição Negativa".</p>
+            <br>
+            <p>Avaliando apenas os 8 dados de teste coloridos descritos na figura, quais seriam os valores exatos de Verdadeiros Positivos (TP), Falsos Positivos (FP), Verdadeiros Negativos (TN) e Falsos Negativos (FN) da nossa Matriz de Confusão?</p>
+        </div>
+        <center><img src="assets/18.png" alt="Questão 18" style="max-width: 100%; height: auto;"></center>
+        <div class="options">
+            <p class="option">A) TP: 4, FP: 0, TN: 2, FN: 2</p>
+            <p class="option">B) TP: 3, FP: 2, TN: 3, FN: 0</p>
+            <p class="option">C) TP: 3, FP: 0, TN: 3, FN: 2</p>
+            <p class="option">D) TP: 5, FP: 0, TN: 3, FN: 0</p>
+            <p class="option">E) A matriz de confusão não pode ser calculada para um gráfico de SVM, pois ela só serve para modelos não supervisionados como os de agrupamento (Clustering).</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 19</p>
+        <div class="question-text">
+            <p>Uma universidade quer reduzir evasão e reprovação. Para isso, criou um programa de intervenção chamado "Fica Mais Um", que oferece: monitoria extra, trilhas de revisão, atendimento psicopedagógico, bolsa de internet (para quem precisa). Só que o orçamento é limitado: o programa só consegue atender no máximo 600 alunos por semestre. Então a reitoria pede um modelo que identifique alunos com alto risco de reprovação para priorizar quem deve entrar no programa.</p>
+            <br>
+            <p><strong>Contexto do dataset:</strong> Você recebe dados de 10.000 alunos do semestre anterior (base de treino/validação), com features como frequência, acessos ao Moodle, entregas atrasadas, etc.</p>
+            <p>A variável-alvo é:</p>
+            <ul>
+                <li>"reprovado" (classe positiva: aluno precisa de intervenção)</li>
+                <li>"aprovado" (classe negativa)</li>
+            </ul>
+            <p>Distribuição real observada: 9.500 aprovados / 500 reprovados.</p>
+            <br>
+            <p>O "<strong>modelo baseline</strong>": Um analista júnior argumenta: "Se eu sempre prever 'aprovado', vou ter uma acurácia enorme. É um ótimo baseline e talvez até suficiente." Esse modelo, portanto, nunca prevê "reprovado".</p>
+            <br>
+            <p class="bold">Considerando acurácia, precisão, recall e F1 (com foco na classe reprovado), qual alternativa descreve melhor o desempenho desse modelo?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) A acurácia será baixa, pois o modelo falha no objetivo principal do projeto (detectar reprovados).</p>
+            <p class="option">B) A acurácia será alta, mas o recall para reprovado será 0, e o F1 para reprovado também será 0.</p>
+            <p class="option">C) A precisão para reprovado será alta, porque o modelo evita alarmes falsos e por isso quase sempre acerta quando "pensa" em reprovar.</p>
+            <p class="option">D) O recall para reprovado será alto, pois como é uma classe rara, prever "aprovado" não prejudica a detecção de casos raros.</p>
+            <p class="option">E) O modelo pode ser considerado bom, pois em cenários desbalanceados a acurácia é a métrica mais confiável e suficiente para decisão.</p>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="question">
+        <p class="question-number">Questão 20</p>
+        <div class="question-text">
+            <p>Ainda sobre o texto da questão anterior, considerando acurácia, precisão, recall e F1 (com foco na classe reprovado, que é a rara e a mais importante para intervenção), qual alternativa descreve melhor o desempenho desse modelo?</p>
+        </div>
+        <div class="options">
+            <p class="option">A) A acurácia será baixa, pois o modelo falha no objetivo principal do projeto (detectar reprovados).</p>
+            <p class="option">B) A acurácia será alta, mas o recall para reprovado será 0, e o F1 para reprovado também será 0.</p>
+            <p class="option">C) A precisão para reprovado será alta, porque o modelo evita alarmes falsos e por isso quase sempre acerta quando "pensa" em reprovar.</p>
+            <p class="option">D) O recall para reprovado será alto, pois como é uma classe rara, prever "aprovado" não prejudica a detecção de casos raros.</p>
+            <p class="option">E) O modelo pode ser considerado bom, pois em cenários desbalanceados a acurácia é a métrica mais confiável e suficiente para decisão.</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p class="bold">Fim da Prova</p>
+        <p>2ªONIA - 3ªFase</p>
+    </div>
+</body>
+</html>
