@@ -43,7 +43,7 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
   </thead>
   <tbody>
         <tr>
-      <td rowspan="24"><b>1. Foundational Skills & Classical Machine Learning</b></td>
+      <td rowspan="28"><b>1. Foundational Skills & Classical Machine Learning</b></td>
       <td><b>Temporal Anomaly Detection:</b> As an energy analyst, parse a decade of hourly power consumption data using Pandas and NumPy. Construct a feature pipeline encoding cyclic time variables (sin/cos), followed by an integrated Scikit-Learn pipeline that trains an Isolation Forest or One-Class SVM to robustly detect blackout anomalies.</td>
       <td><a href="https://www.kaggle.com/datasets/robikscube/hourly-energy-consumption">Hourly Energy Consumption</a></td>
     </tr>
@@ -62,6 +62,14 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
     <tr>
       <td><b>Deep Fraud Detection with Autoencoders:</b> Utilizing PyTorch, architect an Autoencoder neural network to detect anomalies in highly imbalanced credit card transaction data. Leverage high-level PyTorch modules to construct the encoder-decoder topology and compute reconstruction loss via MSE, efficiently separating fraudulent anomalous transactions from legitimate distributions.</td>
       <td><a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud">Credit Card Fraud</a></td>
+    </tr>
+    <tr>
+      <td><b>Unsupervised Density-Based Clustering (DBSCAN):</b> Provided an unstructured GPS coordinate array, you must engineer a spatial clustering solution from scratch. You cannot rely on pre-defined distance thresholds; instead, you must analytically determine <code>eps</code> using a K-Distance graph and implement <code>DBSCAN</code> leveraging a BallTree or KDTree to isolate arbitrary-shaped noise-heavy noise distributions.</td>
+      <td><a href="https://www.kaggle.com/datasets/ahmedmohammad2003/uber-trip-data">Uber Coordinates</a></td>
+    </tr>
+    <tr>
+      <td><b>Centroid-Based Manifold Discovery (K-Means++):</b> Tasked with segmenting a high-dimensional customer behavior matrix, implement a K-Means strategy that explicitly optimizes the 'Elbow' and 'Silhouette' metrics. You must proactively handle multi-collinearity and scale variances using iterative <code>StandardScaler</code> applications before projecting the results onto a 2D PCA plane.</td>
+      <td><a href="https://www.kaggle.com/datasets/vjchoudhary7/customer-segmentation-tutorial-in-python">Mall Customers</a></td>
     </tr>
     <tr>
       <td><b>Elastic Net Feature Shrinkage & K-Fold Stratification:</b> Tasked with regressing explicit medical parameters, completely bypass <code>cross_val_score</code>. Construct a native K-Fold stratification index mapping iteratively over Elastic Net equations mathematically bounding exactly L1 vs L2 regularization shrinkage thresholds mapping explicit coefficient paths decaying visually over loop trajectories.</td>
@@ -108,12 +116,12 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://www.kaggle.com/datasets/usdot/flight-delays">Flight Delays</a></td>
     </tr>
     <tr>
-      <td><b>SVM Kernel Subspace Projections:</b> Working with complex spatial distribution clusters, architect parallel Support Vector Machines matrices. Compare native boundary mappings between Polynomial Kernel shifts and deep Radial Basis Function (RBF) projections mathematically via localized decision matrices outputted to Pandas dataframes.</td>
-      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_circles.html">Synthetic Circles</a></td>
+      <td><b>SVM Kernel Subspace Projections:</b> Working with complex spatial distribution clusters, architect parallel Support Vector Machines matrices. Compare native boundary mappings between Polynomial Kernel shifts and deep Radial Basis Function (RBF) projections. You must clean the raw dataset, which contains missing values and non-standardized feature scales, and engineer a <code>ColumnTransformer</code> to handle these quirks before projection.</td>
+      <td><a href="https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data">Breast Cancer Wisconsin</a></td>
     </tr>
     <tr>
-      <td><b>Lazy Learning Matrix Validations (KNN):</b> Predict classification mappings across a densely noisy biological feature array. Construct a <code>KNeighborsClassifier</code> isolating explicit mathematical validation through an active `BallTree` algorithm optimization sequence, tracking inference decay times under varying sample constraints.</td>
-      <td><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset">Iris Dataset</a></td>
+      <td><b>Lazy Learning Matrix Validations (KNN):</b> Predict classification mappings across a densely noisy biological feature array. Construct a <code>KNeighborsClassifier</code> isolating explicit mathematical validation through an active `BallTree` algorithm optimization sequence. You must perform extensive data cleaning on the raw input, handling outliers and inconsistent labels before tracking inference decay.</td>
+      <td><a href="https://www.kaggle.com/datasets/uciml/glass">Glass Classification</a></td>
     </tr>
     <tr>
       <td><b>Manifold Discovery in Consumer Data:</b> As a marketing proxy analyzing Mall Customers, you must isolate hidden consumer sub-segments. Discard naive K-Means; construct a pipeline channeling data through t-SNE for 2D topological mapping, heavily utilizing NumPy distance matrices, followed by HDBSCAN to capture core dense clusters accurately.</td>
@@ -128,8 +136,8 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://www.kaggle.com/datasets/yasserh/wine-quality-dataset">Wine Quality</a></td>
     </tr>
     <tr>
-      <td><b>Hierarchical Feature Agglomeration:</b> Operating on highly multicollinear sensory data, compute the Spearman rank-order correlations systematically in Pandas/SciPy. Apply Scikit-Learn's Feature Agglomeration to hierarchically fuse tightly correlated features before initiating training, preserving signal-to-noise ratios precisely.</td>
-      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html">Synthetic Classification</a></td>
+      <td><b>Hierarchical Feature Agglomeration:</b> Operating on highly multicollinear sensory data, compute the Spearman rank-order correlations systematically in Pandas/SciPy. Apply Scikit-Learn's Feature Agglomeration to hierarchically fuse tightly correlated features from the raw, uncleaned sensor signals. You must engineer a pipeline to handle noisy transients and missing sensor packets before initiating training.</td>
+      <td><a href="https://www.kaggle.com/datasets/uciml/human-activity-recognition-with-smartphones">Human Activity Recognition</a></td>
     </tr>
     <tr>
       <td><b>Spatial Density Isolation Validation:</b> Process geolocation coordination matrices combining structural `DBSCAN` logic heavily mapped over a pre-processing `UMAP` structural reduction layer. Enforce parameters that reject strict spherical topology structures to isolate arbitrary shaped geographical routing matrices.</td>
@@ -140,9 +148,81 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://www.kaggle.com/datasets/oddrationale/mnist-in-csv">MNIST</a></td>
     </tr>
     <tr>
-      <td rowspan="12"><b>2. Neural Networks & Deep Learning</b></td>
+      <td rowspan="40"><b>2. Neural Networks & Deep Learning</b></td>
+      <td><b>Multi-Dimensional Housing MLP:</b> Implement a 3-layer MLP to predict housing prices. Focus on standardizing heterogeneous input features using <code>StandardScaler</code> and optimizing with <code>MSELoss</code>.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html">CA Housing</a></td>
+    </tr>
+    <tr>
+      <td><b>Binary Health Risk MLP:</b> Build a classifier to predict heart disease risk. Implement <code>BCELoss</code> and <code>Sigmoid</code> output activation, handling binary classification thresholds.</td>
+      <td><a href="https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset">Heart Disease</a></td>
+    </tr>
+    <tr>
+      <td><b>Digit Recognition MLP:</b> Use the MNIST dataset to build a multi-class classifier. Manage 784-pixel input flattening and <code>CrossEntropyLoss</code> for 10-way classification.</td>
+      <td><a href="https://www.kaggle.com/competitions/digit-recognizer">MNIST</a></td>
+    </tr>
+    <tr>
+      <td><b>Dropout & Overfitting Control:</b> Integrate <code>nn.Dropout</code> layers into a deep MLP. Perform a comparative study on training vs validation accuracy with and without dropout active.</td>
+      <td><a href="https://www.kaggle.com/datasets/zalando-research/fashionmnist">Fashion MNIST</a></td>
+    </tr>
+    <tr>
+      <td><b>Ablation Study (Activation Functions):</b> Construct parallel models using <code>ReLU</code>, <code>Tanh</code>, and <code>LeakyReLU</code>. Map their respective loss surfaces and convergence speeds.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">Synthetic Moons</a></td>
+    </tr>
+    <tr>
+      <td><b>Weight Initialization Impact:</b> Compare <code>Xavier/Glorot</code> vs <code>Zero</code> vs <code>Random</code> initialization. Visualize how gradients vanish or explode based on starting weights.</td>
+      <td><a href="https://pytorch.org/docs/stable/nn.init.html">PyTorch Init</a></td>
+    </tr>
+    <tr>
+      <td><b>Learning Rate Scheduling:</b> Implement <code>StepLR</code> and <code>ReduceLROnPlateau</code>. Document how adaptive scheduling prevents local minima stagnation during MLP training.</td>
+      <td><a href="https://www.kaggle.com/c/titanic">Titanic</a></td>
+    </tr>
+    <tr>
+      <td><b>Batch Normalization MLP Speed Trial:</b> Insert <code>BatchNorm1d</code> layers between Linear and ReLU. Measure the reduction in epochs required to reach 90% accuracy on tabular data.</td>
+      <td><a href="https://www.kaggle.com/datasets/vuppalaadithyasairam/heart-disease-dataset">Health Risk</a></td>
+    </tr>
+    <tr>
+      <td><b>L1 vs L2 Sparsity MLP:</b> Compare weight decay (L2) with manual L1 penalty implementation. Visualize the resulting weight histograms to see sparsity effects.</td>
+      <td><a href="https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset">Heart Disease</a></td>
+    </tr>
+    <tr>
+      <td><b>Early Stopping MLP Integration:</b> Program a custom validation loop that halts training when <code>val_loss</code> stops improving for a "patience" of 10 epochs.</td>
+      <td><a href="https://www.kaggle.com/datasets/vuppalaadithyasairam/heart-disease-dataset">Health Risk</a></td>
+    </tr>
+    <tr>
+      <td><b>LeNet-5 Standard Digit Classifier:</b> Implement the classic 1998 LeNet-5 architecture (AvgPool, 5x5 kernels) to classify handwritten digits, documenting tensor shape transformations.</td>
+      <td><a href="https://www.kaggle.com/competitions/digit-recognizer">MNIST</a></td>
+    </tr>
+    <tr>
+      <td><b>AlexNet Feature Extraction Layering:</b> Build the 2012 ImageNet winner with 11x11 kernels and ReLU, classifying RGB dog breeds to demonstrate deep feature hierarchy.</td>
+      <td><a href="https://www.kaggle.com/datasets/miljan/stanford-dogs-dataset-tensors">Stanford Dogs</a></td>
+    </tr>
+    <tr>
+      <td><b>VGG-16 Deep Block Sequencing:</b> Construct a 16-layer network using small 3x3 filters and modular "VGG Blocks" to classify CIFAR-10 objects with extreme depth.</td>
+      <td><a href="https://www.kaggle.com/c/cifar-10">CIFAR-10</a></td>
+    </tr>
+    <tr>
+      <td><b>Data Augmentation & Generalization:</b> Integrate a <code>torchvision</code> pipeline (Rotation, Crop, Jitter) to reduce the generalization gap in limited-category food classification.</td>
+      <td><a href="https://www.kaggle.com/datasets/chrisfilo/fruit-recognition">Kaggle Fruits</a></td>
+    </tr>
+    <tr>
+      <td><b>Transfer Learning Standard Fine-Tuning:</b> Freeze a pre-trained ResNet-18 backbone and replace the FC head to detect Pneumonia from medical X-rays with low data samples.</td>
+      <td><a href="https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia">Chest X-Ray</a></td>
+    </tr>
+    <tr>
+      <td><b>Lung Segmentation with Deep CNNs:</b> Build a custom U-Net-like Encoder-Decoder to identify healthy vs diseased lung tissue in chest X-rays. Implement a differentiable Dice Loss to overcome severe foreground-background pixel imbalance.</td>
+      <td><a href="https://www.kaggle.com/datasets/nikhilpandey31/lung-segmentation-from-chest-x-ray-dataset">Lung Segmentation</a></td>
+    </tr>
+    <tr>
       <td><b>Deep Multi-Layer Perceptron Architectures:</b> Operating over the Synthetic Moons dataset, design a 3-layer Multi-Layer Perceptron deploying PyTorch's high-level <code>nn.Module</code> arrays. Optimize non-linear decision boundaries through sequential <code>nn.ReLU</code> and <code>nn.CrossEntropyLoss</code> metrics natively executed on <code>autograd</code> rather than extracting manual derivations.</td>
       <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">Synthetic Moons</a></td>
+    </tr>
+    <tr>
+      <td><b>Open Problem: End-to-End Solution Engineering:</b> Given a complex, raw dataset representing heterogeneous sensor signals, you must engineer a full solution from scratch. You are not allowed to use a predefined pipeline template; you must autonomously decide on feature engineering (e.g., FFT, wavelet transforms), architecture (CNN vs MLP), and validation strategy to solve the hidden classification objective.</td>
+      <td><a href="https://archive.ics.uci.edu/ml/datasets/human+activity+recognition+using+smartphones">Human Activity Recognition</a></td>
+    </tr>
+    <tr>
+      <td><b>Deep Regressive Feature Extraction:</b> Working with the California Housing dataset, construct a deep neural network that not only predicts housing prices but also outputs an auxiliary latent feature representation. You must define a custom PyTorch <code>forward</code> pass that extracts these features into a separate Pandas DataFrame for downstream clustering analysis.</td>
+      <td><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html">CA Housing</a></td>
     </tr>
     <tr>
       <td><b>Dynamic Learning Rate Interventions:</b> Tasked with the continuous classification of Fashion MNIST tensors, architecture a rigid PyTorch training loop. Integrate AdamW decay alongside a customized OneCycleLR parameter scheduling, embedding dynamic early stopping condition evaluation stored iteratively inside a Pandas DataFrame tracker.</td>
@@ -189,9 +269,21 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
       <td><a href="https://huggingface.co/models">HuggingFace Models</a></td>
     </tr>
     <tr>
-      <td rowspan="6"><b>3. Computer Vision</b></td>
-      <td><b>Architectural Bypass via Skip Connections:</b> Confronting the CIFAR-10 challenge matrix, program a customized ResNet topography from bare PyTorch modules. Project custom residual blocking structures processing dimensional adjustments through 1x1 spatial convolutions, enforcing fluid gradient mapping over 15 un-frozen network sub-layers.</td>
-      <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
+      <td rowspan="9"><b>3. Computer Vision</b></td>
+      <td><b>Architectural Bypass via Skip Connections:</b> Confronting the CIFAR-10 challenge matrix, program a customized ResNet topography from bare PyTorch modules. Project custom residual blocking structures while handling raw, unnormalized image tensors and performing complex data augmentation strategies to prevent over-fitting.</td>
+      <td><a href="https://www.kaggle.com/c/cifar-10">CIFAR-10</a></td>
+    </tr>
+    <tr>
+      <td><b>Real-Time Object Detection (YOLO Custom Head):</b> Targeting high-speed maritime navigation, implement a YOLO-style (You Only Look Once) detection head. You must process raw image frames, formulate a multi-part loss function (localization, confidence, and class loss), and implement non-maximum suppression (NMS) to eliminate overlapping bounding box proposals from scratch.</td>
+      <td><a href="https://www.kaggle.com/datasets/vencerlanz09/sea-animals-image-dataset">Maritime Objects</a></td>
+    </tr>
+    <tr>
+      <td><b>Zero-Shot Visual Reasoning (CLIP):</b> Leveraging Contrastive Language-Image Pre-training (CLIP) principles, architect a dual-encoder system. You must align image embeddings with textual label embeddings in a shared latent space, enabling the model to classify unseen objects without explicit categorical training, mapped via cosine similarity.</td>
+      <td><a href="https://www.kaggle.com/c/imagenet-object-localization-challenge">ImageNet (Subset)</a></td>
+    </tr>
+    <tr>
+      <td><b>ViT - Vision Transformer Architectures:</b> Bypass traditional Convolutional layers to build a Vision Transformer (ViT). Implement patch embedding, positional encoding, and a multi-head self-attention backbone to process images as sequences of tokens, validating performance on high-resolution medical imagery.</td>
+      <td><a href="https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia">Chest X-Ray (Pneumonia)</a></td>
     </tr>
     <tr>
       <td><b>Semantic Masking & Region Isolation:</b> Targeting industrial navigation on Cityscapes sequences, define a structural U-Net layout. Enforce expanding and contracting paths alongside matching symmetrical skip linkages. Compute a customized Intersection-over-Union (IoU) differentiable framework guiding the spatial optimization loop.</td>
@@ -317,4 +409,8 @@ Here is the input:
 </pre>
 
 ## License
-This repository is under the GPL 3.0 License from June, 29th 2007.
+This repository is under the GPL 3.0 License from June, 29th 2007.| 62 | **Physio-Graph: Neural Temporal Graphs** | [PhysioNet Patient Data](https://www.kaggle.com/datasets/koki25/physionet-2012-challenge-dataset) | [instructions.md](exercises/62_Physio-Graph_Neural_Temporal_Graphs/instructions.md) |
+| 63 | **GAN-Powered Anomaly Synthesis** | [Steel Defect Detection](https://www.kaggle.com/c/severstal-steel-defect-detection) | [instructions.md](exercises/63_GAN-Powered_Anomaly_Synthesis/instructions.md) |
+| 64 | **Hyper-Network Matrix Controllers** | [Omniglot (Few-Shot)](https://www.kaggle.com/datasets/sainikhileswar/omniglot-dataset) | [instructions.md](exercises/64_Hyper-Network_Matrix_Controllers/instructions.md) |
+| 65 | **Differentiable Sorting & Ranking** | [MSLR (Learning to Rank)](https://www.kaggle.com/datasets/petezhishuo/mslr-web10k) | [instructions.md](exercises/65_Differentiable_Sorting_&_Ranking/instructions.md) |
+| 66 | **Implicit Neural SDF Reconstruction** | [ModelNet40 (3D shapes)](https://www.kaggle.com/datasets/balraj98/modelnet40-princeton-3d-object-dataset) | [instructions.md](exercises/66_Implicit_Neural_SDF_Reconstruction/instructions.md) |
