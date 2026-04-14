@@ -1,0 +1,46 @@
+O exercicio pede pra fazer uma simples pipeline usando VotingClassifier com Logistic Regression, KNN constraints e SVM para comparar a performance da classificaçao usando diferentes tipos do parametro voting, 'hard' e 'soft'.
+
+Para gerar o dataset, forneci o meu instructions.md para uma LLM e ela me retornou valores apropriados para o exercicio
+
+make_classification(
+    n_samples=2000,         # Enough for stable cross-validation
+    n_features=25,          # High-dimensional matrix
+    n_informative=15,       # Signals required for SVM/Logistic
+    n_redundant=5,          # Structural noise
+    n_classes=3,            # MULTI-CLASS requirement (Section 1)
+    weights=[0.6, 0.3, 0.1], # SEVERELY IMBALANCED (Section 3)
+    flip_y=0.05,            # Potential zero-inflated arrays/noise
+    random_state=42
+)
+
+inicialmente, pode-se analisar que o dataset é extremamente desbalanceado, o que pode acabar influenciando em escolhas futuras de hyperparameters para os modelos selecionados
+
+target
+0    1163
+1     608
+2     229
+Name: count, dtype: int64
+
+Tentei plottar o dataset usando PCA, porém, os clusters não eram bem definidos, significando que o problema tem dados não lineares, e modelos como SVM usando o kernel RBF inicialmente pode ajudar a encontrar relações lineares para depois aplicar o KNN com um valor selecionado através de Cross-Validation e por fim um modelo de Logistic Regression para classificar corretamente o dataset.
+    SVM KBF -> KNN -> Logistic Regression
+
+Após realizar um param grid search com cross validation, é possível verificar que a teoria estava correta, com o modelo com os pesos 'weights': [2, 1, 1] tendo o melhor resultado, com o uso do sistema de voting 'soft', isso confirma a teoria inicial de que seria necesario expor nao linearidades usando SVM KBF antes de aplicar outros tipos de classiifcação, o que se mostrou consistente, com as classificações com menos dados (2) retornando resultados aceitaveis, com os reguintes resultados.
+Para o KNN, ele se situou em um valor apropriado de neighbors em 6, utilizei uma grid search de 25 itens de 1 - 50, meio overkill para o problema, mas como o custo computacional da solução é muito baixo, teve seu uso tolerado com 25 samples.
+
+params: {'knn__n_neighbors': np.int64(6), 'voting': 'soft', 'weights': [2, 1, 1]}
+f1: 0.8476
+              precision    recall  f1-score   support
+
+           0       0.90      0.94      0.92       240
+           1       0.85      0.88      0.86       120
+           2       0.92      0.57      0.71        40
+
+    accuracy                           0.89       400
+   macro avg       0.89      0.80      0.83       400
+weighted avg       0.89      0.89      0.88       400
+
+[[226  14   0]
+ [ 13 105   2]
+ [ 12   5  23]]
+
+Demonstando uma performance consistente do modelo ao longo de varios tipos de tarefas, o recall se mostra um pouco preocupante (0.60), porém, com as limitações apresentadas com relação ao dataset, expor suas vulnerabilidades e aumentar o recall é uma tarefa que exigiria a aplicação de outros modelos que não são permitidos pelas intruções do problema.

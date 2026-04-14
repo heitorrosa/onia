@@ -1,0 +1,29 @@
+O exercicio pede para vetorizar um dataset e aplicar uma Multinomial Naive Bayes para obter as probabilidades de cada target para plotallos no gráfico.
+
+Durnate a limpeza dos dados, houve um erro com relacao ao encoding do dataset que nao era utf-8 e foi necessario usar o latin-1 para seu loading, para classificar metodos de scoring como o f1-score, é necessario um threshold para diferenciar esses dados, para esse exercicio, foi escolhido o threshold mais performante de 0 - 1.0, informação essa plottada em um gráfico, ao escolher um threshold adequado
+
+Usei um max_features de 4096 para o TfidfVectorizer, valor analisado como o mais performante que nao é tão concentrado e nem tao spartial, permitindo um numero adequado de features para o modelo.
+
+Como o dataset está muito desbalanceado
+
+v1
+0    4825
+1     747
+
+defini a lista de class_prior baseado na distribuição desse dataset [0.866, 0.134], com essas alterações, o scoring do modelo é maximizado, atingindo performances proximas de SOTA para o dataset abordado.
+
+              precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99       965
+           1       0.95      0.91      0.93       150
+
+    accuracy                           0.98      1115
+   macro avg       0.97      0.95      0.96      1115
+weighted avg       0.98      0.98      0.98      1115
+
+[[958   7]
+ [ 14 136]]
+
+ auprc: 0.9574
+
+ seria possível usar cross validation para escolher valores mais adequados de alpha para o MultinomialNB, mas o seu custo computacional seria muito elevado para melhoria em performance, tendo em vista que o estado atual do modelo já é quase perfeito.

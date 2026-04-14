@@ -1,0 +1,39 @@
+O problema quer que eu monte uma DecisionTree para prever os targets de um dataset, inicialmente se analisa que o dataset está balanceado
+
+target
+1    71
+0    59
+2    48
+Name: count, dtype: int64
+
+o que mostra que DecisionTrees e RandomForests sao adequadas para esse problema, mesmo que o dataset seja pequeno.
+
+Ao aplicar resolver o dataset usando RandomForets, é possível perceber a inferencia de um possível Overfitting por parte do modelo, que usa n_estimators muito grandes, o que acaba por treinar todo o dataset, que por sí só é pequeno, obtendo um score perfeito em todas as categorias
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        14
+           1       1.00      1.00      1.00        14
+           2       1.00      1.00      1.00         8
+
+    accuracy                           1.00        36
+   macro avg       1.00      1.00      1.00        36
+weighted avg       1.00      1.00      1.00        36
+
+para resolver o problema, foi utilizado o seguinte pipeline para escolha de uma Pruned Decision Tree:
+    - escolha apropriada dos hyperparametors ccp_alpha para o param_grid usando cost_complexity_pruning_path, para escolher os valores mais otimizados para essa tarefa, focando em previnir o overfitting do modelo
+    - com esses valores propostos, um Cross Validation é aplicado nesses valores, que sao otimizados para provir o melhor pruning para a arvore, maximizando a performance sem causar overfitting.
+
+esses problemas da RandomForest ficam ainda mais evidentes ao plottar a importancia de cada feature, em que ele distribui a importância quase que igualmente entre todas as features, enquando as Decision Trees selecionam corretamente as melhores features focando em maximizar a performance ao invés de decorar o datastet.
+
+              precision    recall  f1-score   support
+
+           0       1.00      0.93      0.96        14
+           1       0.88      1.00      0.93        14
+           2       1.00      0.88      0.93         8
+
+    accuracy                           0.94        36
+   macro avg       0.96      0.93      0.94        36
+weighted avg       0.95      0.94      0.94        36
+
+best dt alpha: 0.026013001083423602

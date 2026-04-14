@@ -1,0 +1,10 @@
+O exercicio fornece um dataset Diabetes já normalizado, sem a necessidade de aplicar o ColumnTransformers.
+Para splitting correto com base nos requerimentos do exercicio, foi usado o método pd.qcut() do pandas para permetir a stratificacao para regreccao no eixo y, ajustando o target para que o dataset seja balanceado e não tenha data leakage.
+O splitting dos dados foi feito usando o proprio StratifiedKFold com q=5 e um processo de training com os resultados sendo trackeados usando listas ao longo das iteracoes no for loop. foi aplicado para manter tracking dos scores para plottar a diferença usando MatplotLib.
+
+Para os valores de alpha e l1_ratio, como o custo computacional do problema é relativamente baixo e eu queria extrair o decay de maneira precisa, usei 75 valores para cada um, o que permitiu analisar os outliers do problema propriamente.
+
+Conclui-se que o R² score decai gradualmente em steps relativamente pequenos até ~0.95 para l1_ratio, onde o score tem uma queda extremamente brusca, juntamente vendo uma inversao nos coeficient values de s1 e s2, com s1 aumentando consideravelmente enquanto s2 diminui no mesmo pace.
+
+mean optimal alpha: 0.145761
+best alpha at best l1 (0.09): 0.054520
