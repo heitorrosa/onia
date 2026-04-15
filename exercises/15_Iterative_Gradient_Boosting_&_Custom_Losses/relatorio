@@ -1,0 +1,16 @@
+O exercicio pede pra normalzar um dataset, adicionando a data como index e criando metricas de MA7 e MA50 para a collumn 'sales', fiz isso usando o metodo pd.rolling() junto com mean() para obter esses valores, garantindo que eles façam parte do mesmo grupo ao realizar o calculo do MA usando groupby para evitar data leakage.
+
+Defini funções customizadas de loss e val considerando a assimetria dos dados, fornecendo calculos validos para loss no dataset, tendo em vista que estamos trabalhando com dados históricos e esses precisam ser gerenciados com cuidado para evitar data leakages e problemas relacionados.
+
+Como o problema tem um custo computacional muito alto, mesmo usnado cuda, fui cuidadoso ao escolher os parametros para o Cross Validation.
+    learning_rate: 0.01, 0.05, 0.1
+    max_depth: 3, 5, 7
+    n_estimators: 1000
+    early_stopping_rounds: 50
+
+Os resultados analisados após a iteração do modelo foram:
+
+learning_rate: 0.05, max_depth: 3
+rmse: 12.6363 | mae: 9.6387 | mape: 0.2048 | r2: 0.8396
+
+Para o problema abordado, e as limitações com relação a feature engineering, o resultado se mostra muito bom, considerando que o mdoelo tem um r2 de 84%, indicando a presenca de classificações corretas no dataset, com muitos poucos desvios na regressão, mostrando excelência no quesito de regressão.
