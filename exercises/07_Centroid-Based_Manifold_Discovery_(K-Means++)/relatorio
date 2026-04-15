@@ -1,0 +1,21 @@
+O dataset do problema tem 18 features, todas numéricas, entao eu só preciso aplicar o StandardScaler().
+
+Ao rodar varias runs medindo a distancia entre os pontos (inercia), elas foram plottadas para descobrir o valor de K ideal para o problema, sendo esse o momento em que o ponto adiciona mais clusters, diminuindo a inercia e aumentando a precisao, eh escolhido um ponto no elbow para maximizar o custo computacional da operação, valores muito grandes de K aumentariam o custo computacional com ganhos minimos.
+Com isso, o valor de K adequado, com base nas analises do gráfico, está em aproximadamente 12.
+
+Após aplicar o KMeans com as especificações apresentadas, é possível formar clusters bem definidos, mesmo que na visualização eles estejam de certa forma bem aglomerados pelo fato do dataset ser formado por 18 dimensões.
+
+Cluster 00: CASH_ADVANCE              (+4.78 std dev)
+Cluster 01: PRC_FULL_PAYMENT          (+2.08 std dev)
+Cluster 02: CASH_ADVANCE_FREQUENCY    (+1.86 std dev)
+Cluster 03: PURCHASES_TRX             (+2.37 std dev)
+Cluster 04: BALANCE_FREQUENCY         (+0.38 std dev)
+Cluster 05: PRC_FULL_PAYMENT          (+0.29 std dev)
+Cluster 06: ONEOFF_PURCHASES_FREQUENCY (+1.93 std dev)
+Cluster 07: ONEOFF_PURCHASES          (+13.90 std dev)
+Cluster 08: BALANCE                   (+2.64 std dev)
+Cluster 09: CASH_ADVANCE_FREQUENCY    (+0.29 std dev)
+Cluster 10: PURCHASES_INSTALLMENTS_FREQUENCY (+1.16 std dev)
+Cluster 11: INSTALLMENTS_PURCHASES    (+7.11 std dev)
+
+O silhouette_score foi de 0.2166, mesmo que baixo, nao representou um problema na clusterização correta dos dados no dataset, tendo em vista o std dev de cada cluster é relativamente baixo.

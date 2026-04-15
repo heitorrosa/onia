@@ -1,0 +1,7 @@
+O exercicio pede pra fazer uma busca no dataset para encontrar o valor mais adequado de k e do raio de cada truth point para estabelecer um DBSCAN no dataset.
+O dataset inicial está muito bom, precisa ser alterado com pd.map() para converter as featues de Male e Female em valores numericos.
+
+Ao plottar o dataset usando PCA, não consegui ver clusters muito bem definidos, pela baixa accuracy do PC1 e PC2, tendo em vista que o dataset apresentado tem 4 dimensões, com isso, ignorei analises normais e foquei em maximizar a performance dos hyperparametros do DBSCAN usando a metrica silhouette_score para maximizar a sua performance, utilizei NearestNeighbors para encontrar o elbow do raio dos truth points no dataset para usar como parametro elipson no dataset.
+Com isso, o valor de eps apropriado seria em aproximadamente 0.5 ao traçar uma linha onde se encontra o elbow.
+
+Inicialmente, tentei aplicar o DBSCAN usando as 4 features do dataset. o que se mostrou falho, porque o dataset produzia muito ruido, como meio para viabilizar o uso de DBSCAN do exercicio, foi restrito o uso das featres de Income e Spending Score para o dataset. Facilitando o clustering apropriado do dataset. Com um score de 0.35044, o que pode ser baixo metricamente, masss visualizando o dataset, é possível ver que o DBSCAN conseguiu aplicar propriamente o clustering.

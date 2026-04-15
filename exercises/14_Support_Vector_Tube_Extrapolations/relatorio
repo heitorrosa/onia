@@ -1,0 +1,30 @@
+Irei comecar filtrando o dataset usando ColumnTransformers, com a seguinte configuracao
+    - OrdinalEncoder: cut, color, clarity
+    - StandardScaler: resto
+
+Após filtrar a escalar o dataset propriamente, foi escolhido o uso de um único GridSearchCV para automaticamente comprarar e escolher o modelo com menor loss entre os kernels linear e rbf, com uma restrita gama de hyperparametros pelo custo operacional da operacao, que é alta se considerar que estaremos selecionando um dois modelos em 4MB de dataset.
+
+    c_range = np.linspace(0.1, 10, 5)
+    epsilon_range = np.linspace(0.01, 1, 5)
+    gamma_range = np.linspace(0.001, 0.1, 3)
+
+    param_grid = [
+        {
+            'kernel': ['rbf'],
+            'C': c_range,
+            'epsilon': epsilon_range,
+            'gamma': gamma_range
+        },
+        {
+            'kernel': ['linear'],
+            'C': c_range,
+            'epsilon': epsilon_range
+        }
+    ]
+
+Como o dataset é muito grande, tive problemas para treinar o modelo, inicialmente, splittei o dataset em uma porção menor de 5000 samples para ver a performance do modelo, e tive que cappar o max_iter em 1000 para que obtivesse um resultado aparente.
+
+mae: 0.0149
+params: {'C': np.float64(10.0), 'epsilon': np.float64(0.01), 'gamma': np.float64(0.001), 'kernel': 'rbf'}
+
+A partir desses resultados, é possível concluir que rbf é melhor para esse dataset, muito por conta da escalabilidade infinita das dimensões, o que no kernel linear, é hard-coded, dificultando na amostragem de relações não lineares no dataset.

@@ -1,0 +1,27 @@
+Para filtrar a formatar o dataset, é necessario aplicar um ColumnTransformer para converter algumas colunas em valores numericos
+    - OneHotEncoder: 'region'
+    - StandardScaler: 'age', 'bmi'
+
+Com o dataset formatado, é possível formar a pipeline pros StackingRegressor, inicialmente, é ideal usar o
+     - XGBRegressor -> RandomForestRegression -> Lasso
+
+Para Cross Validation, realizei um GridSearchCV individual para cada modelo analisado, armazenando os valores no final para usar com o StackingRegressor. Como o custo operacional dessa operação é meio alto, valores com espaços restritos foram escolhidos, focando em minimizar o custo computacional, tendo em vista que geralmente, em exercicios do tipo, não tem uma mudança brutal ao usar valores diferentes dos apresentados por padrão, com o overthinking do cross validation sendo prejudicial para pesquisa e desenvolvimento consistente do modelo, já que uma simples alteração pode ter uma exponenciacao computacional muito grande, prejudicando em muito o desenvolvimento.
+
+    xgb_params = {
+        'n_estimators': [100, 250],
+        'max_depth': [3, 5],
+        'learning_rate': [0.05, 0.1]
+    }
+
+    rf_params = {
+        'n_estimators': [50, 100],
+        'max_features': ['sqrt', None],
+        'min_samples_leaf': [1, 5]
+    }
+
+O loss usado foi MAE (ajustado com pocentagem, porque o target não foi escalado e está com valores completos em dolar, o que transformaria o MAE em valores com 4 algarismos) e o scoring foi o R2, o modelo obteve ótimos resultados, performando muito bem considerando a previsão de valores numéricos. O modelo Lasso concentrou os valores em [0.82402376 0.14429788 0.04742591], com o XGB sendo o mais importante para o modelo.
+
+mape: 0.2966 | r2: 0.8852
+[0.82402376 0.14429788 0.04742591]
+{'learning_rate': 0.05, 'max_depth': 3, 'n_estimators': 100}
+{'max_features': None, 'min_samples_leaf': 5, 'n_estimators': 50}

@@ -1,0 +1,16 @@
+Para realizar o problema, é necessário formatar o dataset com um pipeline de processamento, é verificado que é necessario aplicar um ColumnTransformer com as colunas do dataset para fornecer uma formatação correta dos dados.
+    - StandardScaler: Dados numericos
+    - OneHotEncoding: Coluna 'origin', formada por 3 valores (0, 1, 2)
+    - TargetEncoding: Coluna 'car name', que possui alta complexidade.
+
+Após isso, é só aplicar o Ridge com cross validation com um logspace (0.001 - 1000) com 50 valores, já que o custo computacional é relativamente baixo, permitindo procurar por múltiplos valores para 'alpha'
+    - alphas=np.logspace(-3, 3, 50)
+
+Após testar varios valores de 'degrees', estabilizando em um custo computacional x performance em range(1, 7), com o melhor valor para degree sendo 3 para o problema analisado para o PolynomialFeatures(), tendo em vista que o loss de teste começa a subir enquanto a loss de train diminui, indicando overfitting do modelo, isso acaba por ser um problema no dataset que possui poucos samples e acaba causando no overfitting / pouca accuracy do modelo se o número de degrees for muito alto.
+
+1 | train mae: 2.5701 |test mae: 2.3079 | alpha: 14.563
+2 | train mae: 1.8966 |test mae: 1.6567 | alpha: 33.932
+* 3 | train mae: 1.6423 |test mae: 1.6446 | alpha: 59.636
+4 | train mae: 1.5502 |test mae: 1.6748 | alpha: 138.950
+5 | train mae: 1.5093 |test mae: 1.6757 | alpha: 323.746
+6 | train mae: 1.3384 |test mae: 1.6467 | alpha: 323.746
