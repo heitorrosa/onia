@@ -95,7 +95,7 @@ if __name__ == "__main__":
     plt.savefig('exercises/15_Iterative_Gradient_Boosting_&_Custom_Losses/loss.png')
 
     plt.figure(figsize=(15, 6))
-    plt.plot(y_test.values[:100], label='Actual Sales (2017)', color='blue', alpha=0.6, linewidth=2)
+    plt.plot(y_test_original.values[:100], label='Actual Sales (2017)', color='blue', alpha=0.6, linewidth=2)
     plt.plot(preds[:100], label='Predicted Sales (Asymmetric)', color='orange', linestyle='--', linewidth=2)
     plt.xlabel('Days')
     plt.ylabel('Sales Volume')

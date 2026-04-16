@@ -1,0 +1,17 @@
+O exercício quer que eu teste as limitações de hardware, porém, uso cuda para tarefas como XGBoost, o que não traz tanta diversidade para o exercício, com isso, só fiz meu objetivo ter a melhor performance possível no modelo a partir da tunagem dos hyperparametros, que deve ser feita manualmente com o XGBoost pelo tamanho EXTREMO do dataset e a falta de interconectabilidade da estrutura de tensores entre o sklearn e o XGBoost.
+
+Como o dataset já estava formatado, nenhuma mudança foi necessária.
+
+É possível analisar que o dataset está extremamente desbalanceado.
+
+target
+0    573518
+1     21694
+Name: count, dtype: int64
+
+O uso de regularização e do max_delta_step ajuda a valorizar os pesos de partes desbalanceadas do dataset, mesmo que em troca de false true positives, o que em troca de um score maior, é valido, para ajudar nos weights desbalanceados, usei o scale_pos_weight para ajustar a escala dos pesos do modelo com base nas counts 0 / counts 1, ajudando no boosting dos pesos dos targets 1, aumentando a precisão do modelo. Tambem utilizei parametros como alpha, learning_rate e early_stopping para atingir resultados satisfatorios no dataset com um número apropriado de iters.
+Como o modelo não estava overfittando, como visto pelos plotting dos dados, não utilizei o parametro gamma para ajustar o overfititng do modelo.
+
+Para avaliar a performance do dataset, utilizei uma funcao customizada de scoring baseada no gini score e após a tunagem dos hyperparametros, atingi um gini score de 0.2818, sendo muito próximo do SOTA para esse dataset.
+
+gini: 0.2818

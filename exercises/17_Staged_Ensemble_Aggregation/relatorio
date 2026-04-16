@@ -1,0 +1,49 @@
+O dataset apresentado não está normalizado para uso em um modelo, para isso, é necessario aplicar um ColumnTransformer com alguns preprocessers para ajustar o dataset para uso em um modelo, os preprocessing escolhidos foram:
+    - OrdinalEncoder: sex, fbs, exang
+    - OneHotEncoding: dataset, cp, restecg, slope
+
+Como trees como o Gradient Boosting e XGBoost nao precisam de escaling dos valores para classificação, o uso do StandardScaler é descartado para esse exercício.
+
+O target do dataset está meio desbalanceado, com o valor 4 tendo muitas poucas samples, isso surge a possibilidade de usar um booster com o uso de scale_pos_weight para ajustar os pesos do target durante a inferencia
+
+num
+0    411
+1    265
+2    109
+3    107
+4     28
+Name: count, dtype: int64
+
+ao usar 4 valores no targets como resultado o modelo consegue reconhecer as relacoes entre os targets mais predominantes no dataset, mas falha em reconhecer relacoes entre os valores menos incidentes no dataset:
+f1: 0.4077279400187095
+              precision    recall  f1-score   support
+
+           0       0.89      0.70      0.78        82
+           1       0.58      0.47      0.52        53
+           2       0.28      0.45      0.34        22
+           3       0.13      0.19      0.16        21
+           4       0.18      0.33      0.24         6
+
+    accuracy                           0.53       184
+   macro avg       0.41      0.43      0.41       184
+weighted avg       0.62      0.53      0.56       184
+
+{'learning_rate': 0.01, 'max_depth': 3, 'min_samples_leaf': 1, 'n_estimators': 100, 'subsample': 0.8}
+
+se utilizarmos uma transformacao para valroes binarios, y.apply(lambda x: 1 if x > 0 else 0), o modelo consegue performar muito melhor, identificando corretamente as relaceos entre os itens do dataset e performance adequadamente:
+
+f1: 0.8345918734268248
+              precision    recall  f1-score   support
+
+           0       0.82      0.80      0.81        82
+           1       0.85      0.86      0.85       102
+
+    accuracy                           0.84       184
+   macro avg       0.84      0.83      0.83       184
+weighted avg       0.84      0.84      0.84       184
+
+{'learning_rate': 0.05, 'max_depth': 3, 'min_samples_leaf': 5, 'n_estimators': 200, 'subsample': 0.8}
+
+task 4.3: o processo de deviance comeca quando o testing set tem um loss maior que o training set, indicando que o modelo esta com overfitting, o early stopping resolve isso ao restaurar o modelo antes que esse processo comece, mantendo a integridade do modelo e impedindo que ele sofra de overfitting e performe mal em no testing set.
+
+task 4.4: o uso de um learning rate maior pode ser mais prejudicial para o modelo porque, ao passo que ele se aproxima do lowest point no plot de gradiente, ele pode acabar passando por ele e nao atingindo no min loss point, prejudicando na performance do modelo, ao mesmo tempo que usar um learning rate muito baixo, pode fazer com que os steps tenham menos significado e cause um aumento significativo no custo computacional para realizar tarefas como encontrar o min loss point do gradiente.
