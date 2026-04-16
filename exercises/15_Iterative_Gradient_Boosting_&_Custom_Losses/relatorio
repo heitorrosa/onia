@@ -1,4 +1,4 @@
-O exercicio pede pra normalzar um dataset, adicionando a data como index e criando metricas de MA7 e MA50 para a collumn 'sales', fiz isso usando o metodo pd.rolling() junto com mean() para obter esses valores, garantindo que eles façam parte do mesmo grupo ao realizar o calculo do MA usando groupby para evitar data leakage.
+O exercicio pede pra normalzar um dataset, adicionando a data como index e criando metricas de MA7 e MA50 para a collumn 'sales', fiz isso usando o metodo pd.rolling() junto com mean() para obter esses valores, garantindo que eles façam parte do mesmo grupo ao realizar o calculo do MA usando groupby para evitar data leakage. Também criei lagged features e medições relacionadas a data para aumentar a precisão e capacidade de correlação do modelo, indo além de só dados simples e indo além, permitindo ao modelo descobrir relações no dataset e melhorar sua performance consideravelmente. Eu tambem transformei o target em uma escala np.log1p, para facilitar os resultados de regressão, convertendo para valores normais posteriormente com np.expm1
 
 Defini funções customizadas de loss e val considerando a assimetria dos dados, fornecendo calculos validos para loss no dataset, tendo em vista que estamos trabalhando com dados históricos e esses precisam ser gerenciados com cuidado para evitar data leakages e problemas relacionados.
 
@@ -11,6 +11,6 @@ Como o problema tem um custo computacional muito alto, mesmo usnado cuda, fui cu
 Os resultados analisados após a iteração do modelo foram:
 
 learning_rate: 0.05, max_depth: 3
-rmse: 12.6363 | mae: 9.6387 | mape: 0.2048 | r2: 0.8396
+rmse: 8.0996 | mae: 6.1576 | mape: 0.1304 | r2: 0.9341
 
-Para o problema abordado, e as limitações com relação a feature engineering, o resultado se mostra muito bom, considerando que o mdoelo tem um r2 de 84%, indicando a presenca de classificações corretas no dataset, com muitos poucos desvios na regressão, mostrando excelência no quesito de regressão.
+Para o problema abordado, e as limitações com relação a feature engineering, o resultado se mostra muito bom, considerando que o mdoelo tem um r2 de 92%, indicando a presenca de classificações corretas no dataset, com muitos poucos desvios na regressão, mostrando excelência no quesito de regressão.

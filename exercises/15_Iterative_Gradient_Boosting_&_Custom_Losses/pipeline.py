@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error, r2_score, make_scorer
 from xgboost import XGBRegressor
 
@@ -22,11 +21,23 @@ asymmetric_scorer = make_scorer(asymmetric_eval, greater_is_better=False)
 
 def load_data():
     df = pd.read_csv("exercises/15_Iterative_Gradient_Boosting_&_Custom_Losses/store-item.csv")
+    df = df.sort_values(['store', 'item', 'date'])
     df['date'] = pd.to_datetime(df['date'])
     df = df.set_index('date')
 
-    df['MA7'] = df.groupby(['store', 'item'])['sales'].transform(lambda x: x.rolling(7).mean())
-    df['MA50'] = df.groupby(['store', 'item'])['sales'].transform(lambda x: x.rolling(50).mean())
+    group = df.groupby(['store', 'item'])['sales']
+
+    df['day_of_week'] = df.index.dayofweek
+    df['month'] = df.index.month
+    df['is_weekend'] = (df.index.dayofweek >= 5).astype(int)
+
+    df['lag_1'] = group.shift(1)
+    df['lag_7'] = group.shift(7)
+
+    df['MA7'] = group.transform(lambda x: x.rolling(7).mean())
+    df['MA50'] = group.transform(lambda x: x.rolling(50).mean())
+
+    df['sales'] = np.log1p(df['sales'])
 
     df = df.dropna()
     
@@ -34,8 +45,6 @@ def load_data():
 
 if __name__ == "__main__":
     X, y = load_data()
-
-    tscv = TimeSeriesSplit(n_splits=3)
 
     X_train = X[X.index < '2017-01-01']
     X_test = X[X.index >= '2017-01-01']
@@ -57,12 +66,14 @@ if __name__ == "__main__":
         eval_set=[(X_train_scaled, y_train), (X_test_scaled, y_test)],
         verbose=False,
     )
-    preds = model.predict(X_test_scaled)
 
-    rmse = np.sqrt(mean_squared_error(y_test, preds))
-    mae = mean_absolute_error(y_test, preds)
-    mape = mean_absolute_percentage_error(y_test, preds)
-    r2 = r2_score(y_test, preds)
+    preds = np.expm1(model.predict(X_test_scaled))
+    y_test_original = np.expm1(y_test)
+
+    rmse = np.sqrt(mean_squared_error(y_test_original, preds))
+    mae = mean_absolute_error(y_test_original, preds)
+    mape = mean_absolute_percentage_error(y_test_original, preds)
+    r2 = r2_score(y_test_original, preds)
 
     print(f"rmse: {rmse:.4f} | mae: {mae:.4f} | mape: {mape:.4f} | r2: {r2:.4f}")
 
