@@ -1,0 +1,26 @@
+Os modelos usando CatBoost fazem handling automaticamente de dados desalinhados e nao formatados, sem a necessidade de usar algo como ColumnTransformers para ajustar suas colunas e normaliza-las propriamente. Então eu só precisaria treinar o modelo e realizar normalmente.
+Inicialmente, apliquei o modelo com um lr de 0.05, 2000 iteratons, early stopping em 25 iters e rmse como , obtive um resultado muito bom de:
+
+0:      learn: 0.3869779        test: 0.4166839 best: 0.4166839 (0)     total: 167ms    remaining: 5m 33s
+100:    learn: 0.1166475        test: 0.1216915 best: 0.1216915 (100)   total: 12.8s    remaining: 4m
+200:    learn: 0.1044402        test: 0.1157143 best: 0.1157143 (200)   total: 24.2s    remaining: 3m 36s
+300:    learn: 0.1007523        test: 0.1140145 best: 0.1140145 (300)   total: 34.2s    remaining: 3m 13s
+400:    learn: 0.0974586        test: 0.1126305 best: 0.1126305 (400)   total: 44.6s    remaining: 2m 57s
+500:    learn: 0.0953677        test: 0.1118303 best: 0.1118230 (497)   total: 55.3s    remaining: 2m 45s
+bestTest = 0.1118197064
+bestIteration = 502
+Shrink model to first 503 iterations.
+r2: 0.9186 | rmse: 25541.3756
+
+mais do que suficiente para o dataset, com cross validation nao sendo eficiente computacionalmente pelo extremo baixo ganho que uma atividade como tal traria. As features mais importantes da tree são:
+
+Gr Liv Area      21.980140
+Overall Qual     20.671249
+Total Bsmt SF     8.297437
+BsmtFin SF 1      4.210902
+Year Built        3.883965
+Garage Cars       3.840552
+Central Air       3.454777
+Overall Cond      3.022577
+Lot Area          2.746830
+Fireplaces        2.705266

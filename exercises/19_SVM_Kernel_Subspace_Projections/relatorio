@@ -1,0 +1,51 @@
+O dataset já está formatado, só e é bem diverso, utilizei GridSearchCV para achar parametros diferentes para cada tipo de kernel solicitado no exercicio, tentei fazer o teste entre os 3 kernels sem nenhum tipo de hyperparameter como C e gamma e obtive os seguintes resultados:
+
+{'kernel': 'linear'}
+                    precision    recall  f1-score   support
+
+            LAYING       1.00      1.00      1.00       280
+           SITTING       0.94      0.95      0.95       262
+          STANDING       0.96      0.95      0.95       276
+           WALKING       1.00      0.99      0.99       247
+WALKING_DOWNSTAIRS       1.00      1.00      1.00       206
+  WALKING_UPSTAIRS       0.99      0.99      0.99       200
+
+          accuracy                           0.98      1471
+         macro avg       0.98      0.98      0.98      1471
+      weighted avg       0.98      0.98      0.98      1471
+
+[[280   0   0   0   0   0]
+ [  0 250  12   0   0   0]
+ [  0  15 261   0   0   0]
+ [  0   0   0 245   0   2]
+ [  0   0   0   1 205   0]
+ [  0   0   0   0   1 199]]
+
+ mostrando que SVM realmente performa muito bem para tarefas com alta dimensionalidade como no caso do dataset abordado que tem ~580 colunas.
+
+Mesmo com o resultado muito bom, decidi testar a tunagem do hyperparametro C com um logspace médio:
+    kernel: linear,
+    C: logspace(-3, 2, 25)
+
+Obtendo os resultados:
+
+{'C': np.float64(0.12115276586285889), 'kernel': 'linear'}
+                    precision    recall  f1-score   support
+
+            LAYING       1.00      1.00      1.00       280
+           SITTING       0.96      0.96      0.96       262
+          STANDING       0.96      0.96      0.96       276
+           WALKING       1.00      0.99      0.99       247
+WALKING_DOWNSTAIRS       1.00      1.00      1.00       206
+  WALKING_UPSTAIRS       0.99      0.99      0.99       200
+
+          accuracy                           0.98      1471
+         macro avg       0.98      0.98      0.98      1471
+      weighted avg       0.98      0.98      0.98      1471
+
+[[280   0   0   0   0   0]
+ [  1 251  10   0   0   0]
+ [  0  10 266   0   0   0]
+ [  0   0   0 245   0   2]
+ [  0   0   0   1 205   0]
+ [  0   0   0   0   1 199]]

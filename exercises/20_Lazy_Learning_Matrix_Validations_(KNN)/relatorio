@@ -1,0 +1,34 @@
+Como o dataset do iris é muito pequeno e espaçado linearmente, nem é preciso do girdsearch para conseguir um score perfeito no dataset porque o KNN consegue identificar e agrupar as linearidades perfeitamente.
+
+ce: 0.0000
+                 precision    recall  f1-score   support
+
+    Iris-setosa       1.00      1.00      1.00        10
+Iris-versicolor       1.00      1.00      1.00         9
+ Iris-virginica       1.00      1.00      1.00        11
+
+       accuracy                           1.00        30
+      macro avg       1.00      1.00      1.00        30
+   weighted avg       1.00      1.00      1.00        30
+
+[[10  0  0]
+ [ 0  9  0]
+ [ 0  0 11]]
+
+ Para conseguir realizar o exercicio adequadamente, resolvi utilizar um dataset chamado Iris Extended para analisar as relacoes propostas pelo problema adequadamente, o que nao se mostrou efetivo, entao só apliquei um GirdSerach com arrange de 1 até 51.
+
+{'n_neighbors': np.int64(19)}
+ce: 0.0377
+              precision    recall  f1-score   support
+
+      setosa       1.00      1.00      1.00        87
+  versicolor       0.97      1.00      0.99        73
+   virginica       1.00      0.97      0.99        80
+
+    accuracy                           0.99       240
+   macro avg       0.99      0.99      0.99       240
+weighted avg       0.99      0.99      0.99       240
+
+[[87  0  0]
+ [ 0 73  0]
+ [ 0  2 78]]
