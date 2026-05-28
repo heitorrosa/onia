@@ -2,7 +2,8 @@
 A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOAI (International Olympiad in Artificial Intelligence). This repository contains all documents and resolutions made by me during the iteration of this olympiad.
 
 * Fase 3 Etapa 1: *20/20*
-* Fase 3 Etapa 2: ~
+* Fase 3 Etapa 2: *>16/20*
+* Fase 4: ~
 
 ---
 
