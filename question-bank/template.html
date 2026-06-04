@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prova Mista - ONIA/IOAI 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: '#000000',
+            foreground: '#fafafa',
+            card: '#0a0a0a',
+            'card-foreground': '#fafafa',
+            primary: '#fafafa',
+            'primary-foreground': '#18181b',
+            secondary: '#18181b',
+            'secondary-foreground': '#fafafa',
+            muted: '#18181b',
+            'muted-foreground': '#a1a1aa',
+            accent: '#18181b',
+            'accent-foreground': '#fafafa',
+            border: '#27272a',
+            input: '#27272a',
+            ring: '#d4d4d8',
+            mc: '#3b82f6',
+            practical: '#22c55e',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* AMOLED dark base */
+    body { background: #000000; color: #fafafa; font-family: 'Inter', sans-serif; }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+    
+    /* Prose / Markdown rendering */
+    .prose { line-height: 1.75; }
+    .prose h1 { font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem; color: #fafafa; }
+    .prose h2 { font-size: 1.5rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; color: #fafafa; padding-bottom: 0.5rem; border-bottom: 1px solid #27272a; }
+    .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #fafafa; }
+    .prose p { margin-bottom: 0.75rem; color: #d4d4d8; }
+    .prose ul, .prose ol { margin-left: 1.5rem; margin-bottom: 0.75rem; }
+    .prose li { margin-bottom: 0.25rem; color: #d4d4d8; }
+    .prose strong { color: #fafafa; font-weight: 600; }
+    .prose em { color: #a1a1aa; }
+    .prose code { font-family: 'JetBrains Mono', monospace; background: #18181b; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; color: #4ade80; }
+    .prose pre { background: #0a0a0a; border: 1px solid #27272a; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin-bottom: 1rem; }
+    .prose pre code { background: transparent; padding: 0; color: #d4d4d8; font-size: 0.8125rem; }
+    .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
+    .prose th { background: #18181b; padding: 0.5rem 0.75rem; text-align: left; border: 1px solid #27272a; font-weight: 600; color: #fafafa; }
+    .prose td { padding: 0.5rem 0.75rem; border: 1px solid #27272a; color: #d4d4d8; }
+    .prose tr:nth-child(even) td { background: #0a0a0a; }
+    .prose blockquote { border-left: 3px solid #3f3f46; padding-left: 1rem; color: #a1a1aa; margin-bottom: 0.75rem; }
+    .prose hr { border-color: #27272a; margin: 1.5rem 0; }
+    
+    /* Question card */
+    .question-card { 
+      background: #0a0a0a; 
+      border: 1px solid #27272a; 
+      border-radius: 0.75rem; 
+      padding: 1.5rem; 
+      margin-bottom: 1rem; 
+      transition: border-color 0.2s;
+    }
+    .question-card:hover { border-color: #3f3f46; }
+    
+    /* MC options styling */
+    .prose ul { list-style: none; margin-left: 0; padding-left: 0; }
+    .prose ul li { padding: 0.5rem 0.75rem; margin-bottom: 0.375rem; background: #18181b; border-radius: 0.375rem; border-left: 3px solid transparent; transition: all 0.15s; }
+    .prose ul li:hover { border-left-color: #3b82f6; background: #1f1f23; }
+    
+    /* Badge */
+    .badge { display: inline-flex; align-items: center; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .badge-mc { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-practical { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+    
+    /* Gabarito button & panel */
+    .gabarito-btn {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.375rem 0.75rem; border-radius: 0.375rem;
+      font-size: 0.8125rem; font-weight: 500; cursor: pointer;
+      background: #18181b; color: #a1a1aa; border: 1px solid #27272a;
+      transition: all 0.2s; margin-top: 0.75rem;
+    }
+    .gabarito-btn:hover { background: #27272a; color: #fafafa; border-color: #3f3f46; }
+    .gabarito-btn.active { background: rgba(234, 179, 8, 0.1); color: #facc15; border-color: rgba(234, 179, 8, 0.3); }
+    
+    .gabarito-panel {
+      display: none; margin-top: 0.75rem; padding: 1rem;
+      background: rgba(234, 179, 8, 0.03); border: 1px solid rgba(234, 179, 8, 0.15);
+      border-radius: 0.5rem; font-size: 0.875rem; color: #d4d4d8;
+    }
+    .gabarito-panel.show { display: block; animation: fadeIn 0.2s ease; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Sidebar nav */
+    .nav-item { 
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.25rem 0.5rem; border-radius: 0.375rem;
+      font-size: 0.75rem; color: #71717a; cursor: pointer;
+      transition: all 0.15s; text-decoration: none;
+    }
+    .nav-item:hover { color: #d4d4d8; background: #18181b; }
+    .nav-item.active { color: #fafafa; background: #18181b; }
+    .nav-item .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: #27272a; flex-shrink: 0; }
+    .nav-item.active .nav-dot { background: #3b82f6; }
+    .nav-item .nav-type { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nav-item .nav-type.mc { color: #60a5fa; }
+    .nav-item .nav-type.practical { color: #4ade80; }
+    
+    /* Progress bar */
+    .progress-fill { background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width 0.3s ease; }
+    
+    /* Print */
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      .sidebar, .progress-bar, .gabarito-btn { display: none !important; }
+      .main-content { margin-left: 0 !important; padding: 1rem !important; }
+      .question-card { border-color: #ccc !important; background: #fff !important; }
+      .gabarito-panel { display: block !important; border-color: #ccc !important; background: #f9f9f9 !important; }
+      .prose * { color: #000 !important; }
+    }
+  </style>
+</head>
+<body class="bg-black text-zinc-50 min-h-screen">
+  <!-- Sidebar -->
+  <aside class="sidebar fixed top-0 left-0 h-screen w-64 bg-black border-r border-zinc-800 overflow-y-auto z-40 hidden lg:block">
+    <div class="p-4 border-b border-zinc-800">
+      <h2 class="text-sm font-semibold text-zinc-100">Prova Mista</h2>
+      <p class="text-xs text-zinc-500 mt-1">ONIA/IOAI 2025</p>
+      <div class="mt-3 progress-bar h-1 bg-zinc-800 rounded-full overflow-hidden">
+        <div class="progress-fill h-full rounded-full" id="progressBar" style="width: 0%"></div>
+      </div>
+      <p class="text-xs text-zinc-500 mt-1"><span id="progressText">0</span>/100 respondidas</p>
+    </div>
+    <nav class="p-2" id="sidebarNav"></nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content lg:ml-64 max-w-4xl mx-auto px-4 py-8">
+    <div class="prose" id="content"></div>
+  </main>
+
+  <!-- Mobile nav toggle -->
+  <button id="mobileNavToggle" class="fixed bottom-4 right-4 z-50 lg:hidden bg-zinc-800 text-zinc-100 p-3 rounded-full shadow-lg border border-zinc-700">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <div id="mobileNav" class="fixed inset-0 z-40 hidden">
+    <div class="absolute inset-0 bg-black/80" id="mobileNavBackdrop"></div>
+    <aside class="absolute left-0 top-0 h-full w-72 bg-black border-r border-zinc-800 overflow-y-auto">
+      <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
+        <h2 class="text-sm font-semibold text-zinc-100">Navegação</h2>
+        <button id="mobileNavClose" class="text-zinc-500 hover:text-zinc-100">✕</button>
+      </div>
+      <nav class="p-2" id="mobileSidebarNav"></nav>
+    </aside>
+  </div>
+
+  <script>
+    // ===== Embed raw markdown =====
+    const EMBEDDED_MD = `EMBEDDED_MD_PLACEHOLDER`;
+
+    // ===== Parse questions from markdown =====
+    function parseQuestions(md) {
+      const sections = md.split(/\n(?=## Questão \d+)/);
+      const questions = [];
+      for (const section of sections) {
+        const headerMatch = section.match(/## Questão (\d+) \((\d+) pontos\)/);
+        if (!headerMatch) continue;
+        const num = parseInt(headerMatch[1]);
+        const pts = parseInt(headerMatch[2]);
+        const body = section.replace(/## Questão \d+ \(\d+ pontos\)\n*/, '').replace(/\n---\s*$/, '').trim();
+        
+        // Detect MC: has A) B) C) D) options
+        const hasOptions = /^[A-E]\)\s/m.test(body);
+        const hasJust = body.includes('**Justificativa:**');
+        const type = (hasOptions && hasJust) ? 'mc' : 'practical';
+        
+        // Extract justificativa
+        let justificativa = '';
+        if (type === 'mc') {
+          const justMatch = body.match(/\*\*Justificativa:\*\*([\s\S]*?)$/);
+          if (justMatch) justificativa = justMatch[1].trim();
+        }
+        
+        questions.push({ num, pts, type, body, justificativa });
+      }
+      return questions;
+    }
+
+    // ===== Render markdown with KaTeX =====
+    function renderMd(text) {
+      // Protect LaTeX from marked.js
+      const latexBlocks = [];
+      let processed = text.replace(/\$\$([\s\S]*?)\$\$/g, (m, p1) => {
+        latexBlocks.push({ tex: p1, display: true });
+        return `%%LATEX_BLOCK_${latexBlocks.length - 1}%%`;
+      });
+      processed = processed.replace(/\$([^\$]+?)\$/g, (m, p1) => {
+        latexBlocks.push({ tex: p1, display: false });
+        return `%%LATEX_BLOCK_${latexBlocks.length - 1}%%`;
+      });
+      
+      // Render markdown
+      let html = marked.parse(processed);
+      
+      // Restore LaTeX
+      html = html.replace(/%%LATEX_BLOCK_(\d+)%%/g, (m, idx) => {
+        const block = latexBlocks[parseInt(idx)];
+        try {
+          return katex.renderToString(block.tex, { displayMode: block.display, throwOnError: false });
+        } catch { return block.tex; }
+      });
+      
+      return html;
+    }
+
+    // ===== Build page =====
+    const questions = parseQuestions(EMBEDDED_MD);
+    
+    // Build sidebar nav
+    let navHtml = '';
+    questions.forEach(q => {
+      const typeLabel = q.type === 'mc' ? 'MC' : 'Prática';
+      const typeClass = q.type === 'mc' ? 'mc' : 'practical';
+      navHtml += `<a href="#q${q.num}" class="nav-item" data-q="${q.num}">
+        <span class="nav-dot"></span>
+        <span>Q${q.num}</span>
+        <span class="nav-type ${typeClass}">${typeLabel}</span>
+      </a>`;
+    });
+    document.getElementById('sidebarNav').innerHTML = navHtml;
+    document.getElementById('mobileSidebarNav').innerHTML = navHtml;
+    
+    // Build content
+    let contentHtml = `<h1>Prova Mista — ONIA/IOAI 2025</h1>
+    <p class="text-zinc-400">100 questões · 1000 pontos · Mistura de questões discursivas e múltipla escolha</p>
+    <hr class="border-zinc-800">`;
+    
+    questions.forEach(q => {
+      const badgeClass = q.type === 'mc' ? 'badge-mc' : 'badge-practical';
+      const badgeLabel = q.type === 'mc' ? 'Múltipla Escolha' : 'Prática';
+      
+      // Remove the original ## header from body (we render our own)
+      let body = q.body.replace(/^## Questão \d+ \(10 pontos\)\s*/, '');
+      
+      // Render body
+      let bodyHtml = renderMd(body);
+      
+      // Add gabarito button if MC has justificativa
+      let gabaritoHtml = '';
+      if (q.type === 'mc' && q.justificativa) {
+        gabaritoHtml = `
+        <button class="gabarito-btn" onclick="toggleGabarito(this, ${q.num})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver Gabarito
+        </button>
+        <div class="gabarito-panel" id="gabarito-${q.num}">
+          <strong style="color: #facc15;">Justificativa:</strong><br>
+          ${renderMd(q.justificativa)}
+        </div>`;
+      }
+      
+      contentHtml += `
+      <div class="question-card" id="q${q.num}">
+        <div class="flex items-center gap-2 mb-3">
+          <h2 class="!mt-0 !mb-0 !border-0 !pb-0" style="font-size: 1.125rem;">Questão ${q.num}</h2>
+          <span class="badge ${badgeClass}">${badgeLabel}</span>
+          <span class="text-xs text-zinc-500 ml-auto">${q.pts} pontos</span>
+        </div>
+        <div class="prose">${bodyHtml}</div>
+        ${gabaritoHtml}
+      </div>`;
+    });
+    
+    document.getElementById('content').innerHTML = contentHtml;
+
+    // ===== Gabarito toggle =====
+    function toggleGabarito(btn, num) {
+      const panel = document.getElementById(`gabarito-${num}`);
+      const isOpen = panel.classList.contains('show');
+      panel.classList.toggle('show');
+      btn.classList.toggle('active');
+      btn.innerHTML = isOpen 
+        ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Ver Gabarito`
+        : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Ocultar Gabarito`;
+    }
+
+    // ===== Scroll spy =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const num = entry.target.id.replace('q', '');
+          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+          const navItem = document.querySelector(`.nav-item[data-q="${num}"]`);
+          if (navItem) {
+            navItem.classList.add('active');
+            navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    document.querySelectorAll('.question-card').forEach(el => observer.observe(el));
+
+    // ===== Progress (placeholder) =====
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('progressText').textContent = '0';
+
+    // ===== Mobile nav =====
+    document.getElementById('mobileNavToggle').addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.remove('hidden');
+    });
+    document.getElementById('mobileNavClose').addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.add('hidden');
+    });
+    document.getElementById('mobileNavBackdrop').addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.add('hidden');
+    });
+    document.querySelectorAll('#mobileSidebarNav .nav-item').forEach(el => {
+      el.addEventListener('click', () => document.getElementById('mobileNav').classList.add('hidden'));
+    });
+  </script>
+</body>
+</html>

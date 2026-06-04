@@ -1,3 +1,4 @@
 archive/
+.playwright-mcp
 *.csv
 idea.md

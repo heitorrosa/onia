@@ -1,0 +1,602 @@
+[
+  {
+    "num": 1,
+    "type": "Practical",
+    "content": "## Questão 42\n\n(10 pontos)\r\n\r\nComparando as funções de ativação ReLU e sigmoid em camadas ocultas de redes neurais profundas, qual afirmação é CORRETA?\r\n\r\nA. A sigmoid é preferível porque produz saídas entre 0 e 1, evitando valores extremos\r\n\r\nB. A ReLU é preferível porque mitiga o vanishing gradient e é computacionalmente mais eficiente\r\n\r\nC. A sigmoid é preferível porque não tem o problema de \"dying ReLU\"\r\n\r\nD. A ReLU é preferível porque produz saídas normalizadas automaticamente\r\n\r\nE. A sigmoid é preferível porque sua curva suave permite melhor convergência em todas as camadas\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 2,
+    "type": "MC",
+    "content": "## Questão 33\n\n(10 pontos)\r\n\r\nUm cientista de dados está treinando um classificador para identificar e-mails de spam. Ele testa três abordagens: (i) um modelo com alta variância e baixo viés, (ii) um modelo com baixa variância e alto viés, e (iii) um modelo com viés e variância balanceados. Qual das alternativas descreve CORRETAMENTE o trade-off viés-variância no contexto de aprendizado de máquina?\r\n\r\nA) Alto viés e alta variância sempre produzem os melhores resultados, pois cobrem mais casos possíveis.\r\n\r\nB) Modelos com alto viés tendem a subajustar (underfitting), enquanto modelos com alta variância tendem a sobreajustar (overfitting); o ideal é encontrar um equilíbrio que minimize o erro total.\r\n\r\nC) A variância pode ser eliminada completamente aumentando o tamanho do dataset, sem necessidade de regularização.\r\n\r\nD) O viés é causado apenas por dados de treinamento insuficientes e pode ser eliminado com mais épocas de treinamento.\r\n\r\nE) O trade-off viés-variância só se aplica a redes neurais profundas, não a modelos lineares.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 3,
+    "type": "Practical",
+    "content": "## Questão 86\n\n(10 pontos)\r\n\r\nEm um ambiente de aprendizado por reforço (Reinforcement Learning), o agente equilibra exploração e exploitação usando a estratégia ε-greedy. Se ε = 0,1, qual é o comportamento esperado do agente?\r\n\r\nA) O agente sempre escolhe a ação com maior valor Q\r\n\r\nB) O agente escolhe aleatoriamente 10% das vezes e explora a melhor ação conhecida 90% das vezes\r\n\r\nC) O agente escolhe aleatoriamente 90% das vezes e explora a melhor ação conhecida 10% das vezes\r\n\r\nD) O agente não realiza nenhuma exploração, apenas exploita\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 4,
+    "type": "MC",
+    "content": "## Questão 21\n\n(10 pontos)\r\n\r\nEm um modelo de regressão logística treinado para prever a probabilidade de um cliente cancelar uma assinatura, o modelo retorna P(y=1|x) = 0.73. Qual é a interpretação CORRETA deste valor?\r\n\r\nA) O modelo classifica o cliente como \"vai cancelar\" porque 0.73 > 0.5.\r\n\r\nB) O modelo estima que há 73% de probabilidade de o cliente cancelar a assinatura, dado o conjunto de características x.\r\n\r\nC) O modelo está 73% seguro de sua previsão de que o cliente vai cancelar.\r\n\r\nD) Dos clientes com características semelhantes a x, 73% já cancelaram no passado.\r\n\r\nE) O modelo comete 27% de erro em suas previsões para este cliente.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 5,
+    "type": "MC",
+    "content": "## Questão 37\n\n(10 pontos)\r\n\r\nEm uma CNN para reconhecimento de objetos em imagens, a primeira camada convolucional aprendeu filtros que detectam bordas horizontais, verticais e diagonais. As camadas mais profundas combinam essas bordas para formar texturas, e camadas ainda mais profundas detectam partes de objetos (olhos, narizes, rodas). Qual conceito de deep learning ilustra essa progressão de representações?\r\n\r\nA) Transfer learning — cada camada herda os pesos da camada anterior por meio de poda.\r\n\r\nB) Hierarquia de features — camadas rasas extraem características de baixo nível (bordas), enquanto camadas profundas combinam-nas para formar representações de alto nível (objetos complexos).\r\n\r\nC) Data augmentation — cada camada aplica transformações diferentes aos dados de entrada para aumentar a variedade de padrões.\r\n\r\nD) Regularização — camadas mais profundas possuem menos parâmetros para evitar overfitting.\r\n\r\nE) Dropout — camadas alternadas são desativadas para forçar a rede a aprender representações redundantes.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 6,
+    "type": "Practical",
+    "content": "## Questão 34\n\n(10 pontos)\r\n\r\nUm dataset de classificação binária possui 1000 amostras: 950 da classe majoritária e 50 da classe minoritária. O pesquisador aplica SMOTE com k=5 vizinhos para equilibrar as classes.\r\n\r\n**a)** Qual é o problema de usar apenas random oversampling (duplicação) neste caso? (3 pts)\r\n\r\n**b)** Explique como o SMOTE gera novas amostras sintéticas. Qual é a fórmula utilizada? (4 pts)\r\n\r\n**c)** Se o SMOTE gerar 450 novas amostras sintéticas da classe minoritária, qual será o novo balanceamento do dataset? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 7,
+    "type": "Practical",
+    "content": "## Questão 100\n\n(10 pontos)\r\n\r\nUm sistema de recomendação retornou as seguintes 5 recomendações (ordenadas por relevância):\r\n\r\n| Posição | Documento | Relevante? |\r\n|---------|-----------|------------|\r\n| 1 | Doc A | Sim |\r\n| 2 | Doc B | Não |\r\n| 3 | Doc C | Sim |\r\n| 4 | Doc D | Sim |\r\n| 5 | Doc E | Não |\r\n\r\nO dataset contém um total de 10 documentos relevantes.\r\n\r\n**a)** Compute Precision@3. (3 pts)\r\n\r\n**b)** Compute Recall@3. (3 pts)\r\n\r\n**c)** Compute Precision@5 e Recall@5. (4 pts)\r\n\r\n**Fórmulas:**\r\n\r\n$$\\text{Precision@K} = \\frac{\\text{nº de relevantes nos top-K}}{K}$$\r\n\r\n$$\\text{Recall@K} = \\frac{\\text{nº de relevantes nos top-K}}{\\text{total de relevantes}}$$",
+    "justificativa": ""
+  },
+  {
+    "num": 8,
+    "type": "MC",
+    "content": "## Questão 2\n\n(10 pontos)\r\n\r\nEm um sistema de detecção de fraude bancária, o time de negócio afirma que é mais importante detectar o maior número possível de fraudes verdadeiras, mesmo que isso gere alguns falsos positivos (clientes inocentes sinalizados). Qual métrica o cientista de dados deve priorizar ao otimizar o modelo?\r\n\r\nA) Precisão (Precision), pois garante que as fraudes detectadas sejam realmente fraudes.\r\n\r\nB) Acurácia (Accuracy), pois mede o desempenho geral do modelo em todas as classes.\r\n\r\nC) Recall (Sensibilidade), pois maximiza a proporção de fraudes verdadeiras que são corretamente detectadas.\r\n\r\nD) F1-Score, pois equilibra perfeitamente precisão e recall em qualquer cenário.\r\n\r\nE) AUC-ROC, pois mede a capacidade geral de discriminação do modelo independente do limiar de classificação.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 9,
+    "type": "MC",
+    "content": "## Questão 10\n\n(10 pontos)\r\n\r\nEm um projeto de visão computacional para identificação de produtos em uma linha de montagem, o time de ML está arquitetando uma CNN. Eles precisam decidir entre usar camadas de Max Pooling ou Average Pooling após as camadas convolucionais. Qual afirmação descreve CORRETAMENTE a diferença prática entre essas duas abordagens de pooling?\r\n\r\nA) Max Pooling é mais adequado para detecção de características, pois retém o valor mais forte de cada região, enquanto Average Pooling suaviza a representação e pode perder informações de borda.\r\n\r\nB) Average Pooling é sempre melhor que Max Pooling porque preserva mais informações da imagem original.\r\n\r\nC) Max Pooling e Average Pooling produzem exatamente o mesmo resultado quando a janela de pooling é 2×2.\r\n\r\nD) Max Pooling é usado apenas em camadas de entrada, enquanto Average Pooling é usado em camadas intermediárias.\r\n\r\nE) Average Pooling é mais eficiente computacionalmente, mas Max Pooling é mais barato em termos de memória.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 10,
+    "type": "MC",
+    "content": "## Questão 45\n\n(10 pontos)\r\n\r\nEm um modelo de linguagem baseado em Transformer, o mecanismo de autoatenção (self-attention) permite que cada token da sequência \"preste atenção\" a todos os outros tokens. Qual das alternativas descreve CORRETAMENTE o papel da Positional Encoding no Transformer?\r\n\r\nA) A Positional Encoding serve para normalizar as representações dos tokens, garantindo que todas tenham a mesma média e variância.\r\n\r\nB) A Positional Encoding adiciona informação sobre a posição de cada token na sequência, pois o mecanismo de self-attention, por si só, não possui noção de ordem dos elementos.\r\n\r\nC) A Positional Encoding é usada para mascarar tokens futuros durante o treinamento, impedindo que o modelo \"roube\" informações do futuro.\r\n\r\nD) A Positional Encoding converte tokens discretos em vetores contínuos densos, funcionando como uma camada de embedding.\r\n\r\nE) A Positional Encoding é responsável por calcular os pesos de atenção entre os tokens, determinando quais palavras são mais relevantes.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 11,
+    "type": "MC",
+    "content": "## Questão 23\n\n(10 pontos)\r\n\r\nDurante o treinamento de uma rede neural para classificação de imagens, é aplicada dropout com taxa p = 0.3. Qual é o efeito CORRETO do dropout no treinamento?\r\n\r\nA) Remove permanentemente 30% dos neurônios da rede, tornando o modelo menor e mais rápido.\r\n\r\nB) Durante cada iteração de treinamento, desativa aleatoriamente 30% dos neurônios, forçando a rede a não depender excessivamente de neurônios específicos.\r\n\r\nC) Reduz o learning rate em 30% para evitar divergência do treinamento.\r\n\r\nD) Zera 30% dos pesos da rede antes de cada forward pass, funcionando como regularização L2.\r\n\r\nE) Aumenta a capacidade da rede em 30%, permitindo que ela aprenda mais padrões.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 12,
+    "type": "Practical",
+    "content": "## Questão 64\n\n(10 pontos)\r\n\r\nEm um sistema de recomendação de filmes, o pesquisador deseja representar as preferências dos usuários para gerar recomendações.\r\n\r\n**a)** Compare as abordagens de filtragem colaborativa (collaborative filtering) e filtragem baseada em conteúdo (content-based filtering). Cite uma vantagem e uma desvantagem de cada. (4 pts)\r\n\r\n**b)** Explique o problema de cold start em sistemas de recomendação. Apresente 3 estratégias para mitigá-lo. (4 pts)\r\n\r\n**c)** Explique a diferença entre filtering colaborativa baseada em memória (memory-based) e baseada em modelo (model-based). Dê um exemplo de cada. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 13,
+    "type": "MC",
+    "content": "## Questão 28\n\n(10 pontos)\r\n\r\nEm um sistema de recomendação de filmes, um novo usuário acabou de se cadastrar e ainda não avaliou nenhum filme. Ao mesmo tempo, um novo filme foi adicionado ao catálogo sem nenhuma avaliação de usuários. Qual conceito de aprendizado de máquina descreve esse problema e quais das seguintes abordagens são VIÁVEIS para mitigá-lo?\r\n\r\nA) O problema é overfitting; a solução é aumentar o tamanho do dataset com mais filmes.\r\n\r\nB) O problema é cold start; uma possível abordagem é usar metadados do perfil do usuário (gênero, idade) e atributos do filme (gênero, diretor) para fazer recomendações iniciais baseadas em conteúdo.\r\n\r\nC) O problema é underfitting; a solução é tornar o modelo de recomendação mais complexo, adicionando mais camadas.\r\n\r\nD) O problema é data leakage; a solução é remover o filme novo do dataset antes do treinamento.\r\n\r\nE) O problema é vanishing gradient; a solução é usar uma rede neural mais rasa.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 14,
+    "type": "Practical",
+    "content": "## Questão 73\n\n(10 pontos)\r\n\r\nUm engenheiro de ML está construindo um modelo de classificação de imagens para detectar doenças em plantações. O dataset é muito pequeno (200 imagens) e as classes estão desbalanceadas.\r\n\r\n**a)** Explique o problema de overfitting em contextos com datasets pequenos. Por que redes neurais profundas são especialmente vulneráveis a esse problema? (3 pts)\r\n\r\n**b)** Nomeie e explique 3 técnicas de regularização que podem ser usadas para reduzir overfitting: uma aplicada aos dados, uma aplicada à arquitetura da rede, e uma aplicada ao processo de treinamento. (6 pts)\r\n\r\n**c)** Explique o conceito de early stopping e como ele se relaciona com o trade-off entre underfitting e overfitting. (1 pt)",
+    "justificativa": ""
+  },
+  {
+    "num": 15,
+    "type": "MC",
+    "content": "## Questão 7\n\n(10 pontos)\r\n\r\nEm uma rede neural profunda para classificação de imagens médicas, o time de ML está debatendo qual função de ativação usar nas camadas ocultas. O treinamento apresenta vanishing gradient, e o modelo está convergindo muito lentamente. Qual das funções de ativação abaixo é MAIS adequada para mitigar esse problema?\r\n\r\nA) Sigmoid, pois sua derivada é sempre positiva e evita gradientes negativos.\r\n\r\nB) Tanh, pois produz saídas centradas em zero e tem derivada maior que a sigmoid.\r\n\r\nC) ReLU, pois seu gradiente é constante e igual a 1 para valores positivos, evitando o desvanecimento.\r\n\r\nD) Softmax, pois normaliza as saídas da rede para que os gradientes sejam sempre estáveis.\r\n\r\nE) Linear, pois não altera o sinal do gradiente em nenhuma camada.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 16,
+    "type": "Practical",
+    "content": "## Questão 66\n\n(10 pontos)\r\n\r\nO dropout é uma técnica de regularização amplamente utilizada em redes neurais. Durante o treinamento, uma taxa p = 0.5 é aplicada.\r\n\r\n**a)** Explique como o dropout funciona durante o treinamento e como ele é diferente durante a inferência (predição). (3 pts)\r\n\r\n**b)** Por que o dropout pode ser interpretado como um método de ensemble? Explique a conexão entre dropout e a combinação de múltiplos modelos. (4 pts)\r\n\r\n**c)** Em quais tipos de camadas o dropout é tipicamente aplicado e em quais ele NÃO deve ser usado? Justifique. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 17,
+    "type": "Practical",
+    "content": "## Questão 48\n\n(10 pontos)\r\n\r\nUm pesquisador deseja classificar imagens de raio-X torácico usando uma rede neural treinada no ImageNet. Ele decide congelar as camadas convolucionais da rede pré-treinada e treinar apenas as camadas densas finais para a nova tarefa.\r\n\r\n**a)** Qual é a principal vantagem de usar transfer learning neste cenário? (3 pts)\r\n\r\n**b)** Em que camadas da rede pré-treinada estão armazenadas as representações mais genéricas (bordas, texturas) e em que camadas estão as representações mais específicas (objetos complexos)? (4 pts)\r\n\r\n**c)** Se o pesquisador decidisse fazer fine-tuning completo (descongelando todas as camadas), qual seria o risco principal, considerando que o dataset de raio-X é pequeno? (3 pts)\r\n\r\n**Justifique cada resposta.**",
+    "justificativa": ""
+  },
+  {
+    "num": 18,
+    "type": "Practical",
+    "content": "## Questão 60\n\n(10 pontos)\r\n\r\nUm modelo de regressão apresenta os seguintes resultados:\r\n\r\n| Métrica | Treino | Teste |\r\n|---------|--------|-------|\r\n| R² | 0.98 | 0.45 |\r\n| Erro MSE | 12.3 | 89.7 |\r\n\r\n**a)** O que a discrepância entre os valores de R² de treino e teste indica sobre o modelo? (3 pts)\r\n\r\n**b)** Nomeie e explique duas estratégias que poderiam ser aplicadas para reduzir esse problema. (4 pts)\r\n\r\n**c)** Se o R² de treino fosse 0.52 e o R² de teste fosse 0.48, o que isso indicaria? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 19,
+    "type": "Practical",
+    "content": "## Questão 55\n\n(10 pontos)\r\n\r\nUm pesquisador está treinando uma rede neural e percebe que o loss oscila muito entre épocas, sem convergir. Ele usa taxa de aprendizado fixa de 0.1.\r\n\r\n**a)** Explique o que acontece quando a taxa de aprendizado é muito alta durante o treinamento. Qual é o efeito no caminho percorrido pelo otimizador no espaço de parâmetros? (3 pts)\r\n\r\n**b)** Explique o conceito de learning rate scheduling. Descreva duas estratégias comuns de agendamento e quando cada uma é indicada. (4 pts)\r\n\r\n**c)** O pesquisador considera usar ReduceLROnPlateau. Explique como essa estratégia funciona e qual é a intuição por trás dela. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 20,
+    "type": "MC",
+    "content": "## Questão 17\n\n(10 pontos)\r\n\r\nUm time de ML está projetando uma CNN para classificar raio-X de tórax. Eles estão debatendo entre usar apenas camadas convolucionais com stride=2 para reduzir a dimensionalidade ou usar camadas de Max Pooling após as convoluções. Qual afirmação descreve CORRETAMENTE a vantagem de usar Max Pooling em vez de stride=2 na convolução?\r\n\r\nA) Max Pooling é mais eficiente porque não precisa de parâmetros treináveis, ao contrário da convolução com stride=2.\r\n\r\nB) Max Pooling adiciona parâmetros aprendíveis que melhoram a capacidade de representação da rede.\r\n\r\nC) Max Pooling reduz a dimensionalidade mantendo invariância a pequenas translações, algo que stride=2 na convolução não garante.\r\n\r\nD) Max Pooling aumenta a resolução da imagem, permitindo que as camadas seguintes vejam mais detalhes.\r\n\r\nE) Max Pooling é necessário para que a rede possa lidar com imagens de tamanhos diferentes.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 21,
+    "type": "Practical",
+    "content": "## Questão 90\n\n(10 pontos)\r\n\r\nDurante o treinamento de uma rede neural profunda com muitas camadas, os gradientes calculados no backpropagation tornam-se extremamente pequenos nas primeiras camadas, impedindo o aprendizado efetivo.\r\n\r\n**a)** Qual é o nome deste problema? Explique sua causa matemática (relação com a regra da cadeia no backpropagation). (3 pts)\r\n\r\n**b)** A arquitetura **LSTM** foi projetada para mitigar este problema em RNNs. Explique como as gates (forget gate, input gate, output gate) ajudam a preservar o fluxo de gradientes ao longo do tempo. (4 pts)\r\n\r\n**c)** A arquitetura **ResNet** mitiga o mesmo problema em redes feedforward. Explique o conceito de skip connections (conexões residuais) e por que elas facilitam o fluxo de gradientes. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 22,
+    "type": "MC",
+    "content": "## Questão 15\n\n(10 pontos)\r\n\r\nEm um projeto de classificação de imagens para diagnóstico médico, o time de ML treinou dois modelos: Modelo A (mais simples, com poucas camadas) e Modelo B (mais profundo, com muitas camadas). O Modelo A obteve 75% de acurácia no treinamento e 73% no teste. O Modelo B obteve 99% no treinamento e 71% no teste. Qual conceito de ML explica melhor o comportamento do Modelo B?\r\n\r\nA) Underfitting, pois o modelo é simples demais para capturar os padrões dos dados.\r\n\r\nB) Overfitting, pois o modelo memorizou os dados de treinamento e não generaliza bem para dados novos.\r\n\r\nC) Data leakage, pois o Modelo B teve acesso aos dados de teste durante o treinamento.\r\n\r\nD) Bias alto, pois o modelo complexo tem dificuldade em ajustar os dados de treinamento.\r\n\r\nE) Collapse de gradiente, pois o Modelo B tem camadas demais e os gradientes se tornam instáveis.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 23,
+    "type": "Practical",
+    "content": "## Questão 65\n\n(10 pontos)\r\n\r\nUm pesquisador tem um dataset de 500 imagens de gatos para classificação binária. As imagens são todas 224×224 pixels com 3 canais de cor (RGB).\r\n\r\n**a)** Nomeie e explique 4 técnicas comuns de data augmentation para imagens. (4 pts)\r\n\r\n**b)** Se o pesquisador aplicar random horizontal flip com probabilidade 0.5 e random rotation de ±15°, como essas transformações ajudam a reduzir overfitting? (3 pts)\r\n\r\n**c)** Por que data augmentation NÃO deve ser aplicado no conjunto de teste? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 24,
+    "type": "MC",
+    "content": "## Questão 30\n\n(10 pontos)\r\n\r\nUm modelo de regressão linear foi avaliado e obteve R² = 0.85. Qual interpretação é CORRETA?\r\n\r\nA) 85% das predições do modelo estão corretas.\r\n\r\nB) O modelo explica 85% da variância total da variável dependente.\r\n\r\nC) O modelo comete 15% de erro em suas predições.\r\n\r\nD) 85% dos dados de treinamento foram usados para ajustar o modelo.\r\n\r\nE) O modelo tem 85% de probabilidade de acertar a próxima previsão.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 25,
+    "type": "MC",
+    "content": "## Questão 4\n\n(10 pontos)\r\n\r\nConsidere um problema de classificação em que um cientista de dados está decidindo entre usar um Perceptron simples ou uma Support Vector Machine (SVM) com kernel RBF. Os dados têm 500 amostras e 20 features, e a fronteira de decisão não é linearmente separável. Qual das afirmações explica melhor por que a SVM com kernel RBF seria mais adequada que o Perceptron neste caso?\r\n\r\nA) O Perceptron não consegue lidar com dados de alta dimensão, enquanto a SVM funciona com qualquer número de features.\r\n\r\nB) O kernel RBF permite que a SVM mapeie os dados para um espaço de maior dimensionalidade onde a separação linear pode ser possível, algo que o Perceptron linear não consegue fazer.\r\n\r\nC) O Perceptron é um algoritmo não-supervisionado e não pode ser usado para classificação, ao contrário da SVM.\r\n\r\nD) A SVM com kernel RBF sempre tem menos overfitting que um Perceptron, independentemente dos dados.\r\n\r\nE) O Perceptron só funciona com dados binários (0 e 1), enquanto a SVM aceita dados contínuos.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 26,
+    "type": "MC",
+    "content": "## Questão 5\n\n(10 pontos)\r\n\r\nEm um dataset de clientes de um e-commerce, um cientista de dados quer segmentar os clientes em grupos com comportamentos de compra similares. Ele não possui rótulos prévios para os grupos. Considere que ele está escolhendo entre K-Means, DBSCAN e clustering hierárquico aglomerativo. Qual afirmação descreve CORRETAMENTE uma limitação do K-Means para este problema específico?\r\n\r\nA) O K-Means não funciona com dados contínuos, apenas com dados categóricos.\r\n\r\nB) O K-Means assume que os clusters têm formatos esféricos e tamanhos aproximadamente iguais, o que pode ser problemático se os grupos de clientes tiverem formas irregulares ou tamanhos muito diferentes.\r\n\r\nC) O K-Means requer que o número de clusters seja definido a priori e não pode ser ajustado depois do treinamento.\r\n\r\nD) O K-Means é mais lento que DBSCAN para qualquer tamanho de dataset.\r\n\r\nE) O K-Means não consegue lidar com dados que possuem valores faltantes.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 27,
+    "type": "Practical",
+    "content": "## Questão 40\n\n(10 pontos)\r\n\r\nEm uma rede neural convolucional (CNN), qual é a função principal da camada de **pooling**?\r\n\r\nA. Aumentar a dimensionalidade da representação\r\n\r\nB. Extrair características de borda usando filtros\r\n\r\nC. Reduzir a dimensionalidade espacial, diminuindo parâmetros e controls overfitting\r\n\r\nD. Aplicar normalização nas ativações\r\n\r\nE. Combinar os feature maps de diferentes camadas convolucionais em um único vetor\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 28,
+    "type": "MC",
+    "content": "## Questão 31\n\n(10 pontos)\r\n\r\nEm uma rede neural convolucional (CNN) para classificação de imagens médicas, o pesquisador observa que o modelo apresenta alta acurácia no treinamento (98%) mas acurácia baixa no teste (62%). Ele decide aplicar data augmentation com rotações aleatórias, flip horizontal e alterações de brilho. Qual das alternativas descreve CORRETAMENTE por que o data augmentation ajuda a reduzir esse problema?\r\n\r\nA) O data augmentation aumenta o tamanho físico do dataset, permitindo que a rede aprenda mais parâmetros.\r\n\r\nB) O data augmentation introduce variações artificiais nos dados de treinamento, fazendo com que a rede generalize melhor e não memorize exemplos específicos, reduzindo o overfitting.\r\n\r\nC) O data augmentation funciona como uma forma de regularização L2, penalizando pesos grandes durante o treinamento.\r\n\r\nD) O data augmentation normaliza as entradas, garantindo que cada imagem tenha média zero e variância um.\r\n\r\nE) O data augmentation substitui a necessidade de camadas de pooling, pois as transformações já reduzem a dimensionalidade.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 29,
+    "type": "Practical",
+    "content": "## Questão 62\n\n(10 pontos)\r\n\r\nConsidere um problema de clusterização de clientes de uma loja online com base em comportamento de compra. O dataset contém 10.000 clientes com 15 features numéricas e 3 features categóricas.\r\n\r\n**a)** Compare K-Means com DBSCAN para este problema. Em quais situações cada algoritmo seria mais adequado? Considere: forma dos clusters, presença de ruído, e necessidade de definir K previamente. (4 pts)\r\n\r\n**b)** Explique como o método do cotovelo (elbow method) e o coeficiente de silhueta podem ser usados para determinar o número ideal de clusters no K-Means. (3 pts)\r\n\r\n**c)** O pesquisador tem dúvidas sobre se deve padronizar (standardize) as features antes de aplicar K-Means. Explique por que a padronização é importante para algoritmos baseados em distância. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 30,
+    "type": "MC",
+    "content": "## Questão 43\n\n(10 pontos)\r\n\r\nUm engenheiro de machine learning está treinando um modelo de classificação para identificar fraudes em transações financeiras. O dataset possui 99% de transações legítimas e 1% de fraudes. Ele testa quatro abordagens de classificação: (i) um modelo que sempre prediz \"legítimo\", (ii) um modelo que sempre prediz \"fraude\", (iii) um classificador balanceado com F1-Score otimizado, e (iv) um classificador com limiar de decisão ajustado para maximizar o recall. Qual das abordagens é mais adequada para este problema e por quê?\r\n\r\nA) Abordagem (i), pois prediz corretamente 99% das vezes, resultando em alta acurácia.\r\n\r\nB) Abordagem (ii), pois detecta todas as fraudes, embora gere muitos falsos positivos.\r\n\r\nC) Abordagem (iii), pois equilibra precisão e recall, minimizando tanto falsos positivos quanto falsos negativos de forma balanceada.\r\n\r\nD) Abordagem (iv), pois maximiza a detecção de fraudes (recall), o que é crítico quando o custo de uma fraude não detectada é muito alto, mesmo que isso gere mais falsos positivos.\r\n\r\nE) Abordagem (i), pois em problemas desbalanceados o melhor é sempre predizer a classe majoritária.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 31,
+    "type": "Practical",
+    "content": "## Questão 84\n\n(10 pontos)\r\n\r\nEm um concurso de machine learning, dois times estão competindo para resolver um problema de classificação de imagens médicas. O **Time A** usa um único modelo de Random Forest com 500 árvores. O **Time B** usa um ensemble com 3 modelos diferentes: Random Forest, SVM e Rede Neural, combinando suas previsões.\r\n\r\n**a)** Explique como funciona a técnica de **hard voting** (votação por maioria) e aplique-a se as previsões para uma imagem são: RF → \"maligno\", SVM → \"benigno\", Rede Neural → \"maligno\". (3 pts)\r\n\r\n**b)** Explique como funciona a técnica de **soft voting** (votação ponderada pelas probabilidades) e explique em quais situações ela é superior ao hard voting. (3 pts)\r\n\r\n**c)** O Time B decide usar **stacking** em vez de voting. Explique como o stacking funciona e qual é a principal diferença em relação ao voting. (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 32,
+    "type": "Practical",
+    "content": "## Questão 97\n\n(10 pontos)\r\n\r\nEm uma GAN (Generative Adversarial Network), o discriminador pode se tornar muito forte em relação ao gerador.\r\n\r\n**a)** O que acontece quando o discriminador overfita durante o treinamento de uma GAN? (3 pts)\r\n\r\n**b)** Nomeie e explique duas técnicas utilizadas para evitar o overfitting do discriminador. (4 pts)\r\n\r\n**c)** Qual é o equilíbrio ideal entre gerador e discriminador no final do treinamento de uma GAN? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 33,
+    "type": "Practical",
+    "content": "## Questão 76\n\n(10 pontos)\r\n\r\nEm um hospital, pesquisadores querem criar um modelo para identificar se um tumor é maligno ou benigno a partir de exames de imagem. Dois abordagens são propostas:\r\n\r\n- **Modelo A:** Aprende diretamente a fronteira de decisão entre \"maligno\" e \"benigno\" a partir de dados rotulados.\r\n- **Modelo B:** Aprende a distribuição estatística dos pixels de tumores malignos e benignos separadamente, e usa o Teorema de Bayes para classificar novos casos.\r\n\r\n**a)** Identifique qual modelo é discriminativo e qual é generativo. Justifique em uma frase cada. (3 pts)\r\n\r\n**b)** Qual dos dois modelos é capaz de gerar novas imagens de tumores sintéticos? Explique por quê. (3 pts)\r\n\r\n**c)** Em geral, modelos discriminativos apresentam melhor acurácia de classificação que modelos generativos. Explique uma razão teórica para isso. (2 pts)\r\n\r\n**d)** Cite um exemplo de modelo generativo e um exemplo de modelo discriminativo amplamente utilizados na prática. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 34,
+    "type": "MC",
+    "content": "## Questão 26\n\n(10 pontos)\r\n\r\nDurante o treinamento de uma rede neural profunda com backpropagation, os gradientes nas primeiras camadas se tornam extremamente pequenos (da ordem de $10^{-7}$), enquanto os gradientes nas últimas camadas permanecem em ordem adequado. Qual fenômeno está ocorrendo e qual das seguintes técnicas NÃO é uma solução eficaz para mitigá-lo?\r\n\r\nA) Utilizar a inicialização He (He et al.) para os pesos da rede, adequada para camadas com ativação ReLU.\r\n\r\nB) Substituir a ativação sigmoid/tanh por ativações do tipo ReLU, que mantêm o gradiente constante (igual a 1) para valores positivos.\r\n\r\nC) Aplicar Batch Normalization após cada camada para manter as distribuições de ativação estáveis ao longo do treinamento.\r\n\r\nD) Aumentar significativamente a taxa de aprendizado para forçar atualizações maiores nas primeiras camadas.\r\n\r\nE) Utilizar arquiteturas com conexões residuais (skip connections), como nas ResNets, que permitem que o gradiente flua diretamente para camadas anteriores.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 35,
+    "type": "Practical",
+    "content": "## Questão 27\n\n(10 pontos)\r\n\r\nUm pesquisador deseja classificar sentimentos de tweets em português usando BERT pré-treinado.\r\n\r\n**a)** Descreva as 3 etapas principais do fine-tuning de BERT para uma tarefa de classificação de texto. (4 pts)\r\n\r\n**b)** Qual token especial do BERT é utilizado para a classificação e por quê? (3 pts)\r\n\r\n**c)** O pesquisador tem 3 opções: (i) treinar apenas a camada de classificação, (ii) fine-tuning das últimas 4 camadas + classificador, (iii) fine-tuning completo. Qual é a ordem recomendada de complexidade computacional (menor para maior) e qual é a mais adequada para um dataset pequeno de 1000 tweets? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 36,
+    "type": "Practical",
+    "content": "## Questão 72\n\n(10 pontos)\r\n\r\nEm um projeto de machine learning, o engenheiro de features precisa decidir entre usar feature selection e feature extraction para reduzir a dimensionalidade do dataset.\r\n\r\n**a)** Explique a diferença entre feature selection e feature extraction. Cite um exemplo de técnica para cada abordagem. (4 pts)\r\n\r\n**b)** Em quais situações a feature selection é preferível à feature extraction? Considere a interpretabilidade do modelo e a natureza dos dados. (3 pts)\r\n\r\n**c)** Explique o problema da maldição da dimensionalidade (curse of dimensionality) e por que a redução de dimensionalidade é importante para algoritmos baseados em distância como o k-NN. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 37,
+    "type": "MC",
+    "content": "## Questão 46\n\n(10 pontos)\r\n\r\nUm engenheiro está treinando um modelo de regressão para prever preços de imóveis. Ele observa que o erro médio quadrático (MSE) diminui consistentemente tanto no treinamento quanto na validação ao longo das épocas, mas a taxa de diminuição no-validation começa a estagnar após a época 50, enquanto no treinamento continua caindo. Qual das seguintes estratégias é MAIS eficaz para evitar que o modelo comece a overfitar a partir desse ponto?\r\n\r\nA) Aumentar a taxa de aprendizado para acelerar a convergência e ultrapassar o platô.\r\n\r\nB) Implementar early stopping, interrompendo o treinamento quando a métrica de validação não melhora por um número pré-definido de épocas (patience).\r\n\r\nC) Adicionar mais camadas ocultas à rede neural para aumentar a capacidade do modelo.\r\n\r\nD) Aumentar o tamanho do batch de treinamento para estabilizar os gradientes.\r\n\r\nE) Remover a camada de regularização atual, pois ela está impedindo o modelo de aprender padrões mais complexos.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 38,
+    "type": "Practical",
+    "content": "## Questão 70\n\n(10 pontos)\r\n\r\nQual das opções abaixo descreve corretamente a diferença entre **standardization** (z-score) e **normalization** (min-max)?\r\n\r\nA. Standardization transforma os dados para ter média 0 e variância 1; normalization redimensiona os dados para o intervalo [0, 1]\r\n\r\nB. Standardization preserva a distribuição original dos dados; normalization altera a distribuição para uma normal\r\n\r\nC. Standardization é usado apenas para variáveis categóricas; normalization é usado apenas para variáveis numéricas\r\n\r\nD. Ambos produzem exatamente o mesmo resultado quando os dados não têm outliers\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 39,
+    "type": "Practical",
+    "content": "## Questão 63\n\n(10 pontos)\r\n\r\nDurante o treinamento de uma rede neural profunda para classificação de texto, o pesquisador observa que os gradientes da primeira camada ficam extremamente grandes (exploding gradient), causando divergência do treinamento.\r\n\r\n**a)** Explique o que é o problema de exploding gradient e por que ele é mais comum em redes profundas ou RNNs. (3 pts)\r\n\r\n**b)** Nomeie e explique duas técnicas utilizadas para mitigar o problema de exploding gradient. (4 pts)\r\n\r\n**c)** Explique a diferença entre gradient clipping por valor (value clipping) e gradient clipping por norma (norm clipping). Qual é a abordagem mais comumente usada e por quê? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 40,
+    "type": "Practical",
+    "content": "## Questão 11\n\n(10 pontos)\r\n\r\nUm pesquisador tem um dataset de apenas 200 imagens de tumores raros e deseja usar uma ResNet50 pré-treinada no ImageNet para classificar tumores benignos vs. malignos. Considere as duas abordagens principais de transfer learning: (i) feature extraction e (ii) fine-tuning. Explique:\r\n\r\n**a)** O que é congelado e o que é treinado na abordagem de feature extraction? (3 pts)\r\n\r\n**b)** Na abordagem de fine-tuning, quais camadas são tipicamente treinadas? (3 pts)\r\n\r\n**c)** Considerando que o dataset é pequeno (200 imagens) e o domínio (imagens médicas) é diferente do ImageNet, qual abordagem é mais recomendada e por quê? (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 41,
+    "type": "Practical",
+    "content": "## Questão 88\n\n(10 pontos)\r\n\r\nUma empresa de segurança financeira precisa detectar transações fraudulentas em tempo real. As fraudes representam apenas 0,1% das transações. O time de ML precisa projetar um pipeline completo de detecção de anomalias.\r\n\r\n**a)** Explique por que a acurácia (accuracy) é uma métrica enganosa para este problema e quais métricas alternativas seriam mais adequadas. (3 pts)\r\n\r\n**b)** Descreva uma abordagem de detecção de anomalias baseada em autoencoders: como o modelo é treinado e como ele identifica uma transação como fraudulenta. (4 pts)\r\n\r\n**c)** Proponha uma estratégia de balanceamento de classes (dado que fraudes são 0,1% dos dados) e explique pelo menos uma técnica de oversampling e uma de undersampling. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 42,
+    "type": "Practical",
+    "content": "## Questão 59\n\n(10 pontos)\r\n\r\nNo algoritmo K-Means, qual das afirmações abaixo é VERDADEIRA sobre os critérios de convergência?\r\n\r\nA. O algoritmo sempre converge para o ótimo global independentemente dos centróides iniciais\r\n\r\nB. O algoritmo converge quando os centróides deixam de mudar entre iterações (ou a mudança é inferior a um limiar pré-definido)\r\n\r\nC. O algoritmo converge quando o número de clusters atinge o valor K escolhido\r\n\r\nD. O algoritmo converge quando todos os pontos estão no mesmo cluster\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 43,
+    "type": "Practical",
+    "content": "## Questão 71\n\n(10 pontos)\r\n\r\nUm modelo de classificação apresenta acurácia de 95% no conjunto de teste, mas o dataset está extremamente desbalanceado: 95% dos exemplos pertencem à classe majoritária. Qual métrica é MAIS apropriada para avaliar o desempenho real do modelo?\r\n\r\nA. Acurácia (accuracy)\r\n\r\nB. Precisão (precision)\r\n\r\nC. Revocação (recall)\r\n\r\nD. F1-Score\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 44,
+    "type": "MC",
+    "content": "## Questão 49\n\n(10 pontos)\r\n\r\nUm pesquisador está construindo um sistema de classificação de imagens médicas. Ele treina uma CNN e observa que a rede converge rapidamente no conjunto de treinamento, mas o desempenho no conjunto de validação oscila significativamente entre épocas. Qual das seguintes técnicas é MAIS adequada para estabilizar o treinamento e melhorar a generalização?\r\n\r\nA) Aumentar o número de filtros em cada camada convolucional para aumentar a capacidade do modelo.\r\n\r\nB) Aplicar data augmentation nos dados de treinamento e utilizar batch normalization para estabilizar as distribuições internas das ativações.\r\n\r\nC) Remover todas as camadas de pooling para preservar a resolução espacial completa das imagens.\r\n\r\nD) Usar uma taxa de aprendizado constante e muito alta para escapar de mínimos locais.\r\n\r\nE) Aumentar a profundidade da rede adicionando mais camadas densas com ativação sigmoid.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 45,
+    "type": "MC",
+    "content": "## Questão 87\n\n(10 pontos)\r\n\r\nEm uma Rede Neural Convolucional (CNN), o que significa \"weight sharing\" (compartilhamento de pesos)?\r\n\r\nA) Todos os neurônios da rede compartilham os mesmos pesos, tornando o modelo uma rede rasa.\r\n\r\nB) Um mesmo filtro (kernel) com os mesmos pesos é aplicado a diferentes regiões da entrada, reduzindo o número de parâmetros e permitindo detecção de padrões translation-invariant.\r\n\r\nC) Os pesos da camada de saída são copiados para a camada de entrada.\r\n\r\nD) Cada neurônio em uma camada convolucional tem pesos diferentes, mas todos são inicializados com o mesmo valor.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 46,
+    "type": "MC",
+    "content": "## Questão 9\n\n(10 pontos)\r\n\r\nUm cientista de dados está treinando um classificador para identificar e-mails de spam. Após o treinamento, ele observa que o modelo tem precisão de 99% e recall de 60%. Ao analisar o problema, ele percebe que muitos e-mails legítimos estão sendo classificados como spam (falsos positivos). Qual seria a ação MAIS adequada para melhorar o desempenho do modelo considerando o impacto no negócio?\r\n\r\nA) Aumentar o limiar de classificação (threshold) para reduzir falsos positivos, mesmo que isso reduza o recall.\r\n\r\nB) Aumentar o limiar de classificação para aumentar o recall, aceitando mais falsos positivos.\r\n\r\nC) Adicionar mais features ao modelo, como o comprimento do e-mail e o número de links.\r\n\r\nD) Trocar o algoritmo de classificação de Naive Bayes para uma SVM com kernel linear.\r\n\r\nE) Remover todos os e-mails de spam do conjunto de treinamento para evitar falsos positivos.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 47,
+    "type": "MC",
+    "content": "## Questão 39\n\n(10 pontos)\r\n\r\nUm pesquisador está comparando diferentes arquiteturas de redes neurais recorrentes para uma tarefa de tradução automática. Ele observa que a LSTM consegue manter dependências de longo prazo em frases longas, enquanto uma RNN simples \"esquece\" informações do início da frase. Qual componente da LSTM é responsável por controlar o que deve ser esquecido e o que deve ser mantido na memória de longo prazo?\r\n\r\nA) O gate de saída (output gate), que controla quais informações são passadas para a próxima camada.\r\n\r\nB) O gate de esquecimento (forget gate), que decide quais informações da célula de memória anterior devem ser descartadas, e o gate de entrada (input gate), que decide quais novas informações são armazenadas.\r\n\r\nC) A camada de embedding, que converte palavras em vetores densos de alta dimensão.\r\n\r\nD) O mecanismo de attention, que permite ao modelo focar em diferentes partes da sequência de entrada.\r\n\r\nE) A operação de concatenação, que combina o hidden state anterior com a entrada atual.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 48,
+    "type": "MC",
+    "content": "## Questão 12\n\n(10 pontos)\r\n\r\nUm hospital desenvolveu um modelo para detectar uma doença rara que afeta 1% da população. O modelo foi avaliado e apresentou as seguintes métricas: acurácia de 99%, precisão de 85% e recall de 70%. O diretor do hospital afirma que o modelo é excelente porque a acurácia é de 99%. Qual é o problema com essa avaliação e qual métrica deveria ser priorizada?\r\n\r\nA) A acurácia é enganosa porque o dataset é balanceado; a métrica ideal seria o F1-Score.\r\n\r\nB) A acurácia é enganosa por causa o desbalanceamento de classes — um modelo que sempre prediz \"não doente\" já teria 99% de acurácia. Deveria-se priorizar o recall, pois perder um caso positivo tem consequências graves.\r\n\r\nC) A precisão é a métrica mais importante porque ela indica a confiabilidade das predições positivas.\r\n\r\nD) O problema é que a acurácia foi calculada incorretamente; o valor correto seria 50%.\r\n\r\nE) As métricas estão corretas; o problema é apenas que o dataset é pequeno demais para ser confiável.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 49,
+    "type": "MC",
+    "content": "## Questão 54\n\n(10 pontos)\r\n\r\nEm um problema de classificação multiclasse com 10 classes, qual função de ativação é mais adequada para a camada de saída e por quê?\r\n\r\nA) Sigmoid, pois normaliza as saídas entre 0 e 1 para cada classe.\r\n\r\nB) ReLU, pois gera valores positivos que representam a probabilidade de cada classe.\r\n\r\nC) Softmax, pois converte os logits em uma distribuição de probabilidade onde todas as saídas somam 1.\r\n\r\nD) Tanh, pois produz valores entre -1 e 1 que podem ser interpretados como scores.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 50,
+    "type": "Practical",
+    "content": "## Questão 82\n\n(10 pontos)\r\n\r\nPesquisadores de NLP estão traduzindo textos do português para o inglês e precisam decidir entre usar uma RNN (LSTM) bidirecional e um Transformer encoder-decoder.\r\n\r\n**a)** Explique como uma RNN LSTM processa uma sequência de palavras e qual é sua limitação fundamental em relação a dependências de longo prazo. (3 pts)\r\n\r\n**b)** Explique como o mecanismo de autoatenção (self-attention) do Transformer resolve essa limitação, permitindo acesso direto a qualquer posição da sequência. (3 pts)\r\n\r\n**c)** Além do self-attention, cite e explique mais duas vantagens do Transformer sobre RNNs para tarefas de tradução. (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 51,
+    "type": "Practical",
+    "content": "## Questão 77\n\n(10 pontos)\r\n\r\nUm engenheiro de dados está comparando dois métodos de ensemble para prever atrasos em voos usando um dataset tabular com 50 features numéricas e categóricas.\r\n\r\n**a)** Explique como o **Random Forest** constrói suas árvores de decisão e por que a aleatoriedade na seleção de features ajuda a reduzir overfitting. (3 pts)\r\n\r\n**b)** Explique como o **Gradient Boosting** constrói suas árvores e como cada nova árvore se relaciona com os erros das árvores anteriores. (3 pts)\r\n\r\n**c)** Compare os dois métodos em termos de: (i) velocidade de treinamento, (ii) interpretabilidade, (iii) tendência a overfitting quando há poucos dados. (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 52,
+    "type": "Practical",
+    "content": "## Questão 91\n\n(10 pontos)\r\n\r\nEm um curso de RL, o professor compara Q-Learning e SARSA usando o exemplo de um agente que navega em um grid world com uma zona de perigo (recompensa negativa alta) perto do caminho mais curto até o objetivo.\r\n\r\n**a)** Explique a diferença fundamental entre Q-Learning (off-policy) e SARSA (on-policy) em termos de como cada algoritmo seleciona as ações durante o treinamento. (3 pts)\r\n\r\n**b)** Neste cenário com zona de perigo, qual algoritmo (Q-Learning ou SARSA) tende a aprender um caminho mais seguro, mais longo? Justifique. (3 pts)\r\n\r\n**c)** Qual dos dois algoritmos tende a encontrar o caminho mais curto (mesmo que arriscado)? Justifique, explicando o conceito de política alvo (target policy) vs política de comportamento (behavior policy). (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 53,
+    "type": "MC",
+    "content": "## Questão 44\n\n(10 pontos)\r\n\r\nA função de ativação ReLU (Rectified Linear Unit) é definida como f(x) = max(0, x). Qual é a principal vantagem da ReLU em comparação com a sigmoid em redes neurais profundas?\r\n\r\nA) A ReLU produz sempre valores entre 0 e 1, facilitando a interpretação das saídas.\r\n\r\nB) A ReLU mitiga o problema do gradiente desaparecendo, pois seu gradiente é constante (1) para valores positivos, ao contrário da saturação da sigmoid.\r\n\r\nC) A ReLU garante que o gradiente nunca seja zero, permitindo aprendizado em todos os neurônios.\r\n\r\nD) A ReLU introduz não-linearidade suave, diferente da sigmoid que é descontínua.\r\n\r\nE) A ReLU é mais interpretável que a sigmoid, pois seus valores de saída são sempre positivos e facilitam a visualização dos padrões aprendidos.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 54,
+    "type": "Practical",
+    "content": "## Questão 67\n\n(10 pontos)\r\n\r\nConsidere um perceptron com os seguintes pesos e viés:\r\n\r\nw₁ = 0.5, w₂ = −0.5, b = 0.1\r\n\r\nFunção de ativação: degrau unitário (1 se z ≥ 0, 0 caso contrário).\r\n\r\n**a)** Compute a saída do perceptron para cada uma das 4 entradas da tabela-verdade do XOR. (4 pts)\r\n\r\n**b)** Compare as saídas obtidas com a tabela-verdade esperada do XOR. O perceptron funciona corretamente? (3 pts)\r\n\r\n**c)** A porta XOR é linearmente separável? Justifique geometricamente (pense em um plano separando as classes no espaço 2D). (3 pts)\r\n\r\n| Entrada | Saída Esperada (XOR) |\r\n|---------|---------------------|\r\n| (0, 0) | 0 |\r\n| (0, 1) | 1 |\r\n| (1, 0) | 1 |\r\n| (1, 1) | 0 |\r\n\r\n**Fórmula:** z = w₁·x₁ + w₂·x₂ + b",
+    "justificativa": ""
+  },
+  {
+    "num": 55,
+    "type": "MC",
+    "content": "## Questão 75\n\n(10 pontos)\r\n\r\nt-SNE é uma técnica de redução de dimensionalidade frequentemente usada para visualização de dados de alta dimensão. Qual é a característica principal do t-SNE em relação à preservação de estrutura?\r\n\r\nA) t-SNE preserva perfeitamente as distâncias globais entre todos os pontos.\r\n\r\nB) t-SNE preserva principalmente a estrutura local (vizinhos próximos permanecem próximos), podendo distorcer distâncias globais.\r\n\r\nC) t-SNE é uma técnica linear que encontra o melhor hiperplano de separação.\r\n\r\nD) t-SNE preserva apenas a variância total dos dados, sem considerar vizinhança.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 56,
+    "type": "MC",
+    "content": "## Questão 8\n\n(10 pontos)\r\n\r\nConsidere uma empresa que deseja prever a demanda de seus produtos ao longo do tempo usando dados históricos de vendas. A série temporal apresenta padrões sazonais (vendas maiores em dezembro) e tendências de longo prazo. Qual das abordagens de modelagem seria MAIS adequada para capturar automaticamente both a sazonalidade e a tendência?\r\n\r\nA) Regressão linear simples, pois a tendência é linear.\r\n\r\nB) K-Nearest Neighbors (K-NN), pois ele encontra padrões semelhantes no histórico.\r\n\r\nC) LSTM (Long Short-Term Memory), pois é capaz de capturar dependências de longo prazo e padrões temporais complexos.\r\n\r\nD) Árvore de decisão única, pois ela pode partitionar os dados por período do ano.\r\n\r\nE) Naive Bayes, pois ele assume independência entre os passos de tempo.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 57,
+    "type": "Practical",
+    "content": "## Questão 83\n\n(10 pontos)\r\n\r\nConsidere o seguinte dataset bruto de uma loja virtual:\r\n\r\n| data_da_compra | preço | quantidade | categoria | UF  |\r\n|----------------|-------|------------|-----------|-----|\r\n| 2025-03-01     | 50    | 2          | Eletrônico| SP  |\r\n| 2025-03-01     | 30    | 1          | Roupas    | RJ  |\r\n| 2025-03-02     | 80    | 4          | Eletrônico| MG  |\r\n| 2025-03-03     | 20    | 3          | Roupas    | SP  |\r\n| 2025-03-03     | 50    | 1          | Livros    | RJ  |\r\n\r\n**a)** Proponha e compute 4 features derivadas (colunas novas) a partir dos dados existentes. Apresente os valores para cada linha. (4 pts)\r\n\r\n**b)** Aplique one-hot encoding na coluna **categoria**. Apresente a tabela resultante. (3 pts)\r\n\r\n**c)** Aplique normalização min-max na coluna **preço**:\r\n$$\\text{Norm}(x) = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}$$\r\n\r\nApresente os valores normalizados. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 58,
+    "type": "Practical",
+    "content": "## Questão 69\n\n(10 pontos)\r\n\r\nUm Transformer é utilizado para processar documentos longos.\r\n\r\n**a)** O que é \"context window\" (janela de contexto) em um Transformer? (2 pts)\r\n\r\n**b)** Qual é a complexidade computacional do mecanismo de autoatenção em relação ao comprimento da sequência N? Justifique. (3 pts)\r\n\r\n**c)** Nomeie e explique brevemente duas técnicas utilizadas para lidar com documentos que excedem o contexto window de um Transformer. (4 pts)\r\n\r\n**d)** Qual é a limitação prática do positional encoding padrão de seno/cosseno quando a sequência de teste é mais longa que a de treino? (1 pt)",
+    "justificativa": ""
+  },
+  {
+    "num": 59,
+    "type": "Practical",
+    "content": "## Questão 92\n\n(10 pontos)\r\n\r\nNo aprendizado por reforço, o que representa o **fator de desconto γ (gamma)** na função de valor?\r\n\r\nA) A probabilidade de transição entre estados\r\n\r\nB) A importância relativa das recompensas futuras em relação às imediatas\r\n\r\nC) A taxa de aprendizado do agente\r\n\r\nD) A taxa de exploração em relação à exploração\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 60,
+    "type": "Practical",
+    "content": "## Questão 94\n\n(10 pontos)\r\n\r\nEm um Transformer, o mecanismo de atenção (attention) é o componente central que permite ao modelo focar em partes relevantes da sequência de entrada.\r\n\r\n**a)** Descreva os três vetores fundamentais do mecanismo de atenção: Query (Q), Key (K) e Value (V). Qual é a intuição por trás de cada um? (3 pts)\r\n\r\n**b)** Escreva a fórmula do produto escalar de atenção (scaled dot-product attention) e explique o papel do fator de escala $\\frac{1}{\\sqrt{d_k}}$. (3 pts)\r\n\r\n**c)** O mecanismo de **Multi-Head Attention** usa múltiplas cabeças de atenção. Explique por que múltiplas cabeças são mais eficazes que uma única cabeça e como as saídas das cabeças são combinadas. (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 61,
+    "type": "Practical",
+    "content": "## Questão 58\n\n(10 pontos)\r\n\r\nUm pesquisador deseja projetar uma CNN para classificar imagens médicas (radiografias de tórax) em 2 categorias: normal e pneumonia. O dataset contém apenas 500 imagens.\r\n\r\n**a)** Descreva uma arquitetura CNN adequada para este problema, especificando: número de camadas convolucionais, tipo dePooling, e camadas densas finais. Justifique suas escolhas. (4 pts)\r\n\r\n**b)** Explique como o transfer learning pode ser aplicado neste cenário. Nomeie uma arquitetura pré-treinada adequada e descreva as etapas de implementação. (3 pts)\r\n\r\n**c)** O pesquisador quer aplicar data augmentation. Liste 4 técnicas de augmentação adequadas para imagens médicas e justifique por que cada uma é relevante neste domínio. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 62,
+    "type": "Practical",
+    "content": "## Questão 56\n\n(10 pontos)\r\n\r\nEntrada 4×4:\r\n\r\n$$\\begin{bmatrix} 1 & 2 & 0 & 1 \\\\ 3 & 1 & 2 & 0 \\\\ 0 & 3 & 1 & 2 \\\\ 2 & 0 & 3 & 1 \\end{bmatrix}$$\r\n\r\nFiltro de borda vertical 3×3:\r\n\r\n$$\\begin{bmatrix} -1 & 0 & 1 \\\\ -1 & 0 & 1 \\\\ -1 & 0 & 1 \\end{bmatrix}$$\r\n\r\n**Passo 1: Convolução (valid padding)**\r\n\r\nCom filtro 3×3 em entrada 4×4, a saída é (4-3+1) × (4-3+1) = 2×2.\r\n\r\nPosição (0,0):\r\n$(-1)(1) + (0)(2) + (1)(0) + (-1)(3) + (0)(1) + (1)(2) + (-1)(0) + (0)(3) + (1)(1)$\r\n$= -1 + 0 + 0 - 3 + 0 + 2 + 0 + 0 + 1 = -1$\r\n\r\nPosição (0,1):\r\n$(-1)(2) + (0)(0) + (1)(1) + (-1)(1) + (0)(2) + (1)(0) + (-1)(3) + (0)(1) + (1)(2)$\r\n$= -2 + 0 + 1 - 1 + 0 + 0 - 3 + 0 + 2 = -3$\r\n\r\nPosição (1,0):\r\n$(-1)(3) + (0)(1) + (1)(2) + (-1)(0) + (0)(3) + (1)(1) + (-1)(2) + (0)(0) + (1)(3)$\r\n$= -3 + 0 + 2 + 0 + 0 + 1 - 2 + 0 + 3 = 1$\r\n\r\nPosição (1,1):\r\n$(-1)(1) + (0)(2) + (1)(0) + (-1)(3) + (0)(1) + (1)(2) + (-1)(0) + (0)(3) + (1)(1)$\r\n$= -1 + 0 + 0 - 3 + 0 + 2 + 0 + 0 + 1 = -1$\r\n\r\nSaída da convolução:\r\n\r\n$$\\begin{bmatrix} -1 & -3 \\\\ 1 & -1 \\end{bmatrix}$$\r\n\r\n**Passo 2: ReLU**\r\n\r\n$ReLU(x) = max(0, x)$\r\n\r\n$$\\begin{bmatrix} max(0,-1) & max(0,-3) \\\\ max(0,1) & max(0,-1) \\end{bmatrix} = \\begin{bmatrix} 0 & 0 \\\\ 1 & 0 \\end{bmatrix}$$\r\n\r\n**Passo 3: Max Pooling 2×2**\r\n\r\nCom entrada 2×2 e pooling 2×2, a saída é 1×1.\r\n\r\n$MaxPool = max(0, 0, 1, 0) = 1$\r\n\r\n**Resultado final: [[1]]**",
+    "justificativa": ""
+  },
+  {
+    "num": 63,
+    "type": "MC",
+    "content": "## Questão 3\n\n(10 pontos)\r\n\r\nUm engenheiro de ML está projetando um sistema de robô que aprende a andar em um labirinto. O robô pode explorar o labirinto tentando ações aleatórias (exploração) ou seguir a política que já conhece como melhor (exploração). Ele ouve que existem abordagens \"on-policy\" e \"off-policy\" no aprendizado por reforço. Qual das afirmações descreve CORRETAMENTE a diferença entre SARSA (on-policy) e Q-Learning (off-policy)?\r\n\r\nA) SARSA aprende com a política que está sendo seguida durante o treinamento (on-policy), enquanto Q-Learning aprende considerando a melhor ação possível independentemente da ação realmente tomada (off-policy).\r\n\r\nB) SARSA é sempre mais rápido que Q-Learning porque atualiza os valores Q apenas uma vez por episódio.\r\n\r\nC) Q-Learning não precisa de exploração, enquanto SARSA precisa de exploração em todos os passos.\r\n\r\nD) SARSA converge sempre para a solução ótima, enquanto Q-Learning pode ficar preso em mínimos locais.\r\n\r\nE) Não existe diferença prática entre SARSA e Q-Learning; ambos são algoritmos idênticos com notações diferentes.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 64,
+    "type": "Practical",
+    "content": "## Questão 53\n\n(10 pontos)\r\n\r\nNo algoritmo K-Means, qual das seguintes opções descreve corretamente o critério de convergência?\r\n\r\nA. Quando todos os pontos de dados foram atribuídos a um cluster\r\n\r\nB. Quando os centróides não mudam de posição entre iterações (ou a mudança é menor que um limiar)\r\n\r\nC. Quando o número de clusters é igual ao número de pontos de dados\r\n\r\nD. Quando a soma dos quadrados internos atinge o valor máximo\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 65,
+    "type": "MC",
+    "content": "## Questão 25\n\n(10 pontos)\r\n\r\nEm uma rede neural profunda para reconhecimento de fala, o time de ML observa que as ativações nas camadas intermediárias apresentam distribuições que mudam drasticamente ao longo do treinamento (Internal Covariate Shift). Qual técnica é especificamente projetada para mitigar esse problema e quais são seus dois principais benefícios?\r\n\r\nA) Dropout, que desativa neurônios aleatoriamente para evitar dependência excessiva.\r\n\r\nB) Data Augmentation, que aumenta o dataset para evitar overfitting.\r\n\r\nC) Batch Normalization, que normaliza as ativações de cada mini-batch, permitindo taxas de aprendizado maiores e acelerando a convergência.\r\n\r\nD) Early Stopping, que interrompe o treinamento quando a perda de validação para de diminuir.\r\n\r\nE) Regularização L1, que promove sparsity nos pesos da rede.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 66,
+    "type": "MC",
+    "content": "## Questão 36\n\n(10 pontos)\r\n\r\nAutoencoders são utilizados para detecção de anomalias. Qual é o princípio fundamental que permite essa detecção?\r\n\r\nA) Autoencoders classificam diretamente se uma entrada é normal ou anômala usando uma camada de saída binária.\r\n\r\nB) Autoencoders são treinados apenas com dados normais e reconstruem bem dados normais, mas têm alta perda de reconstrução para anomalias.\r\n\r\nC) Autoencoders usam clustering para agrupar dados normais e anômalos em clusters separados.\r\n\r\nD) Autoencoders geram dados sintéticos que substituem as anomalias nos dados de treinamento.\r\n\r\nE) Autoencoders aprendem a comprimir dados em uma representação de baixa dimensão e depois os reconstruem; anomalias, por serem diferentes dos dados de treinamento, apresentam erro de reconstrução elevado, permitindo sua detecção.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 67,
+    "type": "Practical",
+    "content": "## Questão 57\n\n(10 pontos)\r\n\r\nEm uma Rede Neural Convolucional (CNN), as primeiras camadas aprendem padrões simples (bordas, texturas) enquanto as camadas mais profundas aprendem representações mais complexas (objetos, partes de objetos).\r\n\r\n**a)** Explique o conceito de hierarquia de features em CNNs. Por que essa hierarquia é uma das razões pelas quais CNNs são eficientes para tarefas de visão computacional? (4 pts)\r\n\r\n**b)** Compare a eficiência computacional de uma camada convolucional com uma camada fully connected (densa) para processar uma imagem de entrada de 224×224 pixels com 3 canais de cor. Considere uma camada convolucional com 64 filtros de 3×3 e uma camada densa equivalente. Qual tem mais parâmetros e por quê? (4 pts)\r\n\r\n**c)** Explique por que a camada de pooling (max pooling ou average pooling) é importante para tornar a rede invariante a pequenas translações na imagem. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 68,
+    "type": "MC",
+    "content": "## Questão 20\n\n(10 pontos)\r\n\r\nEm um problema de classificação binária, um cientista de dados está comparando Logistic Regression, Random Forest e Gradient Boosting. O dataset tem 10.000 amostras, 50 features e 30% dos dados possuem valores faltantes. Qual abordagem de ensemble é mais robusta para lidar com values faltantes sem pré-processamento extensivo?\r\n\r\nA) Bagging, pois ele treina múltiplos modelos em subconjuntos aleatórios dos dados e faz votação.\r\n\r\nB) Random Forest, pois ele treina múltiplas árvores de decisão que podem lidar com valores faltantes naturalmente através de partições.\r\n\r\nC) Stacking, pois ele combina previsões de múltiplos modelos usando um meta-modelo.\r\n\r\nD) Boosting, pois ele ajusta iterativamente os erros do modelo anterior.\r\n\r\nE) Voting Classifier, pois ele faz a média das previsões de diferentes algoritmos.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 69,
+    "type": "Practical",
+    "content": "## Questão 52\n\n(10 pontos)\r\n\r\nEm um ambiente de aprendizado por reforço, um agente aprende uma política ótima em um grid world. O pesquisador deseja comparar SARSA (on-policy) e Q-Learning (off-policy).\r\n\r\n**a)** Explique a diferença fundamental entre SARSA e Q-Learning no que diz respeito à política usada para selecionar ações durante o aprendizado. (3 pts)\r\n\r\n**b)** Em um ambiente com armadilhas (estados com recompensa altamente negativa), qual algoritmo — SARSA ou Q-Learning — tende a aprender uma política mais \"cautelosa\"? Justifique. (4 pts)\r\n\r\n**c)** O agente utiliza ε-greedy com ε = 0.1. Explique como a política de comportamento (behavior policy) difere da política alvo (target policy) no Q-Learning. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 70,
+    "type": "MC",
+    "content": "## Questão 68\n\n(10 pontos)\r\n\r\nEm Processamento de Linguagem Natural, o TF-IDF é usado para ponderar termos em documentos. Qual é a interpretação CORRETA do valor IDF (Inverse Document Frequency)?\r\n\r\nA) IDF mede a frequência absoluta de um termo em um documento.\r\n\r\nB) IDF penaliza termos que aparecem em muitos documentos, aumentando o peso de termos raros e informativos.\r\n\r\nC) IDF mede a similaridade semântica entre dois termos.\r\n\r\nD) IDF normaliza a contagem de termos pelo tamanho do documento.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 71,
+    "type": "Practical",
+    "content": "## Questão 81\n\n(10 pontos)\r\n\r\nUma empresa deseja implantar um modelo de classificação de imagens como uma API. O modelo recebe imagens, processa e retorna previsões. O tráfego é altamente variável (picos ocasionais e longos períodos de inatividade).\r\n\r\n**a)** Explique o conceito de Function-as-a-Service (FaaS) e como se aplica a este cenário. (3 pts)\r\n\r\n**b)** Quais são as duas principais vantagens do modelo serverless em comparação com um servidor EC2 tradicional para este caso de uso? (4 pts)\r\n\r\n**c)** Qual é a principal limitação do serverless para este caso de uso específico (processamento de modelo de deep learning)? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 72,
+    "type": "MC",
+    "content": "## Questão 13\n\n(10 pontos)\r\n\r\nEm um projeto de recomendação de filmes, um cientista de dados está avaliando diferentes abordagens de filtragem colaborativa. Ele percebe que muitos usuários avaliaram apenas alguns filmes, gerando uma matriz de usuários-filmes extremamente esparsa. Qual das afirmações descreve CORRETAMENTE o problema de \"sparsity\" em sistemas de recomendação e sua consequência?\r\n\r\nA) Sparsity significa que o sistema recomenda apenas filmes populares, ignorando preferências individuais dos usuários.\r\n\r\nB) Sparsity indica que a matriz de utilidade tem muitos valores zerados (avaliações faltantes), o que dificulta encontrar vizinhos similares e degradar a qualidade das recomendações.\r\n\r\nC) Sparsity é causada pelo uso de muitas features no modelo, levando a overfitting.\r\n\r\nD) Sparsity é resolvida aumentando o número de usuários, pois mais dados sempre resolvem o problema.\r\n\r\nE) Sparsity não afeta sistemas de recomendação baseados em conteúdo, apenas os baseados em filtragem colaborativa.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 73,
+    "type": "MC",
+    "content": "## Questão 32\n\n(10 pontos)\r\n\r\nUm engenheiro está comparando dois modelos de classificação para detecção de fraudes em transações bancárias. O Modelo A obtém 95% de precisão e 40% de recall, enquanto o Modelo B obtém 60% de precisão e 92% de recall. O sistema deve priorizar a detecção do maior número de fraudes possíveis, mesmo que isso gere mais falsos positivos. Qual modelo é mais adequado e por quê?\r\n\r\nA) Modelo A, pois possui maior precisão, garantindo que as fraudes detectadas sejam realmente fraudes.\r\n\r\nB) Modelo B, pois possui maior recall, detectando a maior proporção de fraudes verdadeiras, o que é mais importante quando o custo de uma fraude não detectada é alto.\r\n\r\nC) Ambos são igualmente adequados, pois a precisão e o recall são complementares e devem ser balanceados sempre.\r\n\r\nD) Modelo A, pois a precisão é sempre mais importante que o recall em qualquer cenário de classificação.\r\n\r\nE) Modelo B, pois possui maior acurácia geral, embora a acurácia não tenha sido fornecida.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 74,
+    "type": "Practical",
+    "content": "## Questão 24\n\n(10 pontos)\r\n\r\nConsidere as seguintes frases para processamento por um BERT:\r\n\r\n- Frase 1: \"O gato sentou no tapete\"\r\n- Frase 2: \"O cachorro dormiu no sofá\"\r\n\r\n**a)** Realize a tokenização WordPiece para cada frase. Considere que o vocabulário contém as palavras: \"o\", \"gato\", \"sent\", \"##ou\", \"##n\", \"no\", \"tap\", \"##ete\", \"cach\", \"##orro\", \"dor\", \"##miu\", \"so\", \"##fá\". (4 pts)\r\n\r\n**b)** Adicione os tokens especiais [CLS] e [SEP]. (2 pts)\r\n\r\n**c)** Crie os segment embeddings (segmento 0 para a Frase 1, segmento 1 para a Frase 2). (2 pts)\r\n\r\n**d)** Compute o attention mask. Quantos tokens no total são processados? (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 75,
+    "type": "Practical",
+    "content": "## Questão 61\n\n(10 pontos)\r\n\r\nNo contexto de transfer learning, qual é a diferença fundamental entre **fine-tuning** e **feature extraction**?\r\n\r\nA. Fine-tuning retoma todos os pesos da rede; feature extraction retoma apenas os pesos da última camada\r\n\r\nB. Fine-tuning congela todas as camadas exceto a última; feature extraction re-treina todas as camadas\r\n\r\nC. Feature extraction usa apenas os pesos da primeira camada; fine-tuning usa todos os pesos\r\n\r\nD. Fine-tuning retreina (todas ou parte das) camadas pré-treinadas; feature extraction usa a rede pré-treinada como extrator de características, treinando apenas a(s) última(s) camada(s)\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 76,
+    "type": "MC",
+    "content": "## Questão 6\n\n(10 pontos)\r\n\r\nEm Processamento de Linguagem Natural, existem diferentes formas de representar palavras como vetores. Qual das alternativas descreve CORRETAMENTE a diferença entre Bag of Words (BoW) e Word2Vec?\r\n\r\nA) BoW gera vetores densos que capturam relações semânticas, enquanto Word2Vec gera vetores esparsos baseados em contagem.\r\n\r\nB) BoW gera vetores esparsos baseados em frequência de palavras sem capturar semântica, enquanto Word2Vec gera vetores densos de baixa dimensão que capturam relações semânticas e contextuais.\r\n\r\nC) BoW e Word2Vec produzem exatamente o mesmo tipo de representação, diferindo apenas no tamanho do vocabulário.\r\n\r\nD) Word2Vec requer dados rotulados para treinamento, enquanto BoW é não-supervisionado.\r\n\r\nE) BoW é capaz de capturar a ordem das palavras na frase, enquanto Word2Vec perde essa informação.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 77,
+    "type": "Practical",
+    "content": "## Questão 78\n\n(10 pontos)\r\n\r\nUm Transformer é utilizado para traduzir frases do inglês para o português.\r\n\r\n**a)** Qual componente do Transformer é responsável por permitir que a rede \"preste atenção\" a diferentes partes da frase de entrada ao gerar cada palavra da frase de saída? (2 pts)\r\n\r\n**b)** Explique a diferença entre self-attention e cross-attention neste contexto. (4 pts)\r\n\r\n**c)** Por que a Positional Encoding é necessária em Transformers, ao contrário de RNNs? (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 78,
+    "type": "Practical",
+    "content": "## Questão 35\n\n(10 pontos)\r\n\r\nO algoritmo K-NN (K-Nearest Neighbors) é classificado como um algoritmo de aprendizado \"lazy\" (preguiçoso).\r\n\r\n**a)** O que significa dizer que um algoritmo é \"lazy\" no contexto de aprendizado de máquina? (3 pts)\r\n\r\n**b)** Compare K-NN com uma SVM em termos de fase de treinamento e fase de teste. (4 pts)\r\n\r\n**c)** Qual é a principal desvantagem computacional de K-NN quando o dataset é muito grande? (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 79,
+    "type": "MC",
+    "content": "## Questão 38\n\n(10 pontos)\r\n\r\nEm sistemas de recomendação, o \"cold start\" é um desafio conhecido. Qual situação descreve CORRETAMENTE o problema de cold start?\r\n\r\nA) O sistema de recomendação demora muito para carregar quando há muitos usuários.\r\n\r\nB) O sistema não consegue fazer recomendações relevantes para novos usuários ou novos itens que possuem pouca ou nenhuma interação anterior.\r\n\r\nC) O sistema para de funcionar quando a base de dados atinge um tamanho máximo.\r\n\r\nD) O sistema recomenda apenas itens populares, ignorando preferências individuais.\r\n\r\nE) O sistema sofre de overfitting, pois memoriza as preferências dos usuários existentes e não consegue generalizar para novos.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 80,
+    "type": "Practical",
+    "content": "## Questão 29\n\n(10 pontos)\r\n\r\nConsidere um modelo com 3 pesos: w₁ = 2, w₂ = −1, w₃ = 0.5. O hiperparâmetro de regularização é λ = 0.1.\r\n\r\n**a)** Compute a penalidade L1: λ(|w₁| + |w₂| + |w₃|). (2 pts)\r\n\r\n**b)** Compute a penalidade L2: λ(w₁² + w₂² + w₃²). (2 pts)\r\n\r\n**c)** Qual das duas regularizações promove sparsity (pesos exatamente iguais a zero)? Explique por quê, considerando a forma das funções de penalidade. (4 pts)\r\n\r\n**d)** Se aplicarmos regularização L1 com λ muito alto, quais pesos provavelmente serão zerados primeiro — os maiores ou os menores? Justifique. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 81,
+    "type": "Practical",
+    "content": "## Questão 99\n\n(10 pontos)\r\n\r\nEm processamento de linguagem natural (NLP), qual técnica é usada para lidar com a variação das palavras (e.g., \"correr\", \"correndo\", \"correu\")?\r\n\r\nA. Stemming e Lemmatização\r\n\r\nB. One-Hot Encoding\r\n\r\nC. Pooling\r\n\r\nD. Batch Normalization\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 82,
+    "type": "Practical",
+    "content": "## Questão 85\n\n(10 pontos)\r\n\r\nUm pesquisador está treinando word embeddings usando o modelo Word2Vec em um corpus em português. Ele observa que os vetores das palavras \"rei\" e \"rainha\" estão próximos no espaço vetorial, assim como \"homem\" e \"mulher\".\r\n\r\n**a)** Explique como o modelo Word2Vec aprende representações vetoriais para palavras a partir de um corpus de texto, descrevendo brevemente a arquitetura do modelo (skip-gram ou CBOW). (3 pts)\r\n\r\n**b)** Explique a famosa operação vetorial: $\\vec{rei} - \\vec{homem} + \\vec{mulher} \\approx \\vec{rainha}$. Por que essa operação captura relações semânticas? (3 pts)\r\n\r\n**c)** Cite uma limitação dos word embeddings estáticos (como Word2Vec) e explique como modelos como o BERT resolvem essa limitação. (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 83,
+    "type": "Practical",
+    "content": "## Questão 79\n\n(10 pontos)\r\n\r\nUma empresa de entretenimento deseja gerar rostos fotorealistas usando uma GAN (Generative Adversarial Network). Durante o treinamento, o gerador começa a produzir sempre o mesmo rosto, independentemente do ruído de entrada.\r\n\r\n**a)** Qual é o nome fenômeno descrito acima? Explique sua causa. (3 pts)\r\n\r\n**b)** Explique o mecanismo de treinamento de uma GAN: qual é o objetivo do gerador e qual é o objetivo do discriminador, e como eles treinam alternadamente. (4 pts)\r\n\r\n**c)** Cite e explique duas técnicas utilizadas para prevenir o fenômeno descrito no item (a). (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 84,
+    "type": "Practical",
+    "content": "## Questão 98\n\n(10 pontos)\r\n\r\nEm um problema de processamento de linguagem natural (NLP) onde se deseja classificar e-mails como spam ou não spam, qual técnica de representação de texto preserva melhor a informação semântica das palavras?\r\n\r\nA. Bag of Words (Bolsa de Palavras)\r\n\r\nB. TF-IDF\r\n\r\nC. Word Embeddings (e.g., Word2Vec)\r\n\r\nD. One-Hot Encoding\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 85,
+    "type": "MC",
+    "content": "## Questão 14\n\n(10 pontos)\r\n\r\nEm um sistema de detecção de intrusão em rede, o cientista de dados observa que apenas 2% dos tráfegos registrados sãomaliciosos. Ele considera usar um autoencoder para detecção de anomalias. Qual é o princípio fundamental que permite ao autoencoder detectar tráfego malicioso?\r\n\r\nA) O autoencoder classifica diretamente se o tráfego é normal ou malicioso usando uma camada de saída binária.\r\n\r\nB) O autoencoder é treinado apenas com dados normais e reconstrói bem tráfego normal, mas apresenta alta perda de reconstrução para tráfego anômalo (malicioso).\r\n\r\nC) O autoencoder usa clustering para agrupar tráfego normal e malicioso em clusters separados.\r\n\r\nD) O autoencoder gera dados sintéticos que substituem os registros maliciosos nos dados de treinamento.\r\n\r\nE) O autoencoder reduz a dimensionalidade dos dados para que um classificador externo possa trabalhar melhor.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 86,
+    "type": "MC",
+    "content": "## Questão 50\n\n(10 pontos)\r\n\r\nEm um Random Forest com 100 árvores, cada árvore é treinada com uma amostra diferente do conjunto de dados. Qual técnica está sendo utilizada e qual seu principal efeito?\r\n\r\nA) Boosting; cada árvore corrige os erros da anterior.\r\n\r\nB) Bagging; cada árvore é treinada com um subconjunto aleatório dos dados (com reposição), reduzindo a variância do modelo.\r\n\r\nC) Stacking; as previsões das árvores são combinadas por um meta-modelo.\r\n\r\nD) Feature bagging; cada árvore recebe apenas uma feature diferente.\r\n\r\nE) Cross-validation; cada árvore é avaliada em um fold diferente para estimar o desempenho geral.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 87,
+    "type": "MC",
+    "content": "## Questão 22\n\n(10 pontos)\r\n\r\nEm um dataset desbalanceado com 950 exemplos da classe A e 50 exemplos da classe B, um classificador trivial que sempre prediz classe A obtém determinada acurácia. Qual é a acurácia desse classificador e por que a acurácia é uma métrica enganosa nesse caso?\r\n\r\nA) 95%; é enganosa porque não penaliza a incapacidade de detectar a classe minoritária, que pode ser a mais importante.\r\n\r\nB) 50%; é enganosa porque o dataset é pequeno demais para ser confiável.\r\n\r\nC) 5%; é enganosa porque o modelo erra todos os exemplos da classe majoritária.\r\n\r\nD) 95%; é confiável porque a maioria dos exemplos é classificada corretamente.\r\n\r\nE) 100%; é enganosa porque o classificador não aprendeu nada dos dados.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 88,
+    "type": "MC",
+    "content": "## Questão 19\n\n(10 pontos)\r\n\r\nEm um modelo de atenção self-attention (como o Transformer), o mecanismo de atenção permite que cada token de uma sequência \"olhe\" para todos os outros tokens para construir sua representação. Qual das afirmações explica CORRETAMENTE por que o scaling division (dividir os scores por √dₖ) é necessário noScaled Dot-Product Attention?\r\n\r\nA) O scaling é necessário para que os pesos de atenção sempre somem 1, garantindo uma distribuição de probabilidade válida.\r\n\r\nB) O scaling evita que os scores de produto escalar se tornem muito grandes quando a dimensão das chaves (dₖ) é alta, o que causaria gradientes muito pequenos após o softmax.\r\n\r\nC) O scaling normaliza os dados de entrada para que tenham média zero e variância um.\r\n\r\nD) O scaling é usado para reduzir a dimensionalidade das chaves e valores antes do cálculo da atenção.\r\n\r\nE) O scaling é necessário apenas quando se usa attention multi-head, não em attention single-head.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 89,
+    "type": "Practical",
+    "content": "## Questão 80\n\n(10 pontos)\r\n\r\nUm time de NLP precisa avaliar um chatbot de atendimento ao cliente que responde perguntas frequentes. O chatbot já está em produção e recebe 10.000 interações por dia.\r\n\r\n**a)** Proponha 4 métricas quantitativas adequadas para avaliar a qualidade do chatbot, explicando brevemente o que cada uma mede. (4 pts)\r\n\r\n**b)** Além das métricas quantitativas, explique como um protocolo de avaliação qualitativa com humanos (human evaluation) poderia ser estruturado, definindo pelo menos 3 critérios de avaliação. (3 pts)\r\n\r\n**c)** Explique por que apenas a acurácia (percentual de respostas corretas) não é suficiente para avaliar um chatbot, e qual problema pode surgir se o chatbot sempre responde \"não sei\". (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 90,
+    "type": "MC",
+    "content": "## Questão 16\n\n(10 pontos)\r\n\r\nEm um dataset de 50 features e 10.000 amostras, um cientista de dados aplica PCA (Principal Component Analysis) e descobre que as 5 primeiras componentes principais explicam 95% da variância total. Qual afirmação descreve CORRETAMENTE o que isso significa e qual é a implicação prática?\r\n\r\nA) As 5 primeiras componentes contêm 95% dos dados originais, portanto as outras 45 features são irrelevantes e devem ser removidas.\r\n\r\nB) As 5 primeiras componentes capturam 95% da variância dos dados, permitindo reduzir a dimensionalidade de 50 para 5 com perda mínima de informação.\r\n\r\nC) PCA garante que as 5 primeiras componentes são as features mais importantes para a tarefa de classificação.\r\n\r\nD) 95% das amostras do dataset são representadas corretamente pelas 5 primeiras componentes.\r\n\r\nE) O PCA eliminou 95% do ruído dos dados, melhorando a qualidade do modelo.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 91,
+    "type": "MC",
+    "content": "## Questão 95\n\n(10 pontos)\r\n\r\nEm um problema de aprendizado por reforço, o agente precisa escolher entre explorar novas ações com recompensas incertas e explorar a ação que historicamente deu melhor resultado. Qual afirmação descreve CORRETAMENTE o trade-off exploração-exploração?\r\n\r\nA) Exploração significa escolher a melhor ação conhecida; exploração significa tentar ações aleatórias.\r\n\r\nB) Exploração significa tentar novas ações para descobrir melhores recompensas; exploração significa reutilizar a melhor ação conhecida para acumular recompensa.\r\n\r\nC) O trade-off pode ser eliminado completamente com taxa de aprendizado suficientemente alta.\r\n\r\nD) O tradeoff só existe em ambientes com recompensas deterministicas.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 92,
+    "type": "Practical",
+    "content": "## Questão 96\n\n(10 pontos)\r\n\r\nUm cientista de dados está regularizando uma rede neural que está apresentando overfitting no conjunto de treinamento.\r\n\r\n**a)** Explique a diferença entre regularização **L1** (Lasso) e **L2** (Ridge) em termos de como cada uma penaliza os pesos da rede. Qual das duas promove esparsidade (muitos pesos zerados)? (3 pts)\r\n\r\n**b)** Explique o conceito de **dropout** como técnica de regularização: como ele funciona durante o treinamento e por que não é aplicado durante a inferência. (3 pts)\r\n\r\n**c)** Outra técnica é o **early stopping**. Explique como ela funciona e qual é o critério para decidir quando parar o treinamento. (2 pts)\r\n\r\n**d)** Se o dataset é muito pequeno (menos de 1000 amostras), qual das técnicas acima (L1, L2, dropout, early stopping) combinaria melhor com **data augmentation**? Justifique. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 93,
+    "type": "MC",
+    "content": "## Questão 47\n\n(10 pontos)\r\n\r\nEm um problema de classificação multiclasse com 10 classes, um modelo de rede neural apresenta as seguintes métricas no conjunto de teste: acurácia = 75%, F1-Score macro = 45%. Qual das seguintes explicações é MAIS provável para essa discrepância?\r\n\r\nA) O modelo está funcionando corretamente; acurácia e F1-Score macro devem ser sempre iguais em problemas multiclasse.\r\n\r\nB) O dataset está balanceado entre todas as 10 classes, e a discrepância é causada por erro de medição.\r\n\r\nC) O dataset está desbalanceado, com algumas classes tendo muitos mais exemplos que outras; a acurácia é inflada pelas classes majoritárias, enquanto o F1-Score macro dá peso igual a todas as classes, revelando o desempenho real em classes minoritárias.\r\n\r\nD) O modelo está em underfitting; ambos os valores deveriam ser menores que 50%.\r\n\r\nE) A discrepância é causada por data leakage, onde dados de teste foram incorretamente incluídos no treinamento.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 94,
+    "type": "Practical",
+    "content": "## Questão 74\n\n(10 pontos)\r\n\r\nO otimizador Adam combina duas ideias principais de otimização.\r\n\r\n**a)** Quais são os dois momentos (estimativas) que o Adam mantém para cada parâmetro? (2 pts)\r\n\r\n**b)** O que cada momento estima e qual a sua sigla matemática (m e v)? (4 pts)\r\n\r\n**c)** Explique a correção de viés (bias correction) no Adam: por que ela é necessária nos primeiros passos de treinamento? (4 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 95,
+    "type": "Practical",
+    "content": "## Questão 89\n\n(10 pontos)\r\n\r\nNo algoritmo de árvore de decisão, o que a **entropia** mede em relação a um nó?\r\n\r\nA) A dispersão dos valores numéricos das features\r\n\r\nB) O grau de impureza (ou incerteza) dos rótulos dos exemplos naquele nó\r\n\r\nC) A profundidade máxima que a árvore pode atingir\r\n\r\nD) O número de exemplos/classificação corretos naquele nó\r\n\r\n**Justificativa da escolha:** ___",
+    "justificativa": ""
+  },
+  {
+    "num": 96,
+    "type": "Practical",
+    "content": "## Questão 51\n\n(10 pontos)\r\n\r\nUm pesquisador está treinando uma rede neural profunda para classificação de imagens e observa que o treinamento é extremamente lento, com o loss variando erraticamente entre épocas. O pesquisador usa SGD puro com taxa de aprendizado alta.\r\n\r\n**a)** Explique por que o otimizador Adam frequentemente convergenes mais rápido que SGD puro no início do treinamento. Quais mecanismos do Adam contribuem para isso? (4 pts)\r\n\r\n**b)** Explique o que são os momentos de primeira e segunda ordem no Adam e por que a correção de viés (bias correction) é necessária nos primeiros passos. (3 pts)\r\n\r\n**c)** Em que cenários SGD com momentum pode ser preferível ao Adam? Cite pelo menos uma vantagem. (3 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 97,
+    "type": "MC",
+    "content": "## Questão 41\n\n(10 pontos)\r\n\r\nUm pesquisador está construindo um classificador para diagnosticar uma doença rara. Ele treina uma SVM com kernel RBF e observa que o modelo classifica corretamente todos os exemplos de treinamento, mas falha em 40% dos casos de teste. Qual das seguintes afirmações descreve melhor a situação e a ação mais apropriada?\r\n\r\nA) O modelo está em underfitting; o pesquisador deve aumentar a complexidade do modelo adicionando mais features.\r\n\r\nB) O modelo está em overfitting; o pesquisador deve aplicar regularização (aumentar C no caso da SVM) ou usar um kernel mais simples para generalizar melhor.\r\n\r\nC) O problema é causado por dados desbalanceados; o pesquisador deve usar acurácia como métrica principal.\r\n\r\nD) O problema é causado por feature scaling inadequado; o pesquisador deve remover todas as features numéricas.\r\n\r\nE) O problema é causado por data leakage; o pesquisador deve adicionar mais dados de teste ao treinamento.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  },
+  {
+    "num": 98,
+    "type": "Practical",
+    "content": "## Questão 93\n\n(10 pontos)\r\n\r\nDurante o treinamento de uma rede neural profunda, o pesquisador observa que os valores de ativação nas camadas intermediárias mudam drasticamente a cada atualização de peso, tornando o treinamento instável e lento.\r\n\r\n**a)** Qual técnica foi desenvolvida para resolver este problema? Explique seu mecanismo de ação (normalização de ativações + parâmetros aprendíveis). (3 pts)\r\n\r\n**b)** Explique por que a Batch Normalization acelera o treinamento, relacionando com a ideia de \"internal covariate shift\". (3 pts)\r\n\r\n**c)** Durante a inferência (predição com novos dados), a Batch Normalization usa a média e variância acumuladas do treinamento em vez das do batch atual. Explique por que isso é necessário e como essas estatísticas são armazenadas. (2 pts)\r\n\r\n**d)** Cite uma limitação da Batch Normalization quando o batch size é muito pequeno e explique uma alternativa que resolve esse problema. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 99,
+    "type": "Practical",
+    "content": "## Questão 18\n\n(10 pontos)\r\n\r\nO BERT (Bidirectional Encoder Representations from Transformers) é amplamente usado para tarefas de NLP. Considere as seguintes afirmações sobre o token [CLS] no BERT:\r\n\r\n**a)** Qual é a função principal do token [CLS] no BERT? (3 pts)\r\n\r\n**b)** O hidden state associado ao token [CLS] é utilizado como representação de qual tipo de tarefa? (2 pts)\r\n\r\n**c)** Por que o BERT utiliza [CLS] em vez de usar a média de todos os tokens da sequência como representação? (3 pts)\r\n\r\n**d)** Em tarefas de NER (Named Entity Recognition), o token [CLS] é utilizado para a classificação de cada token? Justifique. (2 pts)",
+    "justificativa": ""
+  },
+  {
+    "num": 100,
+    "type": "MC",
+    "content": "## Questão 1\n\n(10 pontos)\r\n\r\nUm pesquisador treina um modelo de classificação para prever se um paciente terá complicações após uma cirurgia. Ele inclui como feature o \"resultado da biópsia pós-operatória\", que só fica disponível dias após a cirurgia. O modelo obtém acurácia de 98% no conjunto de teste. Qual problema está presente nos dados?\r\n\r\nA) Underfitting, pois o modelo é simples demais para capturar os padrões dos dados.\r\n\r\nB) Data leakage (vazamento de dados), pois uma feature que não estaria disponível no momento da predição está sendo usada no treinamento.\r\n\r\nC) Overfitting, pois o modelo memorizou os dados de treinamento.\r\n\r\nD) Collinearity, pois as features estão altamente correlacionadas entre si.\r\n\r\nE) Label noise, pois os rótulos de classe estão incorretos no conjunto de dados.\r\n\r\n**Justificativa:**",
+    "justificativa": ""
+  }
+]
