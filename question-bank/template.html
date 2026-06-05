@@ -110,7 +110,36 @@
       border-radius: 0.5rem; font-size: 0.875rem; color: #d4d4d8;
     }
     .gabarito-panel.show { display: block; animation: fadeIn 0.2s ease; }
-    
+
+    /* Practical button & panel (green theme) */
+    .practical-btn {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.375rem 0.75rem; border-radius: 0.375rem;
+      font-size: 0.8125rem; font-weight: 500; cursor: pointer;
+      background: rgba(34, 197, 94, 0.08); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.25);
+      transition: all 0.2s; margin-top: 0.75rem;
+    }
+    .practical-btn:hover { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.4); }
+    .practical-btn.active { background: rgba(34, 197, 94, 0.18); color: #22c55e; border-color: rgba(34, 197, 94, 0.5); }
+
+    .practical-panel {
+      display: none; margin-top: 0.75rem; padding: 1rem;
+      background: rgba(34, 197, 94, 0.03); border: 1px solid rgba(34, 197, 94, 0.15);
+      border-radius: 0.5rem; font-size: 0.875rem; color: #d4d4d8;
+    }
+    .practical-panel.show { display: block; animation: fadeIn 0.2s ease; }
+
+    /* User textarea (dark theme) */
+    .user-textarea {
+      width: 100%; padding: 0.75rem; margin-top: 0.5rem; margin-bottom: 0.5rem;
+      background: #0a0a0a; color: #d4d4d8; border: 1px solid #27272a;
+      border-radius: 0.5rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem; resize: vertical; min-height: 60px;
+      transition: border-color 0.2s; outline: none;
+    }
+    .user-textarea:focus { border-color: #3f3f46; }
+    .user-textarea::placeholder { color: #52525b; }
+
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
     
     /* Sidebar nav */
@@ -134,10 +163,10 @@
     /* Print */
     @media print {
       body { background: #fff !important; color: #000 !important; }
-      .sidebar, .progress-bar, .gabarito-btn { display: none !important; }
+      .sidebar, .progress-bar, .gabarito-btn, .practical-btn, .user-textarea { display: none !important; }
       .main-content { margin-left: 0 !important; padding: 1rem !important; }
       .question-card { border-color: #ccc !important; background: #fff !important; }
-      .gabarito-panel { display: block !important; border-color: #ccc !important; background: #f9f9f9 !important; }
+      .gabarito-panel, .practical-panel { display: block !important; border-color: #ccc !important; background: #f9f9f9 !important; }
       .prose * { color: #000 !important; }
     }
   </style>
@@ -185,25 +214,30 @@
       const sections = md.split(/\n(?=## Questão \d+)/);
       const questions = [];
       for (const section of sections) {
-        const headerMatch = section.match(/## Questão (\d+) \((\d+) pontos\)/);
+        const headerMatch = section.match(/## Questão (\d+)\s*\n?\s*\((\d+) pontos\)/);
         if (!headerMatch) continue;
         const num = parseInt(headerMatch[1]);
         const pts = parseInt(headerMatch[2]);
-        const body = section.replace(/## Questão \d+ \(\d+ pontos\)\n*/, '').replace(/\n---\s*$/, '').trim();
+        const body = section.replace(/## Questão \d+\s*\n?\s*\(\d+ pontos\)\s*/, '').replace(/\n---\s*$/, '').trim();
         
         // Detect MC: has A) B) C) D) options
-        const hasOptions = /^[A-E]\)\s/m.test(body);
-        const hasJust = body.includes('**Justificativa:**');
+        const hasOptions = /^[A-E][\.\)]\s/m.test(body);
+        const hasJust = /\*\*Justificativa[^*]*:\*\*/.test(body);
         const type = (hasOptions && hasJust) ? 'mc' : 'practical';
         
         // Extract justificativa
         let justificativa = '';
         if (type === 'mc') {
-          const justMatch = body.match(/\*\*Justificativa:\*\*([\s\S]*?)$/);
+          const justMatch = body.match(/\*\*Justificativa[^*]*:\*\*([\s\S]*?)$/);
           if (justMatch) justificativa = justMatch[1].trim();
         }
         
-        questions.push({ num, pts, type, body, justificativa });
+        // Strip justificativa from MC body, strip resolution header from practical body
+        let cleanBody = type === 'mc'
+          ? body.replace(/\n?\*\*Justificativa[^*]*:\*\*[\s\S]*$/, '').trim()
+          : body.replace(/\n?### Resolução\s*[\s\S]*$/, '').trim();
+        
+        questions.push({ num, pts, type, body: cleanBody, rawBody: body, justificativa });
       }
       return questions;
     }
@@ -267,17 +301,38 @@
       // Render body
       let bodyHtml = renderMd(body);
       
-      // Add gabarito button if MC has justificativa
-      let gabaritoHtml = '';
+      // Add interaction buttons based on type
+      let interactionHtml = '';
       if (q.type === 'mc' && q.justificativa) {
-        gabaritoHtml = `
-        <button class="gabarito-btn" onclick="toggleGabarito(this, ${q.num})">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          Ver Gabarito
-        </button>
-        <div class="gabarito-panel" id="gabarito-${q.num}">
-          <strong style="color: #facc15;">Justificativa:</strong><br>
-          ${renderMd(q.justificativa)}
+        // MC: textarea for user justification + Ver Gabarito button + panel
+        interactionHtml = `
+        <div class="mt-4">
+          <label class="text-sm text-zinc-400 mb-2 block">Escreva sua justificativa antes de revelar:</label>
+          <textarea class="user-textarea" placeholder="Digite sua justificativa aqui..." rows="3"></textarea>
+          <button class="gabarito-btn" onclick="toggleGabarito(this, ${q.num})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver Gabarito
+          </button>
+          <div class="gabarito-panel" id="gabarito-${q.num}">
+            <strong style="color: #facc15;">Justificativa:</strong><br>
+            ${renderMd(q.justificativa)}
+          </div>
+        </div>`;
+      } else if (q.type === 'practical') {
+        // Practical: textarea + Ver Resolução button + panel with resolution
+        const resolution = extractResolution(q.rawBody);
+        interactionHtml = `
+        <div class="mt-4">
+          <label class="text-sm text-zinc-400 mb-2 block">Resolva antes de ver a resolução:</label>
+          <textarea class="user-textarea" placeholder="Digite sua resolução aqui..." rows="4"></textarea>
+          <button class="practical-btn" onclick="togglePractical(this, ${q.num})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver Resolução
+          </button>
+          <div class="practical-panel" id="practical-${q.num}">
+            <strong style="color: #818cf8;">Resolução:</strong><br>
+            ${resolution ? renderMd(resolution) : '<em>Resolução não disponível ainda.</em>'}
+          </div>
         </div>`;
       }
       
@@ -289,7 +344,7 @@
           <span class="text-xs text-zinc-500 ml-auto">${q.pts} pontos</span>
         </div>
         <div class="prose">${bodyHtml}</div>
-        ${gabaritoHtml}
+        ${interactionHtml}
       </div>`;
     });
     
@@ -304,6 +359,23 @@
       btn.innerHTML = isOpen 
         ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Ver Gabarito`
         : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Ocultar Gabarito`;
+    }
+
+    // ===== Extract resolution from practical body =====
+    function extractResolution(body) {
+      const match = body.match(/### Resolução\s*([\s\S]*?)$/);
+      return match ? match[1].trim() : '';
+    }
+
+    // ===== Practical toggle =====
+    function togglePractical(btn, num) {
+      const panel = document.getElementById(`practical-${num}`);
+      const isOpen = panel.classList.contains('show');
+      panel.classList.toggle('show');
+      btn.classList.toggle('active');
+      btn.innerHTML = isOpen 
+        ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Ver Resolução`
+        : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Ocultar Resolução`;
     }
 
     // ===== Scroll spy =====

@@ -62,25 +62,57 @@ Em um ambiente de aprendizado por reforço (Reinforcement Learning), o agente eq
 
 **c)** Em um ambiente com 4 ações possíveis e Q-values Q(a₁)=0.8, Q(a₂)=0.5, Q(a₃)=0.9, Q(a₄)=0.3, qual é a probabilidade de o agente escolher cada ação em um passo dado ε = 0,2? (4 pts)
 
-**Resolução:**
+---
 
-**a)** A estratégia ε-greedy funciona da seguinte forma: em cada passo de tempo, com probabilidade ε o agente escolhe uma ação aleatória (exploração), e com probabilidade 1 - ε escolhe a ação com maior valor Q no momento (exploitação). O parâmetro ε controla o equilíbrio entre explorar novas ações possivelmente melhores e explorar a melhor ação conhecida.
+### Resolução
 
-**b)** Quando ε = 0,1: o agente explora 10% do tempo e explora 90% do tempo — busca um equilíbrio entre exploração e explotação. Quando ε = 0: o agente nunca explora, sempre escolhe a ação greed (melhor conhecida) — pode ficar preso em uma solução subótima. Quando ε = 1: o agente sempre escolhe aleatoriamente, nunca exploita — é pura exploração sem aprendizado eficiente.
+**a) Estratégia ε-greedy**
 
-**c)** Com ε = 0,2 e 4 ações:
-- Probabilidade de exploração (ação aleatória): ε = 0,2, distribuída igualmente entre 4 ações → 0,2 / 4 = 0,05 por ação
-- Probabilidade de explotação: 1 - ε = 0,8, aplicada à ação com maior Q-value
+A estratégia ε-greedy é usada em aprendizado por reforço para equilibrar exploração e exploitação. Em cada passo de decisão:
 
-A ação com maior Q-value é a₃ (Q = 0,9). Portanto:
-- P(a₁) = 0,05 (exploração)
-- P(a₂) = 0,05 (exploração)
-- P(a₃) = 0,8 + 0,05 = 0,85 (explotação + exploração)
-- P(a₄) = 0,05 (exploração)
+- Com probabilidade **1 − ε**, o agente **explora** — escolhe uma ação aleatória (uniforme entre todas as ações disponíveis).
+- Com probabilidade **ε**, o agente **explora** — escolhe aleatoriamente uma das ações disponíveis.
 
-Verificação: 0,05 + 0,05 + 0,85 + 0,05 = 1,0 ✓
+Na verdade, a definição correta é:
+- Com probabilidade **1 − ε**, o agente **explora** — escolhe a melhor ação segundo a função Q (exploita o que já sabe).
+- Com probabilidade **ε**, o agente **explora** — escolhe uma ação aleatoriamente.
+
+**Papel do ε:** O ε controla o grau de exploração. Valores maiores de ε significam mais exploração aleatória; valores menores significam mais exploitação da melhor ação conhecida.
 
 ---
+
+**b) Comportamento para diferentes valores de ε**
+
+- **ε = 0,1:** O agente explora a melhor ação com 90% das vezes e escolhe aleatoriamente com 10%. Há um pouco de exploração para descobrir possivelmente melhores estratégias.
+
+- **ε = 0:** O agente **sempre** escolhe a melhor ação conhecida (100% exploitação). Não há exploração. Se a política ótima já foi descoberta, funciona bem. Caso contrário, pode ficar preso em uma subótima.
+
+- **ε = 1:** O agente **sempre** escolhe uma ação aleatoriária (100% exploração). Não exploita nada do que aprendeu. O comportamento é puramente aleatório, como um agente que não aprendeu nada.
+
+**Comparação:** ε = 0 é pura exploitação (pode não encontrar o ótimo), ε = 1 é pura exploração (nunca usa o que aprendeu), e ε = 0,1 é um equilíbrio razoável entre os dois extremos.
+
+---
+
+**c) Probabilidade de escolha com ε = 0,2 e 4 ações**
+
+Dados: Q(a₁) = 0,8, Q(a₂) = 0,5, Q(a₃) = 0,9, Q(a₄) = 0,3, ε = 0,2, 4 ações.
+
+Com ε = 0,2:
+- Probabilidade de escolher aleatoriamente: 0,2 (20%)
+- Probabilidade de exploitar a melhor ação: 0,8 (80%)
+
+A melhor ação é a₃ (Q = 0,9).
+
+**Probabilidade de cada ação:**
+- P(a₁) = 0,2 × (1/4) = 0,05 = **5%** (chance aleatória)
+- P(a₂) = 0,2 × (1/4) = 0,05 = **5%** (chance aleatória)
+- P(a₃) = 0,8 + 0,2 × (1/4) = 0,8 + 0,05 = **0,85 = 85%** (exploitação + chance aleatória)
+- P(a₄) = 0,2 × (1/4) = 0,05 = **5%** (chance aleatória)
+
+**Verificação:** 5% + 5% + 85% + 5% = 100% ✓
+
+---
+
 
 ## Questão 21
 
@@ -136,6 +168,37 @@ Um dataset de classificação binária possui 1000 amostras: 950 da classe major
 
 ---
 
+### Resolução
+
+**a)** O problema de usar apenas random oversampling (duplicação) é que, ao simplesmente copiar as mesmas amostras da classe minoritária, o modelo pode acabar "decorando" essas amostras específicas ao invés de aprender padrões gerais. Isso leva a **overfitting**: o modelo memoriza os dados de treino, mas não consegue generalizar para dados novos. Além disso, duplicar amostras não adiciona nenhuma informação nova ao dataset — o modelo vê exatamente os mesmos exemplos repetidos.
+
+**b)** O SMOTE (Synthetic Minority Over-sampling Technique) gera novas amostras **sintéticas** ao invés de simplesmente duplicar. Para cada amostra da classe minoritária, ele:
+1. Seleciona **k=5** vizinhos mais próximos dessa amostra no espaço das features.
+2. Escolhe **aleatoriamente** um desses 5 vizinhos.
+3. Cria um novo ponto no segmento que liga a amostra original ao vizinho escolhido.
+
+A fórmula utilizada é:
+
+**x_novo = x_i + λ × (x_nn - x_i)**
+
+Onde:
+- **x_i** é a amostra original da classe minoritária
+- **x_nn** é o vizinho mais próximo escolhido
+- **λ** é um número aleatório entre 0 e 1 (λ ~ U(0,1))
+
+Isso gera pontos sintéticos que estão "entre" amostras reais, criando variação e evitando a repetição exata.
+
+**c)** O novo balanceamento do dataset será:
+
+- Classe majoritária: **950** amostras (inalterada)
+- Classe minoritária: **50 + 450 = 500** amostras sintéticas
+- Total: **950 + 500 = 1.450** amostras
+
+O dataset passa de um desbalanceamento de 19:1 (950/50) para um desbalanceamento de **1,9:1** (950/500), o que é muito mais equilibrado para treinar o modelo de classificação.
+
+---
+
+
 ## Questão 100
 
 (10 pontos)
@@ -165,6 +228,50 @@ $$\text{Precision@K} = \frac{\text{nº de relevantes nos top-K}}{K}$$
 $$\text{Recall@K} = \frac{\text{nº de relevantes nos top-K}}{\text{total de relevantes}}$$
 
 ---
+
+### Resolução
+
+**a) Precision@3**
+
+**Dados:**
+- Top-3 recomendações: Doc A (relevante), Doc B (não relevante), Doc C (relevante)
+- Número de relevantes nos top-3: 2 (Doc A e Doc C)
+
+**Fórmula:**
+Precision@K = (nº de relevantes nos top-K) / K
+
+Precision@3 = 2 / 3 ≈ **0,667 (ou 66,7%)**
+
+---
+
+**b) Recall@3**
+
+**Dados:**
+- Número de relevantes nos top-3: 2 (Doc A e Doc C)
+- Total de relevantes no dataset: 10
+
+**Fórmula:**
+Recall@K = (nº de relevantes nos top-K) / (total de relevantes)
+
+Recall@3 = 2 / 10 = **0,2 (ou 20%)**
+
+---
+
+**c) Precision@5 e Recall@5**
+
+**Precision@5:**
+- Top-5 recomendações: Doc A (relevante), Doc B (não relevante), Doc C (relevante), Doc D (relevante), Doc E (não relevante)
+- Número de relevantes nos top-5: 3 (Doc A, Doc C, Doc D)
+- K = 5
+
+Precision@5 = 3 / 5 = **0,6 (ou 60%)**
+
+**Recall@5:**
+- Número de relevantes nos top-5: 3 (Doc A, Doc C, Doc D)
+- Total de relevantes no dataset: 10
+
+Recall@5 = 3 / 10 = **0,3 (ou 30%)**
+
 
 ## Questão 2
 
@@ -260,6 +367,43 @@ Em um sistema de recomendação de filmes, o pesquisador deseja representar as p
 
 ---
 
+### Resolução
+
+**a)** Comparação entre filtragem colaborativa e filtragem baseada em conteúdo:
+
+**Filtragem colaborativa (collaborative filtering):**
+- **Como funciona:** Utiliza as preferências de outros usuários para fazer recomendações. Se o usuário A e o usuário B gostaram dos mesmos filmes, o sistema recomenda ao A filmes que o B gostou mas que o A ainda não viu.
+- **Vantagem:** Não precisa conhecer as características dos itens (filmes) — funciona apenas com o histórico de interações dos usuários.
+- **Desvantagem:** Sofre com o problema de "cold start" — não consegue recomendar para novos usuários que ainda não avaliaram nenhum item.
+
+**Filtragem baseada em conteúdo (content-based filtering):**
+- **Como funciona:** Analisa as características dos próprios itens (gênero, ator, diretor) e recomenda itens semelhantes aos que o usuário já gostou.
+- **Vantagem:** Não depende de outros usuários — pode recomendar para um novo usuário desde que ele tenha avaliado pelo menos alguns itens.
+- **Desvantagem:** Fica limitado ao que já conhece — não consegue recomendar itens de gêneros completamente diferentes dos que o usuário já avaliou (falta de "serendipidade").
+
+---
+
+**b)** Problema de cold start:
+
+O **cold start** ocorre quando um sistema de recomendação não tem dados suficientes sobre um novo usuário ou um novo item para fazer recomendações relevantes. Sem histórico de interações, o sistema "não sabe" o que recomendar.
+
+**3 estratégias para mitigá-lo:**
+
+1. **Recomendação por popularidade:** Enquanto o usuário não tem histórico, recomende os itens mais populares ou com melhores avaliações no geral.
+2. **Questionário inicial (onboarding):** Pedir que o novo usuário selecione alguns gêneros ou itens de interesse no momento do cadastro, para ter dados iniciais.
+3. **Utilizar metadados do perfil:** Usar informações do cadastro (idade, localização, interesses declarados) para fazer recomendações iniciais aproximadas.
+
+---
+
+**c)** Diferença entre filtragem colaborativa baseada em memória e baseada em modelo:
+
+- **Memory-based (baseada em memória):** Utiliza diretamente os dados de interações dos usuários para calcular similaridade e fazer previsões, sem treinar um modelo explícito. **Exemplo:** k-NN (vizinhos mais próximos) — encontrar os k usuários mais similares e usar as avaliações deles.
+
+- **Model-based (baseada em modelo):** Treina um modelo matemático que aprende padrões a partir dos dados de interação e usa esse modelo para fazer previsões. **Exemplo:** Fatoração de matrizes (Matrix Factorization) — decompor a matriz de usuários×itens em matrizes menores que capturam fatores latentes.
+
+---
+
+
 ## Questão 28
 
 (10 pontos)
@@ -293,6 +437,40 @@ Um engenheiro de ML está construindo um modelo de classificação de imagens pa
 **c)** Explique o conceito de early stopping e como ele se relaciona com o trade-off entre underfitting e overfitting. (1 pt)
 
 ---
+
+### Resolução
+
+**a)** Overfitting em datasets pequenos:
+
+**Overfitting** ocorre quando o modelo "decora" os dados de treinamento em vez de aprender padrões gerais. Com datasets pequenos (como 200 imagens), o modelo tem poucos exemplos para aprender e pode memorizar detalhes irrelevantes (ruído) dos dados.
+
+**Por que redes neurais profundas são especialmente vulneráveis:**
+Redes neurais profundas possuem milhões de parâmetros. Quando o dataset é pequeno, há muitos parâmetros para poucos dados. Isso permite que a rede se ajuste perfeitamente aos dados de treino (acurácia de 100% no treino) mas falhe em dados novos (acurácia baixa no teste). Quanto mais profunda a rede, maior a capacidade de memorização e maior o risco de overfitting.
+
+---
+
+**b)** 3 técnicas de regularização:
+
+**1. Regularização aplicada aos dados — Data Augmentation:**
+Aumenta artificialmente o tamanho do dataset aplicando transformações (rotação, flip, recorte) nas imagens existentes. Isso apresenta variações diferentes ao modelo durante cada época de treino, reduzindo a memorização.
+
+**2. Regularização aplicada à arquitetura — Dropout:**
+Durante o treinamento, "desliga" aleatoriamente um percentual dos neurônios (por exemplo, 50%). Isso impede que a rede dependa excessivamente de poucos neurônios e força ela a aprender representações mais robustas e redundantes.
+
+**3. Regularização aplicada ao treinamento — Early Stopping:**
+Monitora a perda (loss) no conjunto de validação durante o treino. Quando a perda no validação para de diminuir (ou começa a aumentar), interrompe o treinamento. Isso evita que o modelo continue treinando e comece a decorar os dados.
+
+---
+
+**c)** Early stopping:
+
+**Early stopping** é uma técnica que interrompe o treinamento da rede neural no momento em que a performance no conjunto de validação para de melhorar. Ela se relaciona com o trade-off entre underfitting e overfitting porque:
+- **Treino muito curto → Underfitting:** O modelo não aprendeu o suficiente.
+- **Treino muito longo → Overfitting:** O modelo começa a decorar os dados.
+- O early stopping encontra o "ponto ideal" entre esses dois extremos, parando o treino no momento de melhor generalização.
+
+---
+
 
 ## Questão 7
 
@@ -328,6 +506,44 @@ O dropout é uma técnica de regularização amplamente utilizada em redes neura
 
 ---
 
+### Resolução
+
+**a)** Dropout durante treinamento vs inferência:
+
+**Durante o treinamento:**
+- Cada neurônio tem uma probabilidade *p* (por exemplo, p = 0.5) de ser "desligado" (sua saída é zerada) a cada amostra de treinamento.
+- Isso é feito de forma aleatória, diferente a cada batch.
+- O efeito é que a rede não pode depender de nenhum neurônio específico, forçando representações mais robustas.
+
+**Durante a inferência (predição):**
+- Nenhum neurônio é desligado — todos permanecem ativos.
+- Para compensar o fato de que durante o treino apenas uma fração dos neurônios estava ativa, multiplica-se as saídas pela taxa de retenção (1 - p). Com p = 0.5, as saídas são multiplicadas por 0.5, ou equivalente, divides os pesos por (1 - p) = 2.
+
+---
+
+**b)** Dropout como método de ensemble:
+
+Cada vez que aplicamos dropout, estamos criando uma "sub-rede" diferente da rede original (com neurônios diferentes desligados). Se tivermos uma rede com N neurônios, existem 2^N sub-redes possíveis.
+
+Durante o treinamento com dropout, estamos implicitamente treinando todas essas 2^N sub-redes ao mesmo tempo. Durante a inferência, ao usar todos os neurônios com ajuste de escala, estamos fazendo uma aproximação da **média** das previsões de todas essas sub-redes.
+
+Isso é análogo a um **ensemble** (comitê) de múltiplos modelos, onde cada sub-rede seria um modelo diferente, e a previsão final seria a combinação (média) das previsões de todos eles. Ensemble de modelos geralmente tem performance melhor que qualquer modelo individual.
+
+---
+
+**c)** Camadas onde dropout é aplicado vs não aplicado:
+
+**Aplicado em:**
+- **Camadas fully connected (densas):** Onde há muitos parâmetros e risco de co-adaptação excessiva entre neurônios.
+
+**NÃO deve ser aplicado em:**
+- **Camadas de pooling:** Não tem parâmetros treináveis e dropout nelas prejudicaria a extração de features espaciais.
+- **Camada de saída (output):** O dropout na saída pode causar instabilidade nas previsões e é desnecessário.
+- **Camadas convolucionais (com ressalvas):** Embora exista variante "Spatial Dropout", o dropout padrão não é eficaz em convoluções porque neurônios vizinhos são altamente correlacionados — eles compartilham a mesma região da imagem. Dropout espacial desliga canais inteiros ao invés de neurônios isolados.
+
+---
+
+
 ## Questão 48
 
 (10 pontos)
@@ -343,6 +559,17 @@ Um pesquisador deseja classificar imagens de raio-X torácico usando uma rede ne
 **Justifique cada resposta.**
 
 ---
+
+### Resolução
+
+**a)** A principal vantagem do transfer learning neste cenário é **aproveitar as representações visuais aprendidas** pela rede no ImageNet (bordas, texturas, formas) e reaproveitá-las para a nova tarefa de classificação de raio-X. Isso permite treinar um bom classificador mesmo com **poucos dados** (o dataset de raio-X pode ser pequeno), pois as camadas convolucionais já foram treinadas em milhões de imagens e já sabem extrair padrões visuais úteis. É muito mais rápido e eficiente do que treinar do zero.
+
+**b)** As representações mais **genéricas** (bordas, texturas, cores) estão armazenadas nas **camadas iniciais e intermediárias** da rede. Essas camadas aprendem padrões que são úteis para qualquer tarefa de visão computacional. As representações mais **específicas** (formas complexas, partes de objetos, objetos inteiros) estão nas **camadas finais e mais profundas** da rede, pois foram refinadas durante o treinamento no ImageNet para reconhecer as 1000 classes específicas.
+
+**c)** O risco principal do fine-tuning completo (descongelar todas as camadas) é o **overfitting** (sobreajuste). Com um dataset pequeno de raio-X, há poucas amostras para atualizar os milhões de parâmetros de todas as camadas da rede. Como as camadas convolucionais já foram treinadas em imagens de objetos cotidianos (ImageNet), os pesos das primeiras camadas são geralmente bons e genéricos. Descongelá-las com poucos dados pode fazer com que esses pesos sejam degradados, perdendo as representações úteis aprendidas anteriormente. O ideal para datasets pequenos é congelar as camadas convolucionais e treinar apenas as camadas densas finais.
+
+---
+
 
 ## Questão 60
 
@@ -363,6 +590,23 @@ Um modelo de regressão apresenta os seguintes resultados:
 
 ---
 
+### Resolução
+
+**a)** A discrepância entre o R² de treino (0,98) e o R² de teste (0,45) indica que o modelo está em **overfitting** (sobreajuste). O modelo aprendeu muito bem os padrões dos dados de treino (R² alto), mas não consegue generalizar para dados novos que nunca viu (R² baixo no teste). O erro MSE confirma: é baixo no treino (12,3) mas muito alto no teste (89,7). O modelo está memorizando os dados de treino ao invés de aprender a relação verdadeira entre as variáveis.
+
+**b)** Duas estratégias para reduzir o overfitting:
+
+1. **Regularização (L1 ou L2):** Adiciona uma penalidade ao custo que penaliza pesos grandes. Isso força o modelo a usar pesos menores e mais simples, impedindo que ele se ajuste demais ao ruído dos dados de treino. L2 (Ridge) diminui gradualmente os pesos; L1 (Lasso) pode zerar pesos irrelevantes.
+
+2. **Early stopping (parada antecipada):** Monitora o erro de validação durante o treinamento e para quando ele começa a aumentar, mesmo que o erro de treino continue diminuindo. Isso evita que o modelo continue treinando além do ponto em que generaliza bem.
+
+Outras opções válidas: diminuir a complexidade do modelo, usar mais dados (data augmentation), ou usar validação cruzada.
+
+**c)** Se o R² de treino fosse 0,52 e o R² de teste fosse 0,48, isso indicaria um modelo com **boa generalização** — a diferença entre treino e teste é pequena (apenas 0,04), o que significa que o modelo aprendeu padrões que funcionam tanto para dados vistos quanto para dados novos. No entanto, o R² absoluto (≈0,5) é moderado, indicando que o modelo não explica muito da variância dos dados — pode ser que o modelo esteja com **underfitting** (subajuste) ou que o problema seja difícil demais para o modelo atual. Seria necessário verificar se um modelo mais complexo poderia melhorar o desempenho sem causar overfitting.
+
+---
+
+
 ## Questão 55
 
 (10 pontos)
@@ -376,6 +620,21 @@ Um pesquisador está treinando uma rede neural e percebe que o loss oscila muito
 **c)** O pesquisador considera usar ReduceLROnPlateau. Explique como essa estratégia funciona e qual é a intuição por trás dela. (3 pts)
 
 ---
+
+### Resolução
+
+**a)** Quando a taxa de aprendizado é muito alta (como 0,1, que é relativamente alto para muitos problemas), o otimizador faz **passos muito grandes** na direção do gradiente. Isso causa o efeito de **oscilação**: o otimizador "pula" para além do mínimo da função de custo, indo para o outro lado, e depois pula de volta, sem nunca chegar perto do ótimo. No espaço de parâmetros, o caminho percorrido pelo otimizador fica **zigzagueando** de forma errática, sem convergir. Em casos extremos, o loss pode até **divergir** (aumentar cada vez mais).
+
+**b)** Learning rate scheduling é a estratégia de **ajustar a taxa de aprendizado ao longo do treinamento** em vez de mantê-la fixa. Duas estratégias comuns são:
+
+1. **Step Decay (degraus):** A taxa de aprendizado é reduzida por um fator (por exemplo, dividida por 10) após um certo número de épocas fixas. É indicada quando se sabe aproximadamente quando o modelo começa a se estabilizar. Exemplo: LR = 0.01 nas primeiras 30 épocas, LR = 0.001 nas próximas 30, etc.
+
+2. **Cosine Annealing:** A taxa de aprendizado diminui suavemente ao longo do tempo seguindo a curva do cosseno, começando alta e terminando baixa. É indicada quando se quer uma transição suave e precisa na fase final do treinamento, evitando oscilações.
+
+**c)** O **ReduceLROnPlateau** é uma estratégia que monitora uma métrica de validação (como a loss ou acurácia) e **reduz a taxa de aprendizado quando a métrica para de melhorar** por um certo número de épocas consecutivas (chamado "patience"). A intuição por trás dela é: se o modelo parou de melhorar, provavelmente está perto de um ponto de mínima mas a taxa de aprendizado pode estar alta demais para fazer ajustes finos. Ao reduzir o LR, o otimizador faz passos menores e pode "refinar" os pesos para encontrar o mínimo local mais preciso. É uma abordagem adaptativa, pois a redução só acontece quando realmente é necessária.
+
+---
+
 
 ## Questão 17
 
@@ -411,6 +670,52 @@ Um hospital está implementando um sistema de IA para auxiliar no diagnóstico d
 
 ---
 
+### Resolução
+
+**a) Fairness, Bias e Transparency**
+
+**Fairness (Justiça):** Significa que o sistema de IA não deve discriminar indivíduos com base em características sensíveis como raça, gênero, idade, etc. Um sistema justo trata todas as pessoas de forma equitativa, independentemente de seu grupo de pertencimento.
+
+**Bias (Viés):** É uma distorção sistemática nos dados ou no modelo que leva a resultados injustos. O viés pode surgir dos dados de treinamento (se eles não representam adequadamente todos os grupos) ou do próprio algoritmo.
+
+**Transparency (Transparência):** Significa que as decisões do sistema de IA devem ser explicáveis e compreensíveis para os usuários. Uma pessoa deve ser capaz de entender por que o sistema tomou uma determinada decisão.
+
+**Como o viés nos dados leva a decisões injustas:** Se os dados de treinamento contêm vieses históricos (por exemplo, se homens foram historicamente mais aprovados em processos seletivos), o modelo aprenderá a reproduzir esse padrão. Em um hospital, se os dados de treinamento contêm menos casos de uma doença em uma população específica (porque essa população historicamente teve menos acesso à saúde), o modelo poderá ter menor acurácia para essa população, levando a diagnósticos incorretos ou atrasados para esses pacientes.
+
+---
+
+**b) Accountability (Prestação de Contas)**
+
+Accountability significa que **alguém deve ser responsável** pelas decisões e consequências do sistema de IA. Quando o sistema comete um erro, deve haver mecanismos para identificar responsabilidades e corrigir os problemas.
+
+**Quando um sistema de IA causa dano a um paciente:** A responsabilidade é **compartilhada** entre várias partes:
+- **Desenvolvedores do sistema:** Se houve falha no design, treinamento ou validação do modelo.
+- **Hospital/Instituição:** Se implementou o sistema sem supervisão adequada ou sem protocolos de validação.
+- **Profissionais de saúde:** Se confiaram cegamente na IA sem validar as decisões.
+- **Reguladores:** Se não estabeleceram padrões adequados de segurança.
+
+Na prática, a responsabilidade legal recai sobre a instituição que utiliza o sistema, mas todos os envolvidos têm responsabilidade ética. A resposta ideal inclui: transparência sobre o erro, correção imediata, e melhoria do sistema para evitar reincidência.
+
+---
+
+**c) Técnicas para Mitigar Vieses**
+
+**1. Reamostragem (Resampling):**
+- **Oversampling:** Aumenta a representação de grupos sub-representados nos dados de treinamento, duplicando ou criando amostras sintéticas desses grupos.
+- **Undersampling:** Reduz a representação de grupos super-representados, removendo amostras desses grupos.
+- **Exemplo:** Se os dados de treinamento de um hospital contêm 80% de pacientes brancos e 20% de pacientes negros, pode-se fazer oversampling dos pacientes negros ou undersampling dos brancos para equilibrar.
+
+**2. Reponderação (Reweighting):**
+- Atribui pesos diferentes às amostras durante o treinamento, dando mais peso a grupos sub-representados ou menos peso a grupos super-representados.
+- **Exemplo:** Se uma classe tem 1000 amostras e outra tem 100, pode-se dar peso 10 para cada amostra da classe minoritária e peso 1 para a classe majoritária.
+
+**3. Pós-processamento de Saídas:**
+- Ajusta as previsões do modelo após o treinamento para garantir que as taxas de erro sejam iguais entre os grupos.
+- **Exemplo:** Se o modelo tem 95% de acurácia para homens e 85% para mulheres, ajusta-se o limiar de classificação para equilibrar essas taxas.
+
+---
+
+
 ## Questão 15
 
 (10 pontos)
@@ -444,6 +749,47 @@ Um pesquisador tem um dataset de 500 imagens de gatos para classificação biná
 **c)** Por que data augmentation NÃO deve ser aplicado no conjunto de teste? (3 pts)
 
 ---
+
+### Resolução
+
+**a)** 4 técnicas de data augmentation para imagens:
+
+1. **Horizontal Flip (Espelhamento horizontal):** Inverte a imagem no eixo horizontal. Por exemplo, um gato olhando para a esquerda passa a olhar para a direita. Útil porque a classe do objeto não muda com o espelhamento.
+
+2. **Rotação (Rotation):** Rotaciona a imagem por um ângulo aleatório (por exemplo, ±15°). Ajuda o modelo a reconhecer o objeto em diferentes orientações.
+
+3. **Crop (Recorte aleatório):** Recorta uma porção aleatória da imagem e redimensiona para o tamanho original. O modelo aprende a reconhecer o objeto mesmo quando ele não está centralizado ou parcialmente oculto.
+
+4. **Adjustment de brilho/contraste:** Altera aleatoriamente o brilho ou contraste da imagem. O modelo aprende a reconhecer o objeto em diferentes condições de iluminação.
+
+---
+
+**b)** Como random horizontal flip e random rotation ajudam a reduzir overfitting:
+
+O **random horizontal flip** (probabilidade 0.5) espelha metade das imagens de treino aleatoriamente, duplicando virtualmente o dataset. O modelo vê a mesma imagem em duas orientações diferentes, aprendendo que a classe não depende da direção.
+
+O **random rotation** (±15°) rotaciona as imagens levemente, apresentando variações que não existiam no dataset original.
+
+Ambas as transformações ajudam a reduzir overfitting porque:
+- Aumentam a diversidade dos dados de treino sem coletar imagens novas.
+- Forçam o modelo a aprender **características invariantes** (como formato, textura) em vez de memorizar padrões exatos (como posição ou orientação específica).
+- O modelo generaliza melhor para dados novos porque já viu variações semelhantes durante o treino.
+
+---
+
+**c)** Por que data augmentation NÃO deve ser aplicado no conjunto de teste:
+
+O data augmentation serve para aumentar a diversidade dos dados de **treino** para que o modelo generalize melhor. No conjunto de **teste**, queremos avaliar a performance real do modelo em dados reais e não modificados.
+
+Se aplicarmos augmentation no teste:
+- Estaríamos avaliando o modelo em dados artificiais, não nos dados reais.
+- A métrica de avaliação não refletiria a performance real do sistema em produção.
+- As previsões poderiam ficar inconsistentes — se cada vez que testamos uma imagem, ela aparece diferente, as previsões variariam sem necessidade.
+
+O teste deve ser feito nos dados originais e fiéis ao mundo real.
+
+---
+
 
 ## Questão 30
 
@@ -559,6 +905,34 @@ Considere um problema de clusterização de clientes de uma loja online com base
 
 ---
 
+### Resolução
+
+**a)** Comparação entre K-Means e DBSCAN:
+
+| Critério | K-Means | DBSCAN |
+|----------|---------|--------|
+| Forma dos clusters | Funciona melhor com clusters **esféricos/convexos** de tamanhos semelhantes | Pode encontrar clusters de **qualquer forma** (arredondados, alongados, irregulares) |
+| Presença de ruído | Não lida bem com ruído — todos os pontos são atribuídos a um cluster, mesmo os outliers | **Detecta ruído naturalmente** — pontos que não pertencem a nenhum cluster são marcados como outlier |
+| Definição de K | É **obrigatório** definir o número de clusters K **antes** de rodar o algoritmo | **Não precisa definir K** — o número de clusters é descoberto automaticamente a partir dos parâmetros eps e min_samples |
+
+**Quando usar cada um:**
+- **K-Means:** quando se sabe aproximadamente quantos clusters existem e espera-se que tenham formas regulares e tamanhos similares (ex: agrupar clientes por faixa de renda).
+- **DBSCAN:** quando não se conhece o número de clusters, quando há ruído/outliers, ou quando os clusters podem ter formas arbitrárias (ex: geolocalização de clientes).
+
+**b)** O **método do cotovelo (elbow method)** consiste em rodar o K-Means com diferentes valores de K (por exemplo, de 1 a 10) e calcular a **inércia** (soma das distâncias quadradas dos pontos ao centro do seu cluster) para cada K. Ao plotar a inércia em função de K, procura-se o ponto onde a curva "dobra" como um cotovelo — ou seja, onde adicionar mais um cluster não reduz significativamente a inércia. Esse ponto sugere o K ideal.
+
+O **coeficiente de silhueta** mede quão similar um ponto é ao seu próprio cluster em comparação com os outros clusters. Varia de -1 a 1:
+- Próximo de **1**: o ponto está bem dentro do seu cluster e longe dos outros.
+- Próximo de **0**: o ponto está na fronteira entre dois clusters.
+- Próximo de **-1**: o ponto pode estar no cluster errado.
+
+O melhor K é aquele que maximiza o coeficiente de silhueta médio.
+
+**c)** A padronização (standardization) é importante porque o K-Means utiliza a **distância euclidiana** entre os pontos para atribuí-los aos clusters. Se as features têm escalas muito diferentes (ex: renda de 1.000 a 100.000 e idade de 18 a 80), a feature com escala maior (renda) **dominará** completamente o cálculo da distância, fazendo com que a feature de idade seja praticamente ignorada. A padronização coloca todas as features na mesma escala (média 0, desvio padrão 1), garantindo que cada feature contribua de forma **proporcional e justa** para o cálculo de distância.
+
+---
+
+
 ## Questão 43
 
 (10 pontos)
@@ -593,6 +967,51 @@ Em um concurso de machine learning, dois times estão competindo para resolver u
 
 ---
 
+### Resolução
+
+**a) Hard Voting (Votação por Maioria)**
+
+O hard voting é uma técnica de ensemble em qual cada modelo do ensemble faz uma previsão (voto) para a classe de uma amostra, e a classe que recebe o maior número de votos é escolhida como previsão final. É simplesmente uma votação por maioria.
+
+**Aplicação no exemplo:**
+- Random Forest → "maligno"
+- SVM → "benigno"
+- Rede Neural → "maligno"
+
+Contagem: "maligno" = 2 votos, "benigno" = 1 voto.
+
+**Resultado:** A previsão final é **"maligno"** (maioria com 2 de 3 votos).
+
+---
+
+**b) Soft Voting (Votação Ponderada pelas Probabilidades)**
+
+No soft voting, cada modelo não apenas vota na classe, mas também fornece a probabilidade estimada para cada classe. A previsão final é calculada tirando a média das probabilidades de cada modelo para cada classe, e a classe com a maior média é escolhida.
+
+**Exemplo simplificado:** Se RF diz 90% maligno / 10% benigno, SVM diz 40% maligno / 60% benigno, e Rede Neural diz 85% maligno / 15% benigno:
+- Média para maligno: (0,90 + 0,40 + 0,85) / 3 = 0,717 → 71,7%
+- Média para benigno: (0,10 + 0,60 + 0,15) / 3 = 0,283 → 28,3%
+- Previsão: "maligno"
+
+**Quando é superior ao hard voting:** O soft voting é superior quando os modelos têm graus de confiança diferentes. Por exemplo, se dois modelos estão quase empatados no hard voting, mas um deles tem alta confiança na sua escolha, o soft voting consegue ponderar isso. É mais informativo e robusto quando as probabilidades dos modelos são bem calibradas.
+
+---
+
+**c) Stacking**
+
+No stacking, em vez de usar regras simples como votação ou média, treina-se um **meta-modelo** (também chamado de blender ou meta-learner) que aprende a combinar as previsões dos modelos base.
+
+**Como funciona:**
+1. Os modelos base (RF, SVM, Rede Neural) são treinados no conjunto de treino.
+2. Cada modelo base faz previsões para um conjunto de validação (ou via cross-validation).
+3. As previsões dos modelos base são usadas como **entrada** (features) para o meta-modelo.
+4. O meta-modelo aprende a combinar essas previsões para produzir a previsão final.
+
+**Diferença principal em relação ao voting:** No voting, a combinação é feita com uma regra fixa (maioria ou média). No stacking, o meta-modelo **aprende** a melhor forma de combinar as previsões, podendo descobrir padrões complexos (por exemplo, confiar mais no RF quando o SVM está incerto). Isso geralmente resulta em melhor desempenho, mas é mais complexo e custoso de treinar.
+
+---
+
+
 ## Questão 97
 
 (10 pontos)
@@ -606,6 +1025,54 @@ Em uma GAN (Generative Adversarial Network), o discriminador pode se tornar muit
 **c)** Qual é o equilíbrio ideal entre gerador e discriminador no final do treinamento de uma GAN? (3 pts)
 
 ---
+
+### Resolução
+
+**a) Overfitting do Discriminador em GANs**
+
+Quando o discriminador overfita durante o treinamento de uma GAN, ele se torna **perfeito em distinguir** amostras reais de falsas. Isso causa os seguintes problemas:
+
+1. **Gradientes que desaparecem:** Se o discriminador é perfeito, ele fornece gradientes muito pequenos ou nulos para o gerador, tornando impossível o aprendizado do gerador.
+
+2. **Treinamento instável:** O gerador não consegue melhorar porque não recebe feedback útil do discriminador.
+
+3. **Colapso do gerador:** O gerador pode parar de aprender ou começar a gerar amostras sempre iguais (mode collapse).
+
+Em resumo, se o discriminador é "forte demais", o gerador não consegue aprender a enganá-lo, e o treinamento da GAN falha.
+
+---
+
+**b) Duas Técnicas para Evitar Overfitting do Discriminador**
+
+1. **Label Smoothing (Suavização de Rótulos):**
+   - Em vez de usar rótulos binários (0 para falso, 1 para real), usa-se valores suavizados (por exemplo, 0,1 para falso e 0,9 para real).
+   - Isso impede que o discriminador se torne muito confiante em suas previsões, pois mesmo para amostras reais, o rótulo alvo não é 1,0 (perfeito).
+   - Resultado: o discriminador mantém certa incerteza, fornecendo gradientes úteis para o gerador.
+
+2. **Treinamento com Menor Número de Épocas para o Discriminador:**
+   - Em vez de treinar o discriminador até a convergência a cada iteração, treina-se por apenas algumas épocas (ou um passo de gradiente) antes de atualizar o gerador.
+   - Isso evita que o discriminador se ajuste demais aos dados atuais.
+   - Alternativa relacionada: usar uma arquitetura mais simples para o discriminador (menos parâmetros).
+
+---
+
+**c) Equilíbrio Ideal entre Gerador e Discriminador**
+
+O equilíbrio ideal no final do treinamento de uma GAN é quando:
+
+1. **O discriminador não consegue distinguir** amostras reais de falsas com alta confiança — ele responde com probabilidade próxima de 0,5 para ambos os tipos de amostra.
+
+2. **O gerador produz amostras** tão realistas que o discriminador está "chutando" (guessing) — a taxa de acerto do discriminador é de aproximadamente 50%.
+
+Nesse ponto:
+- O gerador aprendeu a gerar dados indistinguíveis dos reais.
+- O discriminador não tem vantagem sobre adivinhação aleatória.
+- Matematicamente: D(x) ≈ 0,5 para todo x, onde D é o discriminador e x é uma amostra (real ou falsa).
+
+Esse equilíbrio é conhecido como o **ponto de Nash** do jogo adversarial, onde nem o gerador nem o discriminador podem melhorar unilateralmente.
+
+---
+
 
 ## Questão 76
 
@@ -625,6 +1092,36 @@ Em um hospital, pesquisadores querem criar um modelo para identificar se um tumo
 **d)** Cite um exemplo de modelo generativo e um exemplo de modelo discriminativo amplamente utilizados na prática. (2 pts)
 
 ---
+
+### Resolução
+
+**a)** Identificação dos modelos:
+
+- **Modelo A é discriminativo:** Ele aprende diretamente a fronteira de decisão entre "maligno" e "benigno", ou seja, modela P(classe | dados). Não se preocupa com como os dados foram gerados, apenas com separar as classes.
+
+- **Modelo B é generativo:** Ele aprende a distribuição estatística dos dados de cada classe separadamente, modelando P(dados | classe) e usando o Teorema de Bayes para calcular P(classe | dados). Ele modela como os dados são gerados.
+
+---
+
+**b)** Qual modelo gera imagens sintéticas:
+
+O **Modelo B (generativo)** é capaz de gerar novas imagens sintéticas. Como ele aprende a distribuição estatística dos pixels de cada classe (como os dados são gerados), ele pode **amostrar** dessa distribuição para criar novas imagens realistas. O Modelo A (discriminativo) só sabe separar classes — não tem informação sobre como os dados são gerados, logo não pode criar dados novos.
+
+---
+
+**c)** Por que modelos discriminativos têm melhor acurácia:
+
+Modelos discriminativos focam **exclusivamente** em encontrar a fronteira de decisão entre classes. Eles não desperdiçam capacidade modelando aspectos dos dados que não são relevantes para a classificação. Em contraste, modelos generativos precisam modelar toda a distribuição dos dados (incluindo informações irrelevantes para a separação), o que pode introduzir erros adicionais. Ao focar apenas na fronteira, o discriminativo pode ser mais eficiente e preciso na tarefa de classificação.
+
+---
+
+**d)** Exemplos:
+
+- **Modelo generativo:** Naive Bayes, Gaussian Mixture Models (GMM), GANs (Generative Adversarial Networks), VAEs (Variational Autoencoders).
+- **Modelo discriminativo:** Regressão Logística, SVM (Support Vector Machine), Redes Neurais para classificação, Random Forest.
+
+---
+
 
 ## Questão 26
 
@@ -660,6 +1157,28 @@ Um pesquisador deseja classificar sentimentos de tweets em português usando BER
 
 ---
 
+### Resolução
+
+**a)** As 3 etapas principais do fine-tuning de BERT para classificação de texto são:
+
+1. **Tokenização:** O texto de entrada é dividido em tokens usando o tokenizador WordPiece do BERT. Tokens especiais [CLS] e [SEP] são adicionados. As sequências são padded (completadas) ou truncadas para um tamanho fixo.
+
+2. **Inferência com BERT:** Os tokens são processados pelo modelo BERT pré-treinado, que gera um hidden state para cada token. O hidden state do token [CLS] é extraído como representação da sequência inteira.
+
+3. **Classificação:** O hidden state do [CLS] é passado por uma camada densa (fully connected) com softmax (ou sigmoid para binário) que faz a classificação final. Durante o fine-tuning, os pesos do BERT (e/ou parte deles) e os pesos da camada de classificação são atualizados usando os dados rotulados da nova tarefa.
+
+**b)** O token especial é o **[CLS]** (classification). Ele é utilizado porque o BERT foi pré-treinado para que o hidden state do [CLS] represente a **informação agregada de toda a sequência**. O BERT processa todas as palavras de forma bidirecional e o [CLS] "absorve" o contexto de todas as outras palavras através do mecanismo de attention, tornando-o ideal para representar a sequência para tarefas de classificação.
+
+**c)** Ordem de complexidade computacional (menor para maior):
+1. **(i) Treinar apenas a camada de classificação** — menos complexo
+2. **(ii) Fine-tuning das últimas 4 camadas + classificador**
+3. **(iii) Fine-tuning completo** — mais complexo
+
+Para um dataset pequeno de 1000 tweets, a opção mais adequada é a **(ii) fine-tuning das últimas 4 camadas + classificador**. A opção (i) pode ser insuficiente para adaptar o modelo ao domínio específico dos tweets em português. A opção (iii) pode causar overfitting com poucos dados, pois há muitos parâmetros para atualizar. O fine-tuning das últimas 4 camadas oferece um bom equilíbrio: adapta as representações mais específicas do BERT ao novo domínio sem expor o modelo ao risco excessivo de overfitting.
+
+---
+
+
 ## Questão 72
 
 (10 pontos)
@@ -673,6 +1192,46 @@ Em um projeto de machine learning, o engenheiro de features precisa decidir entr
 **c)** Explique o problema da maldição da dimensionalidade (curse of dimensionality) e por que a redução de dimensionalidade é importante para algoritmos baseados em distância como o k-NN. (3 pts)
 
 ---
+
+### Resolução
+
+**a)** Diferença entre feature selection e feature extraction:
+
+**Feature Selection (Seleção de Features):**
+Seleciona um **subconjunto** das features originais, descartando as menos relevantes. As features escolhidas mantêm seu significado original.
+
+**Exemplo:** Forward Selection — começa com nenhuma feature e vai adicionando uma a uma, escolhendo a que mais melhora o modelo.
+
+**Feature Extraction (Extração de Features):**
+Cria **novas features** a partir das originais, combinando-as matematicamente. As novas features podem perder interpretabilidade.
+
+**Exemplo:** PCA (Principal Component Analysis) — combina todas as features originais em componentes principais que capturam a maior variância dos dados.
+
+---
+
+**b)** Quando feature selection é preferível:
+
+A feature selection é preferível quando:
+- **Interpretabilidade é importante:** Se precisamos explicar quais variáveis influenciam a decisão (ex: diagnóstico médico), manter as features originais facilita a interpretação.
+- **As features originais são informativas e independentes:** Se as features já são boas representações do problema, não precisa combiná-las.
+- **Redução de custo de medição:** Se menos features significa menos dados coletados em produção, feature selection reduz o custo operacional.
+- **Evitar ruído:** Feature extraction pode introduzir componentes artificiais; feature selection mantém apenas o que é relevante.
+
+---
+
+**c)** Maldição da dimensionalidade:
+
+A **maldição da dimensionalidade** é o fenômeno onde, à medida que o número de dimensões (features) aumenta, o espaço se torna cada vez mais "esparso". Pontos que parecem distantes em poucas dimensões se tornam equidistantes em muitas dimensões.
+
+Para algoritmos baseados em distância como o **k-NN**:
+- A distância euclidiana entre qualquer par de pontos converge para ser praticamente a mesma quando há muitas dimensões.
+- Isso torna a noção de "vizinho mais próximo" inútil — todos os pontos ficam quase igualmente distantes.
+- A consequência é que o k-NN perde capacidade de discriminação, pois não consegue distinguir entre pontos realmente próximos e distantes.
+
+A redução de dimensionalidade (via PCA, por exemplo) resolve isso ao manter apenas as dimensões mais relevantes.
+
+---
+
 
 ## Questão 46
 
@@ -728,6 +1287,41 @@ Durante o treinamento de uma rede neural profunda para classificação de texto,
 
 ---
 
+### Resolução
+
+**a)** Exploding gradient:
+
+**Exploding gradient** (gradiente explosivo) ocorre quando os valores dos gradientes aumentam exponencialmente durante o backpropagation, tornando-se extremamente grandes. Isso faz com que os pesos da rede se atualizem de forma descontrolada, e o treinamento diverge (a perda fica cada vez maior em vez de diminuir.
+
+**Por que é mais comum em redes profundas ou RNNs:**
+- Em redes profundas, o gradiente é calculado pela **regra da cadeia** (chain rule), que envolve multiplicar muitos termos (um para cada camada). Se cada termo for maior que 1, a multiplicação de vários números maiores que 1 resulta em um valor explosivamente grande.
+- Nas RNNs, os mesmos pesos são reutilizados em cada passo temporal, e o gradiente é propagado por muitos passos de tempo. Isso causa uma **multiplicação repetida** dos mesmos gradientes, levando à explosão ainda mais facilmente.
+
+---
+
+**b)** Duas técnicas para mitigar exploding gradient:
+
+**1. Gradient Clipping (Clipping de Gradiente):**
+Limita a magnitude máxima do gradiente a um valor predeterminado (threshold). Se o gradiente exceder esse valor, ele é "recortado" proporcionalmente. Isso evita que os gradientes fiquem excessivamente grandes, sem alterar sua direção.
+
+**2. Inicialização adequada dos pesos (Weight Initialization):**
+Usar métodos como **Xavier/Glorot** ou **He initialization**, que ajustam a escala dos pesos iniciais de acordo com o número de neurônios nas camadas. Isso garante que os gradientes se mantenham em uma escala razoável durante as primeiras iterações, evitando a acumulação de valores extremos.
+
+---
+
+**c)** Gradient clipping por valor vs por norma:
+
+**Por valor (value clipping):**
+Limita cada componente do gradiente individualmente. Se algum elemento do vetor gradiente exceder o threshold, ele é substituído pelo threshold. **Exemplo:** Se threshold = 5 e o gradiente é [3, 7, -2], o resultado é [3, 5, -2].
+
+**Por norma (norm clipping):**
+Limita a norma (magnitude) do vetor gradiente como um todo. Se a norma do gradiente exceder o threshold, todo o vetor é escalado proporcionalmente para que sua norma seja igual ao threshold. **Exemplo:** Se threshold = 5 e a norma é 10, todos os elementos são divididos por 2 (10/5).
+
+**A mais comumente usada é a clipping por norma**, porque preserva a **direção** do gradiente (apenas altera a magnitude). A clipping por valor pode distorcer a direção do gradiente, alterando indevidamente a direção de atualização dos pesos.
+
+---
+
+
 ## Questão 11
 
 (10 pontos)
@@ -742,6 +1336,29 @@ Um pesquisador tem um dataset de apenas 200 imagens de tumores raros e deseja us
 
 ---
 
+### Resolução
+
+**a)** Na abordagem de **feature extraction**:
+- **Congelado (frozen):** Todas as camadas convolucionais da ResNet50 pré-treinada. Os pesos dessas camadas NÃO são atualizados durante o treinamento — elas funcionam apenas como extratoras de características fixas.
+- **Treinado (treinável):** Apenas a **nova camada de classificação** adicionada no final (geralmente uma ou duas camadas densas + softmax). Essa camada é treinada do zero com os dados de tumores.
+
+**b)** Na abordagem de **fine-tuning**, tipicamente são treinadas:
+- As **últimas camadas convolucionais** da rede (que aprendem representações mais específicas de objetos complexos)
+- A **nova camada de classificação** adicionada no final
+
+Em alguns casos, faz-se fine-tuning de todas as camadas com uma taxa de aprendizado muito baixa para não degradar os pesos das primeiras camadas (que aprendem padrões genéricos como bordas e texturas).
+
+**c)** A abordagem mais recomendada para este caso é o **feature extraction**. Justificativas:
+
+1. **Dataset pequeno (200 imagens):** O fine-tuning exige mais dados para atualizar os muitos parâmetros da rede sem causar overfitting. Com apenas 200 imagens, há risco alto de o modelo memorizar os dados ao invés de generalizar.
+
+2. **Domínio diferente do ImageNet:** Embora o domínio seja diferente (imagens médicas vs. objetos cotidianos), as primeiras camadas da ResNet50 aprendem padrões visuais **universais** (bordas, texturas, gradientes) que são úteis para qualquer tipo de imagem. Ao congelar essas camadas, aproveitamos esse conhecimento genérico sem arriscar degradá-lo com poucos dados.
+
+3. **Eficiência:** Feature extraction é mais rápido e usa menos memória, pois não é necessário calcular gradientes para milhões de parâmetros.
+
+---
+
+
 ## Questão 88
 
 (10 pontos)
@@ -754,17 +1371,51 @@ Uma empresa de segurança financeira precisa detectar transações fraudulentas 
 
 **c)** Proponha uma estratégia de balanceamento de classes (dado que fraudes são 0,1% dos dados) e explique pelo menos uma técnica de oversampling e uma de undersampling. (3 pts)
 
-**Resolução:**
+---
 
-**a)** A acurácia é enganosa porque, com 99,9% de transações legítimas, um modelo que sempre prediz "legítimo" teria 99,9% de acurácia sem detectar nenhuma fraude. Métricas mais adequadas incluem: Precisão (proporção de fraudes detectadas que são realmente fraudes), Recall (proporção de fraudes verdadeiras detectadas), F1-Score (média harmônica entre precisão e recall) e AUC-ROC (capacidade de discriminação entre classes).
+### Resolução
 
-**b)** Autoencoder para detecção de anomalias: O modelo é treinado apenas com transações normais (não fraudulentas). O autoencoder aprende a comprimir e reconstruir transações normais com baixa perda. Quando uma transação fraudulenta é fornecida, ela difere estatisticamente das normais, resultando em alta perda de reconstrução. Uma transação é classificada como fraudulenta quando sua perda de reconstrução ultrapassa um limiar pré-definido.
+**a) Por que a Acurácia é Enganosa**
 
-**c)** Estratégia de balanceamento: Combinar oversampling da classe minoritária com undersampling da classe majoritária.
-- Oversampling: SMOTE (Synthetic Minority Over-sampling Technique) — gera novas amostras sintéticas da classe minoritária interpolando entre amostras existentes e seus vizinhos mais próximos.
-- Undersampling: Random Under-sampling — remove aleatoriamente amostras da classe majoritária para equilibrar as classes, reduzindo o tamanho do dataset mas mantendo a representatividade da classe minoritária.
+A acurácia (accuracy) é enganosa quando as classes são **muito desbalanceadas**, como neste caso em que fraudes representam apenas 0,1% das transações.
+
+**Exemplo:** Se um modelo classifica todas as transações como "não fraude", ele terá 99,9% de acurácia (pois 99,9% realmente não são fraudes), mas **não detectaria nenhuma fraude** — que é exatamente o que o sistema deveria fazer!
+
+**Métricas alternativas mais adequadas:**
+- **Precisão (Precision):** Quantas das transações marcadas como fraude realmente são fraude?
+- **Recall (Sensibilidade):** Quantas fraudeas reais o modelo conseguiu detectar?
+- **F1-Score:** Média harmônica entre precisão e recall.
+- **AUC-ROC:** Área sob a curva ROC, mede a capacidade de discriminação.
+- **Matriz de confusão:** Mostra verdadeiros positivos, falsos positivos, verdadeiros negativos e falsos negativos.
 
 ---
+
+**b) Detecção de Anomalias com Autoencoders**
+
+Um autoencoder é uma rede neural treinada para **reconstruir sua entrada**. Ele comprime a entrada em uma representação latente (codificação) e depois tenta reconstruí-la.
+
+**Treinamento:** O autoencoder é treinado apenas com transações **normais** (não fraudulentas). Ele aprende a reconstruir transações normais com baixo erro. A rede tem uma estrutura de garrafa ( bottleneck ) que a força a aprender uma representação comprimida das transações normais.
+
+**Identificação de fraude:** Quando uma transação fraudulenta é passada pelo autoencoder, o erro de reconstrução será **muito alto**, porque o modelo nunca viu esse tipo de anomalia durante o treinamento. Define-se um limiar (threshold) de erro: se o erro de reconstrução for maior que o limiar, a transação é classificada como fraude.
+
+**Exemplo:** Se o erro médio de reconstrução para transações normais é 0,02, e uma transação tem erro de reconstrução 0,15, ela é provavelmente fraudulenta.
+
+---
+
+**c) Estratégia de Balanceamento de Classes**
+
+Com fraudes representando apenas 0,1% dos dados, é necessário balancear as classes para que o modelo aprenda a detectar fraudes.
+
+**Técnicas de Oversampling (aumentar a classe minoritária):**
+- **SMOTE (Synthetic Minority Over-sampling Technique):** Cria novas amostras sintéticas da classe minoritária (fraudes) combinando amostras reais existentes de forma interpolada. Por exemplo, se fraude A tem característica X=2 e fraude B tem X=4, o SMOTE pode criar uma fraude sintética com X=3.
+
+**Técnicas de Undersampling (reduzir a classe majoritária):**
+- **Random Undersampling:** Remove aleatoriamente amostras da classe majoritária (transações normais) até que as classes estejam balanceadas. Por exemplo, se há 10.000 transações normais e 10 fraudes, pode-se reduzir para 1.000 transações normais e 10 fraudes.
+
+**Observação:** Uma abordagem comum é combinar ambas (oversampling da minoritária + undersampling da majoritária) para obter o melhor resultado.
+
+---
+
 
 ## Questão 59
 
@@ -838,18 +1489,43 @@ Em uma Rede Neural Convolucional (CNN), o conceito de weight sharing (compartilh
 
 **c)** Explique como o weight sharing contribui para a invariância a translação nas CNNs. (3 pts)
 
-**Resolução:**
+---
 
-**a)** Weight sharing (compartilhamento de pesos) em CNNs significa que o mesmo filtro (conjunto de pesos) é aplicado a todas as posições da imagem de entrada. Em uma camada fully connected, cada neurônio teria pesos próprios para cada posição da entrada — para uma imagem 8×8 (64 pixels) com 64 neurônios na camada oculta, seriam 64 × 64 = 4.096 parâmetros. Com um filtro 3×3, são apenas 9 parâmetros compartilhados em toda a imagem. Isso reduz drasticamente o número de parâmetros, tornando a rede mais eficiente e menos propensa a overfitting.
+### Resolução
 
-**b)** Para uma entrada 8×8 e filtro 3×3 com stride=1 e padding=0, o tamanho da saída é:
-Saída = (8 - 3) / 1 + 1 = 6 × 6
+**a) Weight Sharing em CNNs**
 
-O mesmo filtro é usado em todas as posições porque a característica que ele detecta (por exemplo, uma borda vertical) pode aparecer em qualquer lugar da imagem. Ao compartilhar pesos, a rede aprende a detectar a mesma característica independentemente da posição, tornando a detecção mais eficiente.
+Weight sharing (compartilhamento de pesos) significa que o **mesmo filtro (conjunto de pesos)** é aplicado a todas as posições da imagem de entrada. Em vez de ter pesos diferentes para cada posição, o mesmo conjunto de pesos é "compartilhado" e usado repetidamente.
 
-**c)** O weight sharing contribui para a invariância a translação porque o mesmo filtro detecta a mesma característica em qualquer posição da imagem. Se uma borda aparece no canto superior esquerdo ou no centro da imagem, o mesmo filtro a reconhece. Isso significa que a rede não precisa aprender separadamente que "borda" existe em cada posição — ela aprende uma única vez e aplica globalmente. Assim, a representação da característica é a mesma independentemente de onde ela esteja na imagem.
+**Por que reduz drasticamente os parâmetros:** Em uma camada fully connected, se a entrada tem N pixels e a saída tem M neurônios, são necessários N × M pesos (mais vieses). Em uma CNN, se o filtro é de tamanho F × F, são apenas F × F pesos (mais 1 viés), independentemente do tamanho da imagem. Por exemplo, para uma imagem 100×100, uma camada fully connected precisaria de 10.000 × M pesos, enquanto um filtro 3×3 da CNN precisa de apenas 9 pesos. Isso reduz massivamente o número de parâmetros e o risco de overfitting.
 
 ---
+
+**b) Cálculo do Tamanho da Saída**
+
+Filtro: 3×3, Imagem: 8×8, stride = 1, padding = 0.
+
+Fórmula do tamanho da saída:
+**Saída = (Entrada − Filtro + 2 × Padding) / Stride + 1**
+
+Saída = (8 − 3 + 2 × 0) / 1 + 1 = 5/1 + 1 = **6×6**
+
+O tamanho da saída é **6×6**.
+
+**Por que o mesmo filtro é usado em todas as posições:** O mesmo filtro é usado em todas as posições porque queremos **detectar o mesmo padrão** (por exemplo, bordas verticais) independentemente de onde ele aparece na imagem. Isso se baseia na ideia de que um padrão relevante em um canto da imagem também é relevante em outro canto. O weight sharing permite que a rede aprenda filtros universais e garante invariância a translação.
+
+---
+
+**c) Weight Sharing e Invariância a Translação**
+
+A invariância a translação significa que a rede neural consegue reconhecer o mesmo padrão independentemente de onde ele aparece na imagem.
+
+O weight sharing contribui para isso porque o **mesmo filtro é aplicado a todas as posições** da imagem. Se há uma borda vertical no canto superior esquerdo ou no canto inferior direito, o mesmo filtro a detectará. Isso acontece porque os pesos do filtro são os mesmos em todas as posições — a rede não aprende "borda no canto superior" e "borda no canto inferior" como coisas diferentes; ela aprende "borda vertical" como um conceito geral.
+
+Matematicamente, a operação de convolução (usando o mesmo filtro) é uma operação de mesma resposta independentemente da translação da entrada. Se a imagem for deslocada, a saída também será deslocada da mesma forma, mas os valores serão os mesmos — isso garante que a detecção de padrões seja independente da posição.
+
+---
+
 
 ## Questão 9
 
@@ -945,6 +1621,39 @@ Pesquisadores de NLP estão traduzindo textos do português para o inglês e pre
 
 ---
 
+### Resolução
+
+**a)** RNN LSTM e limitação com dependências de longo prazo:
+
+**Como a LSTM processa uma sequência:**
+Uma LSTM (Long Short-Term Memory) processa a sequência de palavras **uma palavra por vez**, da esquerda para a direita. Em cada passo, ela recebe a palavra atual e o estado oculto (hidden state) da etapa anterior. A LSTM possui **portões** (gates) — de esquecimento, de entrada e de saída — que controlam quais informações são lembradas, quais são esquecidas e quais são passadas adiante.
+
+**Limitação fundamental:**
+Embora a LSTM seja projetada para lidar melhor com dependências de longo prazo que a RNN tradicional, ela ainda precisa processar as palavras **sequencialmente**. Para conectar uma palavra no início da frase com uma palavra no final, a informação precisa passar por todos os passos intermediários. Mesmo com os portões, a informação pode se degradar ou se perder ao longo de muitos passos, especialmente em frases muito longas.
+
+---
+
+**b)** Como o self-attention resolve essa limitação:
+
+O mecanismo de **self-attention** do Transformer permite que cada palavra da sequência acesse diretamente qualquer outra palavra, sem precisar passar por todos os passos intermediários.
+
+Para cada palavra, o self-attention calcula um "ponto de atenção" com **todas** as outras palavras da sequência simultaneamente. Isso cria uma "conexão direta" entre qualquer par de palavras, independentemente de onde elas estão na sequência.
+
+**Exemplo:** Na frase "O gato que estava sentado no chão comeu o peixe", o self-attention permite que "comeu" preste atenção diretamente em "gato", mesmo que estejam separados por várias palavras intermediárias. Na LSTM, essa informação teria que percorrer toda a frase passo a passo.
+
+---
+
+**c)** Duas vantagens do Transformer sobre RNNs para tradução:
+
+**1. Paralelização:**
+O Transformer processa todas as palavras de uma sequência **simultaneamente** (em paralelo), enquanto a RNN precisa processar sequencialmente (uma palavra por vez). Isso permite treinar Transformers muito mais rápido em GPUs modernas, aproveitando o processamento paralelo. Para tradução de textos longos, essa diferença de velocidade é enorme.
+
+**2. Captura de relações de longo prazo mais eficiente:**
+Como cada palavra pode "ver" todas as outras diretamente (via self-attention), o Transformer não sofre com a degradação de informação ao longo de sequências longas. As relações entre palavras distantes são capturadas com a mesma facilidade que palavras próximas, sem o problema de vanishing/exploding gradient em sequências longas.
+
+---
+
+
 ## Questão 77
 
 (10 pontos)
@@ -959,6 +1668,44 @@ Um engenheiro de dados está comparando dois métodos de ensemble para prever at
 
 ---
 
+### Resolução
+
+**a)** Random Forest:
+
+**Como constrói as árvores:**
+O Random Forest constrói múltiplas árvores de decisão, onde cada árvore é treinada com:
+1. **Bootstrap (amostragem com reposição):** Cada árvore recebe um subconjunto aleatório dos dados de treinamento (com reposição), então algumas amostras aparecem repetidas e outras ficam de fora.
+2. **Seleção aleatória de features:** Em cada nó da árvore, apenas um subconjunto aleatório das features é considerado para a melhor divisão.
+
+**Por que a aleatoriedade reduz overfitting:**
+Cada árvore vê uma versão ligeiramente diferente dos dados e usa features diferentes. Isso faz com que as árvores sejam **diversas** — cada uma comaximo diferente. Quando combinamos as previsões de todas (votação), os erros individuais se cancelam, resultando em um modelo mais robusto e com menor tendência a memorizar os dados de treino.
+
+---
+
+**b)** Gradient Boosting:
+
+**Como constrói as árvores:**
+O Gradient Boosting constrói árvores **sequencialmente** (uma de cada vez). Cada nova árvore é treinada para **corrigir os erros** das árvores anteriores. Especificamente:
+1. A primeira árvore é treinada normalmente.
+2. A segunda árvore é treinada nos **resíduos** (erros) da primeira — ou seja, ela tenta prever o que a primeira errou.
+3. A terceira corrige os erros da combinação das duas anteriores, e assim por diante.
+
+**Relação com erros anteriores:**
+Cada nova árvore se concentra nas amostras que foram/classificadas incorretamente pelas árvores anteriores. A previsão final é a **soma** das previsões de todas as árvores (ponderada por uma taxa de aprendizado). Diferente do Random Forest, onde as árvores são independentes, no Gradient Boosting cada árvores depende das anteriores.
+
+---
+
+**c)** Comparação:
+
+| Critério | Random Forest | Gradient Boosting |
+|---|---|---|
+| **(i) Velocidade de treinamento** | Mais rápido — as árvores são independentes e podem ser treinadas em paralelo | Mais lento — as árvores são sequenciais, cada uma depende da anterior |
+| **(ii) Interpretabilidade** | Menos interpretável — muitas árvores votando, difícil entender a decisão final | Ligeiramente mais interpretável — pode-se analisar a contribuição de cada árvore na soma |
+| **(iii) Tendência a overfitting com poucos dados** | Menor tendência — a aleatoriedade e votação ajudam a regularizar | Maior tendência — como corrige erros sequencialmente, pode acabar memorizando ruído quando há poucos dados |
+
+---
+
+
 ## Questão 91
 
 (10 pontos)
@@ -972,6 +1719,47 @@ Em um curso de RL, o professor compara Q-Learning e SARSA usando o exemplo de um
 **c)** Qual dos dois algoritmos tende a encontrar o caminho mais curto (mesmo que arriscado)? Justifique, explicando o conceito de política alvo (target policy) vs política de comportamento (behavior policy). (4 pts)
 
 ---
+
+### Resolução
+
+**a) Diferença Fundamental entre Q-Learning e SARSA**
+
+**Q-Learning (off-policy):** Usa a política greedy para atualizar os Q-values. Quando calcula o valor de uma ação, assume que no próximo passo será escolhida **a melhor ação possível** (a com maior Q-value), independentemente de qual ação o agente realmente escolheria. A política usada para aprender (target policy) é diferente da política usada para agir (behavior policy).
+
+**SARSA (on-policy):** Usa a mesma política para aprender e para agir. Quando calcula o valor de uma ação, usa a ação que a política atual **realmente escolheria** no próximo passo (incluindo exploração aleatória). A política de aprendizado é a mesma política de comportamento.
+
+**Resumo da diferença:**
+- Q-Learning: aprende sobre a melhor ação possível (greedy), mesmo que o agente não a escolha.
+- SARSA: aprende sobre a ação que o agente realmente escolheria (incluindo ε-greedy).
+
+---
+
+**b) Qual Algoritmo Aprende um Caminho Mais Seguro?**
+
+**SARSA** tende a aprender um caminho mais seguro (e mais longo) neste cenário.
+
+**Justificativa:** SARSA leva em conta a política de comportamento, que inclui exploração aleatória (ε-greedy). Se o agente estiver perto da zona de perigo, há chance de escolher aleatoriamente uma ação que o leve para a zona de perigo. SARSA aprende que o caminho que passa perto da zona de perigo é arriscado porque, durante o treinamento, ele realmente explora e pode sofrer a penalidade. Por isso, SARSA prefere um caminho mais longo mas mais seguro.
+
+O Q-Learning, por outro lado, assume que a melhor ação sempre será escolhida no futuro. Se o agente sabe que a melhor ação não leva à zona de perigo, ele pode aprender o caminho curto que passa perto da zona de perigo, confiando que não vai entrar nela.
+
+---
+
+**c) Qual Algoritmo Encontra o Caminho Mais Curto (Mesmo Arriscado)?**
+
+**Q-Learning** tende a encontrar o caminho mais curto, mesmo que arriscado.
+
+**Justificativa:**
+
+- **Target policy (política alvo):** É a política usada para calcular o valor-alvo na atualização dos Q-values. No Q-Learning, a target policy é **greedy** — sempre assume que no próximo passo será escolhida a ação com maior Q-value.
+
+- **Behavior policy (política de comportamento):** É a política usada pelo agente para realmente agir no ambiente (escolher ações). No Q-Learning, a behavior policy é ε-greedy (inclui exploração).
+
+Como o Q-Learning usa uma target policy greedy, ele aprende que o caminho mais curto (mesmo que passe perto da zona de perigo) é o melhor, porque assume que no futuro o agente sempre escolherá a melhor ação e evitará a zona de perigo. Isso resulta no caminho mais curto, mas potencialmente mais arriscado.
+
+O SARSA, por outro lado, usa a behavior policy (ε-greedy) como target policy, então leva em conta a possibilidade de exploração aleatória que pode levar à zona de perigo, preferindo um caminho mais seguro.
+
+---
+
 
 ## Questão 44
 
@@ -1019,6 +1807,58 @@ Função de ativação: degrau unitário (1 se z ≥ 0, 0 caso contrário).
 **Fórmula:** z = w₁·x₁ + w₂·x₂ + b
 
 ---
+
+### Resolução
+
+**a)** Saída do perceptron para cada entrada do XOR:
+
+**Fórmula:** z = w₁·x₁ + w₂·x₂ + b = 0,5·x₁ + (−0,5)·x₂ + 0,1
+
+**Entrada (0, 0):**
+z = 0,5 × 0 + (−0,5) × 0 + 0,1 = 0 + 0 + 0,1 = 0,1
+Como z = 0,1 ≥ 0 → **saída = 1**
+
+**Entrada (0, 1):**
+z = 0,5 × 0 + (−0,5) × 1 + 0,1 = 0 − 0,5 + 0,1 = −0,4
+Como z = −0,4 < 0 → **saída = 0**
+
+**Entrada (1, 0):**
+z = 0,5 × 1 + (−0,5) × 0 + 0,1 = 0,5 + 0 + 0,1 = 0,6
+Como z = 0,6 ≥ 0 → **saída = 1**
+
+**Entrada (1, 1):**
+z = 0,5 × 1 + (−0,5) × 1 + 0,1 = 0,5 − 0,5 + 0,1 = 0,1
+Como z = 0,1 ≥ 0 → **saída = 1**
+
+---
+
+**b)** Comparação com tabela-verdade do XOR:
+
+| Entrada | Saída obtida | Saída esperada (XOR) | Correto? |
+|---------|-------------|----------------------|----------|
+| (0, 0) | 1 | 0 | ❌ |
+| (0, 1) | 0 | 1 | ❌ |
+| (1, 0) | 1 | 1 | ✅ |
+| (1, 1) | 1 | 0 | ❌ |
+
+O perceptron **não funciona corretamente** — ele acerta apenas 1 das 4 entradas (25% de acurácia).
+
+---
+
+**c)** A porta XOR é linearmente separável?
+
+**Não.** A porta XOR **não é linearmente separável.**
+
+Geometricamente, no plano 2D, as quatro entradas formam:
+- (0,0) e (1,1) → classe 0 (saída 0)
+- (0,1) e (1,0) → classe 1 (saída 1)
+
+Não é possível traçar **uma única linha reta** que separe os pontos da classe 0 dos pontos da classe 1. Qualquer reta que separe (0,0) de (0,1) não consegue ao mesmo tempo separar (1,1) de (1,0). Isso é facilmente verificável visualizando os pontos em um gráfico 2D — as duas classes estão "entrelaçadas" em forma de X.
+
+Um perceptron (com apenas uma camada) só pode resolver problemas linearmente separáveis, por isso falha no XOR. Para resolver o XOR, seria necessário usar um perceptron multicamada (MLP).
+
+---
+
 
 ## Questão 75
 
@@ -1079,6 +1919,59 @@ Apresente os valores normalizados. (3 pts)
 
 ---
 
+### Resolução
+
+**a)** 4 features derivadas:
+
+| data_da_compra | preço | quantidade | categoria | UF | **total_gasto** | **preço_unitário** | **dia_semana** | **é_SP** |
+|----------------|-------|------------|-----------|-----|----------------|--------------------|--------------|----|
+| 2025-03-01 | 50 | 2 | Eletrônico | SP | 50×2 = **100** | 50/2 = **25** | Sábado | **1** |
+| 2025-03-01 | 30 | 1 | Roupas | RJ | 30×1 = **30** | 30/1 = **30** | Sábado | **0** |
+| 2025-03-02 | 80 | 4 | Eletrônico | MG | 80×4 = **320** | 80/4 = **20** | Domingo | **0** |
+| 2025-03-03 | 20 | 3 | Roupas | SP | 20×3 = **60** | 20/3 ≈ **6,67** | Segunda | **1** |
+| 2025-03-03 | 50 | 1 | Livros | RJ | 50×1 = **50** | 50/1 = **50** | Segunda | **0** |
+
+**Features criadas:**
+1. **total_gasto** = preço × quantidade (valor total da compra)
+2. **preço_unitário** = preço / quantidade (preço por unidade)
+3. **dia_semana** = dia da semana extraído da data (0=Domingo, 1=Segunda, ...)
+4. **é_SP** = 1 se UF=SP, 0 caso contrário (indicador binário do estado)
+
+---
+
+**b)** One-hot encoding na coluna categoria:
+
+| data_da_compra | preço | quantidade | UF | **cat_Eletrônico** | **cat_Livros** | **cat_Roupas** |
+|----------------|-------|------------|-----|--------------------|----------------|----------------|
+| 2025-03-01 | 50 | 2 | SP | **1** | **0** | **0** |
+| 2025-03-01 | 30 | 1 | RJ | **0** | **0** | **1** |
+| 2025-03-02 | 80 | 4 | MG | **1** | **0** | **0** |
+| 2025-03-03 | 20 | 3 | SP | **0** | **0** | **1** |
+| 2025-03-03 | 50 | 1 | RJ | **0** | **1** | **0** |
+
+Cada categoria vira uma coluna binária (0 ou 1). Apenas uma das colunas de categoria vale 1 por linha.
+
+---
+
+**c)** Normalização min-max na coluna preço:
+
+**Valores:** 50, 30, 80, 20, 50
+- x_min = 20
+- x_max = 80
+- Denominador: x_max − x_min = 80 − 20 = 60
+
+**Cálculos:**
+- 50: (50 − 20) / 60 = 30/60 = **0,50**
+- 30: (30 − 20) / 60 = 10/60 = **0,17** (aproximadamente)
+- 80: (80 − 20) / 60 = 60/60 = **1,00**
+- 20: (20 − 20) / 60 = 0/60 = **0,00**
+- 50: (50 − 20) / 60 = 30/60 = **0,50**
+
+**Valores normalizados:** 0,50 | 0,17 | 1,00 | 0,00 | 0,50
+
+---
+
+
 ## Questão 69
 
 (10 pontos)
@@ -1095,6 +1988,39 @@ Um Transformer é utilizado para processar documentos longos.
 
 ---
 
+### Resolução
+
+**a)** Context window (janela de contexto):
+
+A **context window** é o número máximo de tokens (palavras ou subpalavras) que um Transformer consegue processar simultaneamente em uma única passagem. É o "tamanho da memória de curto prazo" do modelo — ele só "enxerga" até essa quantidade de tokens de uma vez. Por exemplo, se a context window é 4096 tokens, o modelo não consegue processar um texto de 5000 tokens inteiro de uma vez.
+
+---
+
+**b)** Complexidade computacional do self-attention:
+
+A complexidade do self-attention é **O(N²)**, onde N é o comprimento da sequência.
+
+**Justificativa:** Para cada uma das N palavras, o self-attention calcula um score de atenção com **todas** as N palavras da sequência (para determinar quanto cada palavra "presta atenção" a cada outra). Isso gera uma matriz de atenção de tamanho N × N, resultando em N² operações. Por exemplo, se a sequência tem 1000 tokens, são necessárias 1.000.000 operações de atenção.
+
+---
+
+**c)** Duas técnicas para lidar com documentos que excedem a context window:
+
+**1. Sliding Window (Janela Deslizante):**
+Divide o documento longo em trechos menores (janelas) que cabem na context window. Cada trecho é processado independentemente, e as representações são combinadas posteriormente. **Exemplo:** Se o documento tem 10.000 tokens e a context window é 4096, processa-se em janelas sobrepostas de 4096 tokens.
+
+**2. Hierarchical Attention (Atenção Hierárquica):**
+Processa o documento em blocos, criando representações para cada bloco, e então aplica atenção entre as representações dos blocos. Isso cria uma "árvore" de atenção — atenção local dentro de cada bloco, e atenção global entre blocos. **Exemplo:** O modelo processa parágrafos individualmente e depois "presta atenção" entre os parágrafos.
+
+---
+
+**d)** Limitação do positional encoding padrão:
+
+O positional encoding padrão de seno/cosseno foi projetado para um comprimento máximo fixo (definido durante o treino). Se a sequência de teste for **mais longa** do que a sequência de treino, o modelo nunca viu posições além do limite de treino, e os embeddings de posição para essas posições novas são **extrapolações** — valores que o modelo não aprendeu a interpretar corretamente. Isso pode causar degradação significativa na performance, pois as posições "desconhecidas" podem gerar representações sem sentido para o modelo.
+
+---
+
+
 ## Questão 92
 
 (10 pontos)
@@ -1108,6 +2034,54 @@ No aprendizado por reforço, a função de valor e os conceitos de exploração 
 **c)** Explique a diferença entre a política alvo (target policy) e a política de comportamento (behavior policy) no Q-Learning off-policy. (3 pts)
 
 ---
+
+### Resolução
+
+**a) Fator de Desconto γ na Função de Valor**
+
+O fator de desconto γ (gamma) representa a importância das **recompensas futuras** em relação às recompensas imediatas. Ele controla o "horizonte de planejamento" do agente.
+
+**Valores diferentes de γ:**
+
+- **γ próximo de 0 (por exemplo, 0,1):** O agente se importa principalmente com recompensas imediatas. Ele prefere recompensas agora do que no futuro. É "myope" (curto de visão).
+
+- **γ próximo de 1 (por exemplo, 0,99):** O agente se importa quase igualmente com recompensas imediatas e futuras. Ele "olha para longe" e considera consequências a longo prazo.
+
+**Exemplo:** Se γ = 0,1 e há uma recompensa de 10 em 2 passos, o valor descontado é 10 × 0,1² = 0,1 (quase nada). Se γ = 0,9, o valor descontado é 10 × 0,9² = 8,1 (ainda significativo).
+
+---
+
+**b) Cálculo do Valor Descontado Acumulado**
+
+Dados: γ = 0,9, sequência de 3 passos com recompensas na ordem s₃ → s₂ → s₁:
+- r₁ (s₃) = +1
+- r₂ (s₂) = +5
+- r₃ (s₁) = +10
+
+**Fórmula do valor descontado acumulado:**
+V = r₁ × γ⁰ + r₂ × γ¹ + r₃ × γ²
+
+Cálculo:
+- r₁ × γ⁰ = 1 × 0,9⁰ = 1 × 1 = 1
+- r₂ × γ¹ = 5 × 0,9¹ = 5 × 0,9 = 4,5
+- r₃ × γ² = 10 × 0,9² = 10 × 0,81 = 8,1
+
+**V = 1 + 4,5 + 8,1 = 13,6**
+
+O valor descontado acumulado é **13,6**.
+
+---
+
+**c) Target Policy vs Behavior Policy no Q-Learning Off-Policy**
+
+**Target Policy (Política Alvo):** É a política usada para calcular o valor-alvo na atualização dos Q-values. No Q-Learning, a target policy é **greedy** — sempre assume que no próximo passo será escolhida a ação com maior valor Q. É a política que o algoritmo está tentando aprender/optimalizar.
+
+**Behavior Policy (Política de Comportamento):** É a política usada pelo agente para realmente agir no ambiente e coletar dados. No Q-Learning, a behavior policy é **ε-greedy** — escolhe a melhor ação com probabilidade 1−ε e uma ação aleatória com probabilidade ε.
+
+**Diferença fundamental:** No Q-Learning, a target policy e a behavior policy são **diferentes** (por isso é off-policy). O agente age de forma exploratória (ε-greedy), mas aprende como se o futuro sempre fosse greedy. Isso permite que o agente aprenda a política ótima mesmo enquanto explora.
+
+---
+
 
 ## Questão 94
 
@@ -1123,6 +2097,86 @@ Dynamic Programming (Programação Dinâmica) é uma técnica algorítmica funda
 
 ---
 
+### Resolução
+
+**a) Duas Condições para Programação Dinâmica**
+
+1. **Subestrutura Ótima (Optimal Substructure):** Um problema tem subestrutura ótima se a solução ótima pode ser construída a partir das soluções ótimas dos seus subproblemas.
+   - **Exemplo:** No problema do caminho mais curto entre A e C passando por B, se o caminho mais curto de A a C passa por B, então o trecho A→B deve ser o caminho mais curto de A a B, e o trecho B→C deve ser o caminho mais curto de B a C.
+
+2. **Sobreposição de Subproblemas (Overlapping Subproblems):** O problema deve conter subproblemas que são resolvidos repetidamente. Em vez de recalcular o mesmo subproblema várias vezes, PD o calcula uma vez e armazena o resultado.
+   - **Exemplo:** Na sequência de Fibonacci, fib(5) precisa de fib(4) e fib(3), fib(4) precisa de fib(3) e fib(2), fib(3) precisa de fib(2) e fib(1). O subproblema fib(3) aparece duas vezes, e fib(2) aparece três vezes.
+
+---
+
+**b) Problema da Mochila 0/1 com Programação Dinâmica**
+
+Dados:
+- Itens: pesos [2, 3, 4, 5], valores [3, 4, 5, 6]
+- Capacidade da mochana: W = 8
+- Número de itens: n = 4
+
+Construção da tabela DP[i][w] = valor máximo usando os i primeiros itens com capacidade w.
+
+**Passo 1: Inicializar a tabela**
+
+| iw | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|---|---|---|---|---|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | | | | | | | | |
+| 2 | 0 | | | | | | | | |
+| 3 | 0 | | | | | | | | |
+| 4 | 0 | | | | | | | | |
+
+**Passo 2: Preencher a tabela**
+
+Regra: DP[i][w] = max(DP[i-1][w], DP[i-1][w-pesoᵢ] + valorᵢ) se pesoᵢ ≤ w, caso contrário DP[i-1][w].
+
+**Item 1 (peso=2, valor=3):**
+| iw | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|---|---|---|---|---|
+| 1 | 0 | 0 | 3 | 3 | 3 | 3 | 3 | 3 | 3 |
+
+**Item 2 (peso=3, valor=4):**
+| iw | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|---|---|---|---|---|
+| 2 | 0 | 0 | 3 | 4 | 4 | 7 | 7 | 7 | 7 |
+
+**Item 3 (peso=4, valor=5):**
+| iw | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|---|---|---|---|---|
+| 3 | 0 | 0 | 3 | 4 | 5 | 7 | 8 | 9 | 9 |
+
+**Item 4 (peso=5, valor=6):**
+| iw | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|---|---|---|---|---|
+| 4 | 0 | 0 | 3 | 4 | 5 | 7 | 8 | 9 | 10 |
+
+**Valor máximo = DP[4][8] = 10**
+
+**Verificação:** Itens 2 (peso=3, valor=4) + 4 (peso=5, valor=6) = peso 8, valor 10. ✓
+
+---
+
+**c) Top-Down (Memoização) vs Bottom-Up (Tabulação)**
+
+**Top-Down (com Memoização):**
+- Começa pelo problema original e o divide em subproblemas recursivamente.
+- Usa uma tabela (memo) para armazenar resultados já calculados.
+- Só calcula subproblemas que realmente são necessários.
+- **Vantagens:** Mais intuitivo, espelha a recursão natural do problema, calcula apenas o necessário.
+- **Desvantagens:** Overhead de recursão (pode causar stack overflow para problemas grandes).
+
+**Bottom-Up (com Tabulação):**
+- Começa pelos subproblemas menores e vai construindo a solução para problemas maiores.
+- Usa uma tabela (array) para armazenar resultados.
+- Calcula **todos** os subproblemas, mesmo os que podem não ser necessários.
+- **Vantagens:** Sem overhead de recursão, mais eficiente em memória (pode usar apenas a linha anterior da tabela).
+- **Desvantagens:** Pode calcular subproblemas desnecessários, menos intuitivo para alguns problemas.
+
+---
+
+
 ## Questão 58
 
 (10 pontos)
@@ -1136,6 +2190,41 @@ Um pesquisador deseja projetar uma CNN para classificar imagens médicas (radiog
 **c)** O pesquisador quer aplicar data augmentation. Liste 4 técnicas de augmentação adequadas para imagens médicas e justifique por que cada uma é relevante neste domínio. (3 pts)
 
 ---
+
+### Resolução
+
+**a)** Uma arquitetura CNN adequada para este problema seria:
+
+- **Camadas convolucionais:** 2 a 3 camadas convolucionais com filtros 3×3, ReLU como ativação e números de filtros progressivos (ex: 32, 64, 128). Poucas camadas são suficientes porque o dataset é pequeno (500 imagens) e arquiteturas muito profundas tendem a overfitting.
+- **Pooling:** Max Pooling 2×2 após cada camada convolucional. Isso reduz a dimensionalidade espacial pela metade e ajuda a tornar a rede invariante a pequenas translações.
+- **Camadas densas finais:** Após as camadas convolucionais, uma camada flatten (achatamento), seguida de uma camada densa com, por exemplo, 128 neurônios + dropout (para reduzir overfitting), e uma camada de saída com 2 neurônios (ou 1 com sigmoid) para classificação binária (normal vs. pneumonia).
+
+Justificação: Com apenas 500 imagens, uma arquitetura leve e simples é mais adequada. Muitas camadas convolucionais criariam muitos parâmetros e causariam overfitting.
+
+**b)** O transfer learning pode ser aplicado da seguinte forma:
+
+1. Carregar uma arquitetura pré-treinada, como **VGG16** ou **ResNet50** (treinada no ImageNet).
+2. **Congelar** todas as camadas convolucionais da rede pré-treinada.
+3. **Remover** a última camada de classificação original (que classifica 1000 classes do ImageNet).
+4. **Adicionar** novas camadas densas finais: uma camada densa com ativação ReLU + dropout, e uma camada de saída com 2 classes (normal vs. pneumonia).
+5. **Treinar** apenas as novas camadas densas com o dataset de raio-X.
+
+Arquitetura recomendada: **VGG16** ou **ResNet50** são boas escolhas por serem amplamente utilizadas e bem documentadas.
+
+**c)** 4 técnicas de data augmentation adequadas para imagens médicas:
+
+1. **Rotação leve (±10° a 15°):** Radiografias podem ser capturadas em ângulos ligeiramente diferentes. Rotações pequenas simulam essa variação sem alterar o diagnóstico.
+
+2. **Flip horizontal:** Em alguns contextos médicos (dependendo do tipo de exame), a inversão horizontal é plausível e aumenta o dataset sem alterar a natureza da imagem.
+
+3. **Ajuste de brilho/contraste:** As condições de iluminação e configurações do equipamento de raio-X podem variar. Variar brilho e contraste simula essas diferenças.
+
+4. **Zoom leve (±10%):** A distância entre o paciente e o equipamento pode variar ligeiramente, resultando em imagens com escalas levemente diferentes.
+
+**Importante:** Técnicas como crop aleatório ou deslocamento (shift) devem ser usadas com cautela em imagens médicas, pois podem cortar regiões clinicamente importantes.
+
+---
+
 
 ## Questão 56
 
@@ -1165,6 +2254,77 @@ $$\text{Entropia}(S) = -p_+ \log_2(p_+) - p_- \log_2(p_-)$$
 $$\text{Ganho}(S, A) = \text{Entropia}(S) - \sum_{v \in \text{valores}(A)} \frac{|S_v|}{|S|} \text{Entropia}(S_v)$$
 
 ---
+
+### Resolução
+
+**a)** Cálculo da entropia do nó raiz (todos os 6 exemplos):
+
+O dataset tem 6 exemplos: 3 "Sim" e 3 "Não".
+
+- p+ = 3/6 = 1/2 = 0,5
+- p- = 3/6 = 1/2 = 0,5
+
+**Entropia(S) = -p+ × log₂(p+) - p- × log₂(p-)**
+
+Entropia(S) = -0,5 × log₂(0,5) - 0,5 × log₂(0,5)
+
+Sabendo que log₂(0,5) = -1:
+
+Entropia(S) = -0,5 × (-1) - 0,5 × (-1)
+Entropia(S) = 0,5 + 0,5
+**Entropia(S) = 1,0 bit**
+
+**b)** Ganho de informação ao dividir pela feature "Cor":
+
+A feature "Cor" tem 2 valores: Verde e Vermelho.
+
+**Para "Verde" (4 exemplos):**
+- Exemplos 1, 2, 3, 6: Sim, Não, Sim, Não → 2 Sim, 2 Não
+- p+ = 2/4 = 0,5, p- = 2/4 = 0,5
+- Entropia(Verde) = -0,5 × log₂(0,5) - 0,5 × log₂(0,5) = 1,0
+
+**Para "Vermelho" (2 exemplos):**
+- Exemplos 4, 5: Sim, Não → 1 Sim, 1 Não
+- p+ = 1/2 = 0,5, p- = 1/2 = 0,5
+- Entropia(Vermelho) = -0,5 × log₂(0,5) - 0,5 × log₂(0,5) = 1,0
+
+**Entropia condicional ponderada:**
+E(S, Cor) = (4/6) × 1,0 + (2/6) × 1,0
+E(S, Cor) = 0,667 + 0,333 = **1,0**
+
+**Ganho(S, Cor) = Entropia(S) - E(S, Cor)**
+Ganho(S, Cor) = 1,0 - 1,0 = **0,0**
+
+O ganho de informação ao dividir pela feature "Cor" é **zero**, ou seja, essa feature não ajuda a separar os exemplos.
+
+**c)** Ganho de informação ao dividir pela feature "Tamanho":
+
+A feature "Tamanho" tem 2 valores: Grande e Pequeno.
+
+**Para "Grande" (3 exemplos):**
+- Exemplos 1, 3, 5: Sim, Sim, Não → 2 Sim, 1 Não
+- p+ = 2/3, p- = 1/3
+- Entropia(Grande) = -(2/3) × log₂(2/3) - (1/3) × log₂(1/3)
+- log₂(2/3) = log₂(2) - log₂(3) = 1 - 1,585 = -0,585
+- log₂(1/3) = -log₂(3) = -1,585
+- Entropia(Grande) = -(2/3) × (-0,585) - (1/3) × (-1,585)
+- Entropia(Grande) = 0,390 + 0,528 = **0,918**
+
+**Para "Pequeno" (3 exemplos):**
+- Exemplos 2, 4, 6: Não, Sim, Não → 1 Sim, 2 Não
+- p+ = 1/3, p- = 2/3
+- Entropia(Pequeno) = -(1/3) × log₂(1/3) - (2/3) × log₂(2/3) = **0,918** (mesmo cálculo, simétrico)
+
+**Entropia condicional ponderada:**
+E(S, Tamanho) = (3/6) × 0,918 + (3/6) × 0,918 = **0,918**
+
+**Ganho(S, Tamanho) = Entropia(S) - E(S, Tamanho)**
+Ganho(S, Tamanho) = 1,0 - 0,918 = **0,082**
+
+**Conclusão:** A feature **"Tamanho"** deveria ser escolhida como raiz da árvore, pois possui ganho de informação **maior** (0,082) do que "Cor" (0,0). A feature "Tamanho" é a que melhor separa os exemplos nas classes "Sim" e "Não".
+
+---
+
 
 ## Questão 3
 
@@ -1199,6 +2359,33 @@ Em um problema de regressão para prever preços de imóveis, um cientista de da
 **c)** Explique o papel do parâmetro C no SVR: o que acontece quando C é muito alto e quando C é muito baixo? Relacione com o trade-off entre viés e variância. (3 pts)
 
 ---
+
+### Resolução
+
+**a)** O **SVR (Support Vector Regression)** funciona encontrando uma função que se aproxima dos dados de treino com um erro máximo aceitável. A diferença fundamental entre SVR e SVM de classificação é:
+- Na **SVM de classificação**, busca-se uma fronteira de decisão que separe as classes com a maior margem possível.
+- No **SVR**, busca-se uma função que passe o mais próximo possível dos pontos, permitindo um erro dentro de uma faixa aceitável.
+
+A **ε-insensitive tube** (tubo insensível ao epsilon) é uma faixa ao redor da função de regressão com largura **ε**. Dentro desse tubo, os erros são **tolerados** (não são penalizados). Apenas os pontos que ficam **fora** do tubo são considerados "violations" e são penalizados na função de custo. Isso torna o SVR robusta a ruído e pequenas flutuações nos dados.
+
+**b)** Comparação dos kernels no SVR:
+
+- **Kernel linear:** Adequado quando a relação entre as features e o alvo é **aproximadamente linear**. É mais rápido de treinar e interpretável. Use quando as features têm uma relação direta e proporcional com a variável alvo.
+
+- **Kernel RBF (gaussiano):** Adequado quando a relação entre as features e o alvo é **não-linear e complexo**. É o kernel mais versátil e funciona bem na maioria dos casos. Use quando não se conhece a forma da relação ou quando ela é claramente não-linear.
+
+- **Kernel polinomial:** Adequado quando a relação pode ser descrita por uma **função polinomial** de grau conhecido. É mais específico que o RBF e pode ser útil quando se tem conhecimento prévio sobre a forma da relação (ex: relações quadráticas ou cúbicas entre as variáveis).
+
+**c)** O parâmetro **C** no SVR controla a penalidade por pontos que ficam fora da ε-tube:
+
+- **C muito alto:** O modelo penaliza bastante os pontos fora do tubo, forçando a função a passar o mais próximo possível de todos os pontos. Isso resulta em um modelo com **baixo viés e alta variância** — pode causar overfitting, pois o modelo se ajusta demais aos dados de treino.
+
+- **C muito baixo:** O modelo tolera mais pontos fora do tubo, permitindo uma função mais "suave" e genérica. Isso resulta em um modelo com **alto viés e baixa variância** — pode causar underfitting, pois o modelo é simples demais para capturar os padrões dos dados.
+
+O parâmetro C é, portanto, o controle do **trade-off entre viés e variância**: valores altos favorecem baixo viés (complexidade alta), valores baixos favorecem baixa variância (simplicidade).
+
+---
+
 
 ## Questão 25
 
@@ -1254,6 +2441,38 @@ Em uma Rede Neural Convolucional (CNN), as primeiras camadas aprendem padrões s
 
 ---
 
+### Resolução
+
+**a)** A **hierarquia de features** em CNNs é o conceito de que diferentes camadas da rede aprendem representações de complexidade crescente:
+- **Camadas iniciais:** aprendem padrões simples e locais — bordas, linhas, texturas, gradientes.
+- **Camadas intermediárias:** combinam padrões simples em formas mais complexas — círculos, cantos, padrões de textura.
+- **Camadas profundas:** aprendem representações de alto nível — partes de objetos (olhos, rodas), objetos inteiros (carros, faces).
+
+Essa hierarquia é uma das razões pelas quais CNNs são eficientes para visão computacional porque:
+1. Cada camada se especializa em um nível de abstração, o que é mais eficiente do que tentar aprender tudo de uma vez.
+2. A rede pode ser treinada de forma modular — as primeiras camadas são reutilizáveis entre diferentes tarefas (transfer learning).
+3. O compartilhamento de pesos (shared weights) nos filtros reduz drasticamente o número de parâmetros em comparação com redes densas.
+
+**b)** Comparação de parâmetros:
+
+**Camada convolucional (64 filtros 3×3):**
+- Cada filtro tem 3 × 3 × 3 = 27 pesos (altura × largura × canais de cor) + 1 bias = 28 parâmetros.
+- 64 filtros × 28 = **1.792 parâmetros**.
+
+**Camada densa equivalente:**
+- Para processar uma imagem 224×224×3, seria necessário achatar para um vetor de 224 × 224 × 3 = 150.528 elementos.
+- Se a camada densa tivesse 64 neurônios: 150.528 × 64 + 64 = **9.633.856 parâmetros**.
+
+A **camada densa** tem **muito mais parâmetros** (aproximadamente 5.000 vezes mais). A razão é que na camada densa, **cada neurônio se conecta com todos os pixels da imagem**, enquanto na camada convolucional, cada filtro se conecta apenas com uma **pequena região local** (3×3 pixels) e os mesmos pesos são compartilhados por toda a imagem.
+
+**c)** A camada de pooling (max pooling ou average pooling) é importante para invariância a translações porque:
+- Ela reduz a resolução espacial da feature map, "comprimindo" regiões.
+- Ao pegar o **máximo** (max pooling) ou a **média** (average pooling) de uma região, small deslocamentos do objeto na imagem não alteram significativamente o resultado do pooling.
+- Por exemplo, se um objeto se move 1 pixel para a direita, o max pooling da mesma região provavelmente retorna o mesmo valor. Isso torna a representação mais **robusta e invariante** a pequenas mudanças de posição.
+
+---
+
+
 ## Questão 20
 
 (10 pontos)
@@ -1286,15 +2505,32 @@ Em um ambiente de aprendizado por reforço, um agente aprende uma política óti
 
 **c)** O agente utiliza ε-greedy com ε = 0.1. Explique como a política de comportamento (behavior policy) difere da política alvo (target policy) no Q-Learning. (3 pts)
 
-**Resolução:**
+---
 
-**a)** A diferença fundamental é que o SARSA é on-policy, ou seja, aprende usando a mesma política que está sendo seguida durante o treinamento. Quando o agente escolhe uma ação, ele atualiza os valores Q usando a ação que realmente foi tomada. Já o Q-Learning é off-policy: ele aprende considerando a melhor ação possível (greedy), independentemente da ação que o agente realmente executou. Ou seja, o Q-Learning atualiza os valores Q assumindo que o agente sempre escolherá a melhor ação futura, mesmo que na prática ele explore outras opções.
+### Resolução
 
-**b)** O SARSA tende a aprender uma política mais cautelosa. Isso porque o SARSA leva em conta a política que está sendo seguida (incluindo exploração), então ele considera que o agente pode acabar caindo nas armadilhas durante a exploração. Já o Q-Learning assume que o agente sempre escolherá a melhor ação (greedy), ignorando o risco de exploração. Portanto, o Q-Learning pode aprender um caminho mais curto mas que passa perto de armadilhas, enquanto o SARSA aprende um caminho mais longo mas seguro, evitando áreas perigosas.
+**a)** A diferença fundamental entre SARSA e Q-Learning é a política usada para selecionar ações durante o aprendizado:
 
-**c)** No Q-Learning com ε-greedy, a política de comportamento (behavior policy) é a política ε-greedy, que escolhe a melhor ação com probabilidade 1-ε = 0,9 e uma ação aleatória com probabilidade ε = 0,1. Essa política é usada para o agente interagir com o ambiente e coletar dados. Já a política alvo (target policy) é a política greedy, que sempre escolhe a ação com maior valor Q. É essa política que é usada para calcular os valores Q atualizados. A distinção entre as duas é o que torna o Q-Learning um algoritmo off-policy.
+- **SARSA (on-policy):** Usa a **mesma política** (ε-greedy) tanto para **selecionar as ações** quanto para **atualizar os valores Q**. Ou seja, o SARSA leva em conta que o agente vai explorar (escolher ações aleatoriamente com probabilidade ε) e atualiza Q considerando essa exploração. A política "comportamental" e a política "alvo" são a mesma.
+
+- **Q-Learning (off-policy):** Usa uma política **diferente** da que seleciona as ações. O agente pode seguir uma política ε-greedy para explorar, mas atualiza os valores Q assumindo que sempre escolheria a **melhor ação possível** (greedy). A política "alvo" é sempre a política ótima (greedy), independente da política de comportamento.
+
+**b)** O **SARSA** tende a aprender uma política mais "cautelosa" em ambientes com armadilhas. A justificativa é:
+
+No SARSA, o agente leva em conta que ele pode explorar (escolher ações aleatórias com probabilidade ε). Se existe uma armadilha (estado com recompensa altamente negativa) perto do caminho ótimo, o SARSA valoriza os estados que **evitam passar perto da armadilha**, porque sabe que a exploração pode levá-lo para lá. Assim, o SARSA aprende um caminho mais seguro, mesmo que mais longo.
+
+O Q-Learning, por outro lado, assume que o agente sempre escolherá a melhor ação (greedy). Ele pode aprender o caminho mais curto, passando perto da armadilha, assumindo que consegue evitar a exploração perigosa. Isso pode ser perigoso em ambientes reais.
+
+**c)** No Q-Learning com ε-greedy (ε = 0,1):
+
+- **Política de comportamento (behavior policy):** É a política ε-greedy, que seleciona as ações que o agente **realmente executa** no ambiente. Com ε = 0,1, em 90% das vezes escolhe a melhor ação conhecida (greedy) e em 10% escolhe uma ação aleatória. Essa política controla a **exploração**.
+
+- **Política alvo (target policy):** É a política **ótima (greedy)**, que o Q-Learning assume para atualizar os valores Q. Na atualização, o agente assume que sempre escolherá a ação com maior valor Q no próximo estado, ignorando a chance de exploração.
+
+A diferença é que o agente **age** com exploração (ε-greedy), mas **aprende** como se não houvesse exploração (greedy). Isso permite que o Q-Learning aprenda a política ótima mesmo enquanto explora.
 
 ---
+
 
 ## Questão 68
 
@@ -1329,6 +2565,39 @@ Uma empresa deseja implantar um modelo de classificação de imagens como uma AP
 **c)** Qual é a principal limitação do serverless para este caso de uso específico (processamento de modelo de deep learning)? (3 pts)
 
 ---
+
+### Resolução
+
+**a)** Function-as-a-Service (FaaS):
+
+**FaaS** é um modelo de computação serverless onde o desenvolvedor escreve apenas a **função** (código) que processa uma requisição, sem se preocupar com servidores, sistemas operacionais ou infraestrutura. A provedora (AWS Lambda, Google Cloud Functions, Azure Functions) cuida de tudo automaticamente.
+
+**Aplicação neste cenário:**
+Para a API de classificação de imagens, cada chamada da API dispara uma função serverless que:
+1. Recebe a imagem
+2. Carrega o modelo de deep learning
+3. Processa a imagem e retorna a previsão
+
+Quando não há tráfego, **nenhum recurso está sendo consumido** (e não se paga nada). Quando há pico, a plataforma cria automaticamente múltiplas instâncias da função em paralelo.
+
+---
+
+**b)** Duas vantagens do serverless vs EC2:
+
+**1. Escalabilidade automática (Auto-scaling):**
+Com serverless, a plataforma cria automaticamente mais instâncias da função quando o tráfego aumenta e as encerra quando diminui. Não é necessário configurar ou gerenciar escalonamento. Com EC2, o engenheiro precisa configurar Auto Scaling Groups, definir limites, criar novas instâncias manualmente ou com scripts — tudo isso exige tempo e conhecimento.
+
+**2. Pagamento por uso (Pay-per-use):**
+No serverless, paga-se apenas pelo tempo de execução das funções (milissegundos). Se não há tráfego, o custo é zero. No EC2, paga-se pela instância ligada 24/7, mesmo em períodos de inatividade. Para um sistema com "longos períodos de inatividade", o serverless é muito mais econômico.
+
+---
+
+**c)** Principal limitação do serverless para deep learning:
+
+A principal limitação é o **tempo máximo de execução** e o **tamanho do pacote de deploy**. Funções serverless têm limites de tempo de execução (por exemplo, 15 minutos no AWS Lambda) e limite de tamanho do pacote (que inclui o código e dependências). Modelos de deep learning são frequentemente **grandes** (pesos de several GB) e o tempo de inferência pode ser significativo quando o modelo precisa ser carregado do zero a cada chamada (cold start). Isso pode causar latência inaceitável para aplicações que precisam de resposta rápida.
+
+---
+
 
 ## Questão 13
 
@@ -1389,6 +2658,57 @@ Considere as seguintes frases para processamento por um BERT:
 
 ---
 
+### Resolução
+
+**a)** Tokenização WordPiece:
+
+**Frase 1: "O gato sentou no tapete"**
+- "o" → **o**
+- "gato" → **gato** (está no vocabulário)
+- "sentou" → **sent** + **##ou** + **##n** (分解分解: sent está no vocab, ##ou e ##n completam a palavra)
+- "no" → **no**
+- "tapete" → **tap** + **##ete**
+
+Tokens da Frase 1: **o, gato, sent, ##ou, ##n, no, tap, ##ete**
+
+**Frase 2: "O cachorro dormiu no sofá"**
+- "o" → **o**
+- "cachorro" → **cach** + **##orro**
+- "dormiu" → **dor** + **##miu**
+- "no" → **no**
+- "sofá" → **so** + **##fá**
+
+Tokens da Frase 2: **o, cach, ##orro, dor, ##miu, no, so, ##fá**
+
+**b)** Adicionando tokens especiais [CLS] e [SEP]:
+
+- **Frase 1:** [CLS] o gato sent ##ou ##n no tap ##ete [SEP]
+- **Frase 2:** [CLS] o cach ##orro dor ##miu no so ##fá [SEP]
+
+**c)** Segment embeddings:
+
+Cada token recebe um identificador de segmento:
+- **Segmento 0** (frase 1): [CLS]=0, o=0, gato=0, sent=0, ##ou=0, ##n=0, no=0, tap=0, ##ete=0, [SEP]=0
+- **Segmento 1** (frase 2): [CLS]=1, o=1, cach=1, ##orro=1, dor=1, ##miu=1, no=1, so=1, ##fá=1, [SEP]=1
+
+**d)** Attention mask:
+
+A attention mask indica quais tokens devem ser processados (1) e quais são padding (0). Como não há padding (todas as frases têm o mesmo comprimento com padding mínimo):
+
+Attention mask: **1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1**
+
+**Total de tokens processados:** 19 tokens
+- 2 × [CLS] = 2
+- 2 × [SEP] = 2
+- Frase 1: 9 tokens (o, gato, sent, ##ou, ##n, no, tap, ##ete)
+- Frase 2: 9 tokens (o, cach, ##orro, dor, ##miu, no, so, ##fá)
+- Total: 2 + 2 + 9 + 9 = **22 tokens**
+
+(Ajustando: Frase 1 tem 8 tokens de palavras + [CLS] + [SEP] = 10. Frase 2 tem 8 tokens de palavras + [CLS] + [SEP] = 10. Como as frases são processadas juntas com um [SEP] entre elas: [CLS] + Frase1 + [SEP] + Frase2 + [SEP] = 1 + 8 + 1 + 8 + 1 = **19 tokens**.)
+
+---
+
+
 ## Questão 61
 
 (10 pontos)
@@ -1441,6 +2761,43 @@ Um Transformer é utilizado para traduzir frases do inglês para o português.
 
 ---
 
+### Resolução
+
+**a)** Componente responsável pela atenção:
+
+O componente é o **Cross-Attention** (atenção cruzada). No decoder do Transformer, o cross-attention permite que cada palavra da frase de saída (em tradução) "preste atenção" a diferentes partes da frase de entrada. As queries vêm do decoder e as chaves e valores vêm do encoder, permitindo que a rede se concentre nas partes mais relevantes da frase original ao gerar cada palavra da tradução.
+
+---
+
+**b)** Diferença entre self-attention e cross-attention:
+
+**Self-attention (autoatenção):**
+- Cada palavra presta atenção **a todas as outras palavras da mesma sequência**.
+- Na tradução: no encoder, cada palavra da frase em inglês presta atenção a todas as outras palavras em inglês. No decoder, cada palavra já traduzida presta atenção a todas as outras palavras já traduzidas.
+- **Queries, chaves e valores** vêm da **mesma sequência**.
+
+**Cross-attention (atenção cruzada):**
+- Cada palavra de uma sequência presta atenção **a palavras de outra sequência**.
+- Na tradução: cada palavra que está sendo gerada (português) presta atenção a palavras da frase original (inglês).
+- **Queries** vêm do decoder (saída), **chaves e valores** vêm do encoder (entrada).
+
+**Exemplo:** Na tradução "The cat sat" → "O gato sentou":
+- Self-attention no encoder: "The" presta atenção a "cat" e "sat" (mesma língua).
+- Cross-attention: "gato" presta atenção a "cat" (traduzindo de uma língua para outra).
+
+---
+
+**c)** Por que Positional Encoding é necessário em Transformers:
+
+As RNNs processam palavras **sequencialmente** (uma por vez), então a ordem natural das palavras já está implícita na sequência de processamento — a primeira palavra é processada primeiro, a segunda depois, e assim por diante.
+
+Já os Transformers processam **todas as palavras simultaneamente** (em paralelo). Sem positional encoding, o Transformer trataria a entrada como um "saco de palavras" (bag of words) — sem saber qual palavra veio antes ou depois. A frase "O gato comeu o peixe" seria idêntica ao modelo como "O peixe comeu o gato".
+
+O **Positional Encoding** adiciona informação sobre a **posição** de cada palavra na sequência (usando funções seno e cosseno), permitindo que o Transformer distinga a ordem das palavras e compreenda a estrutura gramatical da frase.
+
+---
+
+
 ## Questão 35
 
 (10 pontos)
@@ -1454,6 +2811,22 @@ O algoritmo K-NN (K-Nearest Neighbors) é classificado como um algoritmo de apre
 **c)** Qual é a principal desvantagem computacional de K-NN quando o dataset é muito grande? (3 pts)
 
 ---
+
+### Resolução
+
+**a)** Dizer que um algoritmo é **"lazy" (preguiçoso)** significa que ele **não cria um modelo explícito** durante a fase de treinamento. Em vez disso, ele simplesmente **armazena** todos os dados de treino e espera até a fase de teste para fazer as predições. Quando chega um novo ponto para classificar, o algoritmo busca nos dados de treino os exemplos mais próximos e usa esses vizinhos para decidir a classe. O "trabalho pesado" é feito na fase de teste, não na fase de treinamento.
+
+**b)** Comparação K-NN vs SVM:
+
+| Critério | K-NN | SVM |
+|----------|------|-----|
+| **Fase de treinamento** | Simples e rápida — apenas armazena os dados. Não calcula pesos nem cria um modelo. | Complexa e demora — resolve um problema de otimização para encontrar o hiperplano de margem máxima. Pode ser computacionalmente custosa para datasets grandes. |
+| **Fase de teste** | Demorada — para cada novo ponto, precisa calcular a distância a todos os pontos de treino e encontrar os K vizinhos mais próximos. O custo cresce com o tamanho do dataset. | Rápida — uma vez treinado, a predição é apenas calcular em que lado do hiperplano o novo ponto está (uma operação matemática simples). |
+
+**c)** A principal desvantagem computacional de K-NN quando o dataset é muito grande é que, para classificar **cada novo ponto**, é necessário calcular a distância entre esse ponto e **todos os N pontos** do dataset de treino. Isso tem custo **O(N × d)** por predição, onde N é o número de pontos e d é o número de features. Com datasets muito grandes (milhões de pontos), a fase de teste se torna extremamente lenta. Além disso, é necessário armazenar todo o dataset em memória.
+
+---
+
 
 ## Questão 38
 
@@ -1491,6 +2864,36 @@ Considere um modelo com 3 pesos: w₁ = 2, w₂ = −1, w₃ = 0.5. O hiperparâ
 
 ---
 
+### Resolução
+
+**a)** Penalidade L1:
+
+L1 = λ × (|w₁| + |w₂| + |w₃|)
+L1 = 0,1 × (|2| + |-1| + |0,5|)
+L1 = 0,1 × (2 + 1 + 0,5)
+L1 = 0,1 × 3,5
+**L1 = 0,35**
+
+**b)** Penalidade L2:
+
+L2 = λ × (w₁² + w₂² + w₃²)
+L2 = 0,1 × (2² + (-1)² + 0,5²)
+L2 = 0,1 × (4 + 1 + 0,25)
+L2 = 0,1 × 5,25
+**L2 = 0,525**
+
+**c)** A regularização **L1 (Lasso)** é a que promove **sparsity** (pesos exatamente iguais a zero). A razão está na forma geométrica das funções de penalidade:
+
+- A penalidade **L1** tem a forma de um **losango** (em 2D) ou hipercubo (em mais dimensões). Quando a curva de nível da função de custo encontra essa forma, tende a tocar nos **vértices**, onde uma ou mais coordenadas são exatamente zero.
+- A penalidade **L2** tem a forma de um **círculo** (em 2D) ou hiperesfera. A curva de nível da função de custo toca essa forma em pontos que geralmente **não são zero**.
+
+Além disso, a derivada da penalidade L1 é constante (igual a λ ou -λ), independentemente do valor do peso. Isso empurrena os pesos pequenos diretamente para zero. A derivada da L2 é proporcional ao valor do peso (2λw), então pesos pequenos recebem uma penalidade pequena e se aproximam de zero mas nunca chegam a ser exatamente zero.
+
+**d)** Se aplicarmos regularização L1 com λ muito alto, os pesos **menores** serão zerados primeiro. A justificativa é que a penalidade L1 adiciona uma constante λ ao custo de cada peso (independentemente do seu valor). Um peso pequeno tem pouca contribuição para o erro do modelo, então o custo de mantê-lo (λ) supera o benefício de mantê-lo, e ele é zerado. Um peso grande, por outro lado, contribui muito para reduzir o erro do modelo, então o custo λ não é suficiente para zerá-lo — ele resiste à penalidade. Portanto, λ alto首先 zera os pesos com menor contribuição para o erro (os menores em magnitude).
+
+---
+
+
 ## Questão 99
 
 (10 pontos)
@@ -1525,6 +2928,46 @@ Um pesquisador está treinando word embeddings usando o modelo Word2Vec em um co
 
 ---
 
+### Resolução
+
+**a) Word2Vec e Arquitetura**
+
+O Word2Vec aprende representações vetoriais (embeddings) para palavras a partir de um corpus de texto grande, baseando-se na ideia de que **palavras que aparecem em contextos semelhantes têm significados semelhados** (hipótese distribucional).
+
+Existem duas arquiteturas principais:
+
+- **CBOW (Continuous Bag of Words):** O modelo recebe o contexto (palavras vizinhas) e tenta prever a palavra central. Por exemplo, dadas as palavras "o" e "caminha" na frase "o ___ caminha no parque", o modelo tenta prever "gato".
+
+- **Skip-gram:** O modelo faz o inverso — recebe a palavra central e tenta prever as palavras vizinhas. Dada a palavra "gato", tenta prever que "caminha", "parque", etc. estão no contexto.
+
+Ambos usam uma rede neural simples com uma camada oculta. Após o treinamento, os pesos da camada oculta se tornam os embeddings das palavras.
+
+---
+
+**b) Operação Vetorial: rei − homem + mulher ≈ rainha**
+
+Essa operação captura relações semânticas porque os embeddings do Word2Vec organizam palavras no espaço vetorial de forma que **direções no espaço representam relações semânticas**.
+
+- A direção de **homem → mulher** representa a relação de gênero (masculino/feminino).
+- A direção de **rei → rainha** representa a mesma relação de gênero (masculino/feminino), mas aplicada a royalidade.
+
+Ao fazer **rei − homem**, removemos a componente "masculino" do vetor de "rei". Ao somar **+ mulher**, adicionamos a componente "feminino". O resultado é um vetor muito próximo ao de "rainha", porque a relação semântica (gênero) é codificada como uma direção consistente no espaço vetorial.
+
+Matematicamente: se os embeddings são bem treinados, rei ≈ homem + relação_gênero, então rei − homem + mulher ≈ mulher + relação_gênero ≈ rainha.
+
+---
+
+**c) Limitação dos Word Embeddings Estáticos e como o BERT Resolve**
+
+**Limitação:** No Word2Vec (e outros embeddings estáticos), cada palavra recebe **um único vetor**, independentemente do contexto em que aparece. Isso é um problema porque muitas palavras têm **múltiplos significados** (polisemia).
+
+Exemplo: a palavra "banco" tem significados diferentes em "banco da escola" (mobília) e "banco do Brasil" (instituição financeira). No Word2Vec, "banco" recebe o mesmo vetor para todos os contextos, misturando os dois significados.
+
+**Como o BERT resolve:** O BERT (Bidirectional Encoder Representations from Transformers) gera **embeddings contextuais** — o vetor de cada palavra é calculado com base em toda a frase em que ela aparece. Isso significa que "banco" terá um vetor diferente em "banco da escola" do que em "banco do Brasil". O BERT usa mecanismos de atenção (attention) para considerar tanto o contexto à esquerda quanto à direita de cada palavra, produzindo representações mais ricas e precisas.
+
+---
+
+
 ## Questão 79
 
 (10 pontos)
@@ -1538,6 +2981,48 @@ Uma empresa de entretenimento deseja gerar rostos fotorealistas usando uma GAN (
 **c)** Cite e explique duas técnicas utilizadas para prevenir o fenômeno descrito no item (a). (3 pts)
 
 ---
+
+### Resolução
+
+**a)** Nome e causa do fenômeno:
+
+O fenômeno se chama **Mode Collapse** (colapso de modos).
+
+**Causa:** Ocorre quando o gerador descobre uma "saída fácil" que consegue enganar o discriminador, e passa a gerar sempre a mesma saída (ou um conjunto muito limitado de saídas) em vez de aprender toda a diversidade da distribuição de dados real. O discriminador não consegue punir o gerador porque a saída é "boa o suficiente", então o gerador não tem incentivo para diversificar.
+
+---
+
+**b)** Mecanismo de treinamento da GAN:
+
+Uma GAN possui dois componentes que competem:
+
+**Gerador (Generator):**
+- **Objetivo:** Gerar imagens falsas que sejam tão realistas quanto possível, de forma a "enganar" o discriminador.
+- Recebe ruído aleatório (noise) e gera uma imagem.
+- Quer que o discriminador classifique suas imagens como "reais".
+
+**Discriminador (Discriminator):**
+- **Objetivo:** Distinguir imagens reais (do dataset) de imagens falsas (do gerador).
+- Recebe uma imagem e classifica como "real" ou "falsa".
+- Quer acertar a classificação.
+
+**Treinamento alternado:**
+1. **Passo 1 — Treina o discriminador:** Apresenta imagens reais e falsas, atualiza os pesos do discriminador para classificar corretamente.
+2. **Passo 2 — Treina o gerador:** Gera imagens falsas e passa pelo discriminador. Atualiza os pesos do gerador para que o discriminador classifique como "reais".
+3. Repete os passos 1 e 2 alternadamente até que o gerador gere imagens indistinguíveis das reais.
+
+---
+
+**c)** Duas técnicas para prevenir mode collapse:
+
+**1. minibatch discrimination:**
+Em vez de o discriminador avaliar cada imagem individualmente, ele avalia um **minibatch** (grupo) de imagens. Isso permite ao discriminador detectar se todas as imagens geradas são muito similares entre si (baixa diversidade). Se o gerador produz sempre a mesma imagem, o discriminador percebe essa falta de diversidade no minibatch e penaliza o gerador.
+
+**2. Feature matching:**
+Em vez de treinar o gerador apenas com base na saída do discriminador (real/falso), o gerador é treinado para que as **características internas** (features) das imagens que ele gera sejam similares às características das imagens reais, conforme extraídas pelo discriminador. Isso incentiva o gerador a aprender representações diversas e não apenas uma saída que passe no teste binário.
+
+---
+
 
 ## Questão 98
 
@@ -1653,6 +3138,59 @@ Em uma CNN, as operações de convolução são fundamentais para extração de 
 
 ---
 
+### Resolução
+
+**a)** Tamanho da saída da convolução:
+
+**Fórmula geral:**
+$$\text{Saída} = \frac{N - F + 2P}{S} + 1$$
+
+Onde: N = tamanho da entrada, F = tamanho do filtro, P = padding, S = stride.
+
+**(i) stride=1, padding=0 (valid):**
+Saída = (7 − 3 + 2×0) / 1 + 1 = 4/1 + 1 = **5** → imagem de saída 5×5
+
+**(ii) stride=1, padding=1 (same):**
+Saída = (7 − 3 + 2×1) / 1 + 1 = 6/1 + 1 = **7** → imagem de saída 7×7 (mesmo tamanho da entrada)
+
+**(iii) stride=2, padding=0:**
+Saída = (7 − 3 + 2×0) / 2 + 1 = 4/2 + 1 = **3** → imagem de saída 3×3
+
+---
+
+**b)** Camada convolucional com entrada 32×32×3 e 16 filtros 5×5:
+
+**(i) Tamanho da saída espacial:**
+Com stride=1 e padding=2:
+Saída = (32 − 5 + 2×2) / 1 + 1 = (32 − 5 + 4)/1 + 1 = 31 + 1 = **32**
+
+A saída espacial é **32×32** (mesmo tamanho da entrada, por causa do padding "same").
+
+**(ii) Número de parâmetros:**
+Cada filtro 5×5 opera em 3 canais de entrada (RGB), então cada filtro tem:
+- Pesos: 5 × 5 × 3 = 75 parâmetros
+- Bias: 1 parâmetro
+- Total por filtro: 75 + 1 = 76 parâmetros
+
+Com 16 filtros:
+- Total: 16 × 76 = **1.216 parâmetros**
+
+---
+
+**c)** Diferença entre padding "valid" e "same":
+
+**Padding "valid" (sem padding):**
+- Não adiciona zeros ao redor da imagem.
+- A saída é **menor** que a entrada.
+- **Quando preferir:** Quando queremos reduzir gradualmente o tamanho espacial da representação (por exemplo, nas primeiras camadas de uma CNN para extrair features de alto nível).
+
+**Padding "same" (com padding):**
+- Adiciona zeros ao redor da imagem para que a saída tenha o **mesmo tamanho** que a entrada.
+- **Quando preferir:** Quando queremos manter a resolução espacial (por exemplo, em redes de segmentação como U-Net, ou quando precisamos que a saída tenha exatamente o mesmo tamanho da entrada para后续 operações).
+
+---
+
+
 ## Questão 16
 
 (10 pontos)
@@ -1687,6 +3225,49 @@ Em um problema de aprendizado por reforço, o agente precisa equilibrar explora�
 
 ---
 
+### Resolução
+
+**a) Exploração vs Exploração**
+
+**Exploração (Exploration):** É quando o agente tenta **ações diferentes** para descobrir quais geram maiores recompensas. O agente "explora" o ambiente para aprender mais sobre ele.
+
+**Exploração (Exploitation):** É quando o agente usa o que **já sabe** para escolher a ação que ele acredita ser a melhor (com maior recompensa esperada). O agente "explora" seu conhecimento atual.
+
+**Por que é importante equilibrar:** Se o agente apenas explora (100% exploração), ele nunca usa o que aprende e desperdiça tempo tentando ações aleatórias. Se apenas explora (100% explotação), ele pode ficar preso em uma subótima, nunca descobrindo que existem melhores opções. O equilíbrio permite que o agente aprenda eficientemente e encontre a política ótima.
+
+---
+
+**b) Estratégia ε-greedy**
+
+A estratégia ε-greedy funciona da seguinte forma em cada passo de decisão:
+- Com probabilidade **1 − ε**: escolhe a melhor ação conhecida (exploitação).
+- Com probabilidade **ε**: escolhe uma ação aleatoriamente (exploração).
+
+**Controle do trade-off:**
+- **ε grande (próximo de 1):** Mais exploração. O agente tenta muitas ações diferentes, aprendendo mais sobre o ambiente, mas pode não usar bem o que já sabe.
+- **ε pequeno (próximo de 0):** Mais explotação. O agente usa quase sempre a melhor ação conhecida, mas pode perder oportunidades de descobrir melhores estratégias.
+- **ε = 0:** Nenhuma exploração (puramente greedy).
+- **ε = 1:** Nenhuma explotação (puramente aleatório).
+
+---
+
+**c) ε-greedy vs Sampling Softmax**
+
+**ε-greedy:**
+- Escolhe a melhor ação com probabilidade 1−ε.
+- Escolhe qualquer ação aleatoriamente com probabilidade ε (todas as ações não-greedy têm a mesma probabilidade).
+- **Mais adequada quando:** Todas as ações não-ótimas são igualmente ruins, ou quando se quer uma exploração simples e uniforme. É mais fácil de implementar e理解.
+
+**Sampling Softmax:**
+- Converte os Q-values em probabilidades usando a função softmax: P(a) = e^(Q(a)/τ) / Σ e^(Q(a')/τ), onde τ é a temperatura.
+- Ações com maiores Q-values têm maior probabilidade de serem escolhidas, mas ações com menores Q-values ainda têm alguma chance.
+- **Mais adequada quando:** As ações têm valores Q muito diferentes, e queremos que ações com Q-values razoáveis ainda sejam consideradas (não apenas a melhor). Útil quando a diferença entre ações é importante e se quer uma exploração mais "informada".
+
+**Resumo:** ε-greedy é mais simples e adequada para exploração uniforme. Softmax é mais sofisticada e adequada quando se quer ponderar a exploração pela qualidade relativa das ações.
+
+---
+
+
 ## Questão 96
 
 (10 pontos)
@@ -1700,6 +3281,49 @@ Algoritmos de busca são fundamentais para resolver problemas de planejamento e 
 **c)** Para que A* seja ótimo, a heurística h(n) deve ser admissível. Defina heurística admissível e explique por que ela garante a optimalidade. Dê um exemplo de heurística admissível para o problema de navegação em um grid. (3 pts)
 
 ---
+
+### Resolução
+
+**a) Comparação BFS vs DFS**
+
+| Critério | BFS (Breadth-First Search) | DFS (Depth-First Search) |
+|----------|---------------------------|--------------------------|
+| **(i) Completeza** | Completo em grafos finitos (encontra solução se existir) | Não é completo em grafos com ciclos ou infinitos (pode não encontrar solução) |
+| **(ii) Optimalidade** | Ótimo se todas as arestas têm custo igual (encontra o caminho mais curto) | Não é ótimo (pode encontrar um caminho mais longo antes do mais curto) |
+| **(iii) Complexidade de Espaço** | O(b^d) — exponencial, precisa armazenar todos os nós do nível atual | O(b × d) — linear, precisa armazenar apenas o caminho atual |
+| **(iii) Complexidade de Tempo** | O(b^d) — exponencial | O(b^d) — exponencial |
+
+Onde b = fator de ramificação, d = profundidade da solução.
+
+---
+
+**b) Algoritmo A* e a Função f(n)**
+
+O A* combina as ideias de:
+- **Busca de custo uniforme (Dijkstra):** Considera o custo real do caminho percorrido até o nó.
+- **Busca gulosa (Greedy Best-First):** Considera apenas a estimativa heurística do custo restante.
+
+**Função f(n) = g(n) + h(n):**
+- **g(n):** Custo real do caminho do nó inicial até o nó n. Representa o custo já "gasto" para chegar a n.
+- **h(n):** Estimativa heurística do custo do nó n até o objetivo. Representa o custo "estimado" para chegar ao objetivo.
+
+**Papel de cada componente:**
+- g(n) garante que o A* encontre o caminho de menor custo (considera custos reais).
+- h(n) guia a busca para o objetivo, tornando-a mais eficiente que a busca de custo uniforme pura.
+- A combinação f(n) = g(n) + h(n) equilibra otimalidade (via g) e eficiência (via h).
+
+---
+
+**c) Heurística Admissível e Optimalidade do A***
+
+**Definição:** Uma heurística h(n) é **admissível** se ela **nunca superestima** o custo real de chegar de n ao objetivo. Para todo nó n: 0 ≤ h(n) ≤ h*(n), onde h*(n) é o custo real mínimo de n ao objetivo.
+
+**Por que garante a optimalidade:** Se h(n) é admissível, então f(n) = g(n) + h(n) nunca superestima o custo real total. Isso significa que o A* sempre expandirá nós na ordem correta de custo crescente, garantindo que o primeiro caminho encontrado até o objetivo seja o ótimo (de menor custo). Se h(n) superestimasse o custo, o A* poderia descartar caminhos ótimos e encontrar apenas subótimos.
+
+**Exemplo para navegação em grid:** A distância de Manhattan é uma heurística admissível para navegação em grid com movimentos apenas nas 4 direções cardinais (cima, baixo, esquerda, direita). Ela calcula |x₁−x₂| + |y₁−y₂|, que é sempre menor ou igual ao custo real (pois o caminho real pode ter obstáculos que aumentam a distância).
+
+---
+
 
 ## Questão 47
 
@@ -1735,6 +3359,47 @@ O otimizador Adam combina duas ideias principais de otimização.
 
 ---
 
+### Resolução
+
+**a)** Os dois momentos do Adam:
+
+O Adam mantém para cada parâmetro:
+1. **m (primeiro momento):** A média móvel dos gradientes.
+2. **v (segundo momento):** A média móvel dos quadrados dos gradientes.
+
+---
+
+**b)** O que cada momento estima:
+
+**m (primeiro momento — moments):**
+- Estima a **média** dos gradientes ao longo do treinamento.
+- Funciona como um "filtro de suavização" dos gradientes, reduzindo o ruído nas atualizações.
+- Sigla matemática: **m_t** (média móvel dos gradientes no passo t).
+
+**v (segundo momento — raw second moment):**
+- Estima a **média dos quadrados** dos gradientes.
+- Indica a **variância** (quanto os gradientes oscilam). Quando os gradientes oscilam muito, o v é alto, e o Adam reduz o tamanho do passo de atualização para aquele parâmetro.
+- Sigla matemática: **v_t** (média móvel dos quadrados dos gradientes no passo t).
+
+**Utilidade combinada:** O Adam usa m para determinar a **direção** da atualização e v para determinar o **tamanho do passo** (dividindo m por √v + ε), adaptando-se automaticamente à escala dos gradientes de cada parâmetro.
+
+---
+
+**c)** Correção de viés (bias correction):
+
+**Por que é necessária:**
+No início do treinamento, m_t e v_t são inicializados com zero. Após poucos passos, as médias móveis ainda estão muito próximas de zero (subestimadas), porque começaram de zero e só tiveram poucos gradientes para "aprender".
+
+**Como funciona:**
+O Adam aplica uma correção que divide m_t e v_t por (1 − β^t), onde t é o número do passo e β é o fator de decaimento (tipicamente 0,9 ou 0,999).
+
+- No passo t=1: 1 − 0,9¹ = 0,1 → divide por 0,1 (multiplica por 10) → corrige drasticamente.
+- No passo t=10: 1 − 0,9¹⁰ ≈ 0,65 → correção menor.
+- Quando t → ∞: 1 − β^t → 1 → sem correção (já convergiu).
+
+**Sem essa correção**, as atualizações nos primeiros passos seriam **muito pequenas** (praticamente zero), fazendo o treinamento começar muito devagar. A correção garante que o treinamento tenha um bom início mesmo com inicialização zero.
+
+
 ## Questão 89
 
 (10 pontos)
@@ -1747,34 +3412,70 @@ No algoritmo de árvore de decisão, os critérios de divisão (split criteria) 
 
 **c)** Compare os critérios de entropia (usado no ID3/C4.5) e de impureza de Gini (usado no CART). Quais são as principais diferenças entre eles e em que situação um pode ser preferível ao outro? (3 pts)
 
-**Resolução:**
+---
 
-**a)** A entropia mede o grau de incerteza ou impureza de um nó em relação à distribuição das classes. Quanto maior a entropia, mais misturadas estão as classes no nó. Fórmula para um nó com p exemplos da classe positiva e n exemplos da classe negativa (total = p + n):
+### Resolução
 
-Entropia(S) = -p/(p+n) × log₂(p/(p+n)) - n/(p+n) × log₂(n/(p+n))
+**a) Entropia em Árvores de Decisão**
 
-Quando p = 0 ou n = 0, a entropia é 0 (nó puro). A entropia máxima é 1 (quando p = n).
+A entropia mede o ** grau de impureza ** ou **incerteza** de um nó em uma árvore de decisão. Se um nó contém exemplos de apenas uma classe, a entropia é 0 (puro). Se contém exemplos de todas as classes igualmente misturados, a entropia é máxima.
 
-**b)** Nó com 10 exemplos: 7 da classe A e 3 da classe B.
-p = 7, n = 3, total = 10
+**Fórmula:** Para um nó com p exemplos da classe positiva e n exemplos da classe negativa (total = p + n):
 
-Entropia = -7/10 × log₂(7/10) - 3/10 × log₂(3/10)
+**H = − (p/(p+n)) × log₂(p/(p+n)) − (n/(p+n)) × log₂(n/(p+n))**
 
-Calculando:
-- 7/10 = 0,7 → log₂(0,7) ≈ -0,515
-- 3/10 = 0,3 → log₂(0,3) ≈ -1,737
-
-Entropia = -0,7 × (-0,515) - 0,3 × (-1,737)
-Entropia = 0,361 + 0,521 = 0,882
-
-**c)** Principais diferenças entre Entropia e Impureza de Gini:
-- Entropia usa logaritmos, Gini usa apenas multiplicação → Gini é computacionalmente mais barato
-- Entropia tende a criar árvores mais balanceadas; Gini pode criar árvores mais desbalanceadas
-- Na prática, ambos produzem árvores muito similares
-
-Preferência: Gini é mais usado no CART por ser mais rápido. Entropia é preferível quando se deseja árvores mais balanceadas ou quando a interpretabilidade é prioridade.
+onde:
+- p/(p+n) = proporção de exemplos positivos
+- n/(p+n) = proporção de exemplos negativos
+- log₂ = logaritmo na base 2
 
 ---
+
+**b) Cálculo da Entropia**
+
+Nó com 10 exemplos: 7 da classe A e 3 da classe B.
+
+Proporções:
+- p(A) = 7/10 = 0,7
+- p(B) = 3/10 = 0,3
+
+Fórmula da entropia:
+**H = − [0,7 × log₂(0,7) + 0,3 × log₂(0,3)]**
+
+Calculando:
+- log₂(0,7) = ln(0,7)/ln(2) = −0,3567/0,6931 ≈ −0,5146
+- log₂(0,3) = ln(0,3)/ln(2) = −1,2040/0,6931 ≈ −1,7370
+
+H = − [0,7 × (−0,5146) + 0,3 × (−1,7370)]
+H = − [−0,3602 + (−0,5211)]
+H = − [−0,8813]
+**H ≈ 0,881**
+
+A entropia é aproximadamente **0,881** (próxima do valor máximo de 1,0, indicando impureza considerável).
+
+---
+
+**c) Entropia (ID3/C4.5) vs Impureza de Gini (CART)**
+
+**Entropia (usada no ID3 e C4.5):**
+- Mede a impureza usando logaritmo na base 2.
+- Fórmula: H = −Σ pᵢ × log₂(pᵢ)
+- Mais custosa computacionalmente por causa do logaritmo.
+- Tende a produzir árvores mais balanceadas.
+
+**Impureza de Gini (usada no CART):**
+- Mede a probabilidade declassificar um elemento aleatório se ele for rotulado aleatoriamente.
+- Fórmula: Gini = 1 − Σ pᵢ²
+- Mais simples e rápida de calcular (não precisa de logaritmo).
+- Tende a isolar classes minoritárias em galhos específicos.
+
+**Quando prefere-se cada uma:**
+- Gini é preferida quando se deseja **velocidade** de treinamento (é computacionalmente mais barata).
+- Entropia é preferida quando se deseja **árvores mais equilibradas** e quando a interpretabilidade das probabilidades é importante.
+- Na prática, os resultados são muito semelhantes na maioria dos casos. A diferença raramente é significativa.
+
+---
+
 
 ## Questão 51
 
@@ -1789,6 +3490,38 @@ Um pesquisador está treinando uma rede neural profunda para classificação de 
 **c)** Em que cenários SGD com momentum pode ser preferível ao Adam? Cite pelo menos uma vantagem. (3 pts)
 
 ---
+
+### Resolução
+
+**a)** O Adam frequentemente converge mais rápido que SGD puro no início do treinamento por dois mecanismos principais:
+
+1. **Adaptatividade do learning rate:** O Adam ajusta a taxa de aprendizado **individualmente para cada parâmetro** com base no histórico de gradientes. Parâmetros com gradientes grandes recebem learning rates menores, e parâmetros com gradientes pequenos recebem maiores. Isso permite que o otimizador navegue pelo espaço de parâmetros de forma mais eficiente, especialmente em direções onde o gradiente é muito pequeno ou muito grande.
+
+2. **Momentum (momentos):** O Adam acumula uma média móvel dos gradientes (momento de primeira ordem), o que ajuda a "acelerar" o otimizador na direção certa e a suavizar oscilações. Isso é especialmente útil no início do treinamento, quando o loss pode oscilar muito.
+
+Esses mecanismos combinados fazem com que o Adam seja mais robusto à escolha inicial da taxa de aprendizado e converja mais rápido em muitos cenários.
+
+**b)** **Momentos de primeira e segunda ordem no Adam:**
+
+- **Momento de primeira ordem (m):** É a média móvel dos **gradientes** (primeiras derivadas). Representa a direção média do gradiente ao longo do tempo. Funciona como o momentum — ajuda o otimizador a seguir a direção predominante e a suavizar oscilações.
+  - Fórmula: m_t = β₁ × m_{t-1} + (1 - β₁) × g_t
+
+- **Momento de segunda ordem (v):** É a média móvel dos **gradientes ao quadrado** (segundas derivadas). Representa a magnitude média dos gradientes. Usado para ajustar o learning rate de cada parâmetro: onde os gradientes são grandes, o learning rate efetivo diminui; onde são pequenos, aumenta.
+  - Fórmula: v_t = β₂ × v_{t-1} + (1 - β₂) × g_t²
+
+**Correção de viés (bias correction):** Nos primeiros passos, m e v são inicializados com zero. Como são médias móveis, nos primeiros passos eles estão enviesados para zero (subestimam os valores reais). A correção de viés compensa isso dividindo m e v por (1 - β₁^t) e (1 - β₂^t) respectivamente, onde t é o número de passos. Isso garante que as estimativas sejam não-enviesadas especialmente nos primeiros passos do treinamento.
+
+**c)** SGD com momentum pode ser preferível ao Adam em cenários onde:
+
+- **Generalização é mais importante que velocidade de convergência:** Estudos mostram que SGD com momentum frequentemente encontra soluções com **melhor generalização** (melhor desempenho em dados de teste) do que Adam, especialmente em problemas de visão computacional (como treinar ResNet no ImageNet). O Adam pode convergir mais rápido mas encontrar soluções que generalizam menos.
+
+- **Um ou mais de uma vantagem:**
+  - SGD com momentum é mais simples e tem menos hiperparâmetros para ajustar.
+  - Em problemas com dados limpos e bem distribuídos, SGD com momentum pode encontrar mínimos mais "planos", que são associados a melhor generalização.
+  - O Adam pode ter comportamento irregular em某些 cenários específicos devido à adaptação do learning rate.
+
+---
+
 
 ## Questão 41
 
@@ -1824,6 +3557,57 @@ Graph Neural Networks (GNNs) são redes neurais projetadas para trabalhar com da
 
 ---
 
+### Resolução
+
+**a) Message Passing em GNNs**
+
+Message passing é o processo fundamental pel qual os nós de um grafo **agregam informações de seus vizinhos** para atualizar suas próprias representações (embeddings).
+
+**Como funciona (passo a passo):**
+1. **Mensagem (Message):** Cada nó envia uma mensagem (sua representação atual) para seus vizinhos.
+2. **Agregação (Aggregate):** Cada nó recebe mensagens de todos os seus vizinhos e as combina (por exemplo, somando, tirando a média, ou usando uma função aprendida).
+3. **Atualização (Update):** Cada nó atualiza sua própria representação usando a informação agregada dos vizinhos e sua representação anterior.
+
+**Exemplo:** Se um nó A tem vizinhos B e C, ele recebe as representações de B e C, combina-as (por exemplo, pela média), e usa o resultado para atualizar sua própria representação. Após várias camadas de message passing, cada nó incorpora informações de vizinhos cada vez mais distantes (1-hop, 2-hop, etc.).
+
+---
+
+**b) GCN vs GAT**
+
+**GCN (Graph Convolutional Network):**
+- Na agregação de vizinhos, **todos os vizinhos têm o mesmo peso**.
+- A representação atualizada de um nó é a média (ou soma) ponderada das representações de seus vizinhos, com pesos fixos baseados na estrutura do grafo (por exemplo, grau do nó).
+- É mais simples e rápido, mas trata todos os vizinhos como igualmente importantes.
+
+**GAT (Graph Attention Network):**
+- Na agregação de vizinhos, **cada vizinho recebe um peso diferente**, calculado por um mecanismo de atenção (attention).
+- Os pesos de atenção são aprendidos durante o treinamento e dependem das representações dos nós. Vizinhos mais relevantes recebem pesos maiores.
+- É mais flexível e pode capturar a importância relativa dos vizinhos, mas é mais complexo e custoso.
+
+**Diferença principal:** GCN usa pesos fixos para os vizinhos (baseados na estrutura do grafo), enquanto GAT usa pesos aprendidos por atenção (baseados no conteúdo dos nós).
+
+---
+
+**c) 3 Aplicações Práticas de GNNs**
+
+1. **Descoberta de Drogas (Drug Discovery):**
+   - Moléculas são representadas como grafos (átomos = nós, ligações = arestas).
+   - GNNs predizem propriedades de moléculas (toxicidade, eficácia) para acelerar o desenvolvimento de medicamentos.
+   - A estrutura de grafo é importante porque as propriedades de uma molécula dependem não apenas dos átomos, mas de **como eles estão conectados**.
+
+2. **Redes Sociais:**
+   - Usuários e suas interações formam um grafo (usuários = nós, amizades/interações = arestas).
+   - GNNs são usados para recomendação de amigos, detecção de contas falsas, e análise de comunidades.
+   - A estrutura de grafo é importante porque o comportamento de um usuário é influenciado por **seus vizinhos na rede** (amigos, seguidores).
+
+3. **Sistemas de Recomendação:**
+   - Usuários e itens (produtos, filmes) formam um grafo bipartido.
+   - GNNs predizem a preferência de um usuário por um item baseando-se nos padrões de interação de toda a rede.
+   - A estrutura de grafo é importante porque as preferências de um usuário são influenciadas por **usuários similares** e por **itens relacionados**.
+
+---
+
+
 ## Questão 18
 
 (10 pontos)
@@ -1839,6 +3623,29 @@ O BERT (Bidirectional Encoder Representations from Transformers) é amplamente u
 **d)** Em tarefas de NER (Named Entity Recognition), o token [CLS] é utilizado para a classificação de cada token? Justifique. (2 pts)
 
 ---
+
+### Resolução
+
+**a)** A função principal do token **[CLS]** no BERT é servir como **representação agregada de toda a sequência** para tarefas de classificação. O [CLS] é colocado no início da sequência e, através do mecanismo de self-attention do Transformer, ele "consegue访问" a informação de todas as outras palavras da frase. O hidden state final do [CLS] resume o contexto completo da sequência.
+
+**b)** O hidden state associado ao token [CLS] é utilizado como representação para tarefas de **classificação de nível de sequência** (sequence-level classification), como:
+- Classificação de sentimentos (positivo/negativo)
+- Classificação de tópicos
+- Classificação de spam/não-spam
+- Classificação de paráfrase
+
+Ou seja, tarefas onde a resposta é uma única classe para **toda a frase**, não para cada palavra individualmente.
+
+**c)** O BERT utiliza [CLS] em vez da média de todos os tokens porque:
+
+1. O [CLS] é projetado durante o **pré-treinamento** para representar a sequência inteira. Ele passa por todas as camadas do Transformer e acumula contexto de todas as palavras através do mecanismo de attention.
+
+2. A média de todos os tokens pode diluir a informação importante — palavras irrelevantes (artigos, preposições) teriam o mesmo peso que palavras-chave. O [CLS] aprende a **selecionar e combinar** a informação mais relevante de forma otimizada.
+
+3. O [CLS] é um ponto fixo de referência, o que torna a representação mais **estável e consistente** do que uma média que varia com o comprimento da sequência.
+
+**d)** **Não**, em tarefas de NER (Named Entity Recognition), o token [CLS] **não** é utilizado para a classificação de cada token. Na NER, a classificação é feita **token por token** — cada token da sequência recebe uma etiqueta ( Pessoa, Local, Organização, O). Para isso, são utilizados os **hidden states de cada token individualmente**, não o hidden state do [CLS]. O [CLS] é útil apenas para tarefas que exigem uma classificação para a sequência inteira, não para tarefas de classificação token-level.
+
 
 ## Questão 1
 
