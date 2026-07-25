@@ -1,9 +1,15 @@
 # ONIA
-A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOAI (International Olympiad in Artificial Intelligence). This repository contains all documents and resolutions made by me during the iteration of this olympiad.
+A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOAI (International Olympiad in Artificial Intelligence). This repository contains all documents and resolutions made by me during the iteration of this olympiad.
 
+### 2026
 * Fase 3 Etapa 1: *20/20*
 * Fase 3 Etapa 2: *17/20 + dissertations*
 * Fase 4: ~
+  - Result: Silver Medal (Top ~100)
+ 
+### 2027
+* TODO
+
 ---
 
 ### Syllabus
@@ -13,6 +19,7 @@ A repository dedicated to study for the 2nd ONIA (Olimpíada Nacional de Intelig
 ### Related repositories and content
 * [IOAI-official/IOAI-2024](https://github.com/IOAI-official/IOAI-2024)
 * [IOAI-official/IOAI-2025](https://github.com/IOAI-official/IOAI-2025)
+* [IOAI-official/IOAI-2026](https://github.com/IOAI-official/IOAI-2026)
 * [ioai-writeup/ioai-writeup.github.io](https://github.com/ioai-writeup/ioai-writeup.github.io)
 * [open-cu/awesome-ioia-tasks](https://github.com/open-cu/awesome-ioai-tasks)
 * [NOIC-IA/Problem-Solutions](https://github.com/NOIC-IA/Problem-Solutions)
