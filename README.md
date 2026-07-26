@@ -2,10 +2,10 @@
 A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligência Artificial) and the IOAI (International Olympiad in Artificial Intelligence). This repository contains all documents and resolutions made by me during the iteration of this olympiad.
 
 ### 2026
-* Fase 3 Etapa 1: *20/20*
-* Fase 3 Etapa 2: *17/20 + dissertations*
-* Fase 4: ~
-  - Result: Silver Medal (Top ~100)
+* Result: Silver Medal (Top ~100)
+  - Fase 3 Etapa 1: *20/20*
+  - Fase 3 Etapa 2: *17/20 + dissertations*
+  - Fase 4: ~
  
 ### 2027
 * TODO
