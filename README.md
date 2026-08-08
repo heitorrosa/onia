@@ -33,8 +33,8 @@ A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligênc
 * [babidisrc/introducao-a-ML](https://github.com/babidisrc/introducao-a-ML)
 
 ---
-* [ONIA 2025 4 Fase Etapa 1](https://www.oniabrasil.com.br/assets/files/2025_05_20_ONIA_4a_fase_1a_etapa_gabarito.pdf)
-* [ONIA 2025 4 Fase Etapa 2](https://www.oniabrasil.com.br/assets/files/Gabarito_Prova_2a_etapa_4a_fase_13jun2025.pdf)
+* [ONIA 2025 Archive](https://www.oniabrasil.com.br/page1.html)
+* [ONIA 2026 Archive](https://www.oniabrasil.com.br/page2.html)
 
 ### Compiled Study Playlist
 [Machine Learning](https://www.youtube.com/playlist?list=PLjn45pXnqU0DY8RDF2FL8PKrAHZlALK2m)
