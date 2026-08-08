@@ -3,6 +3,8 @@ A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligênc
 
 ### 2026
 * Result: Silver Medal (top 0.004% out of 965k)
+  - Phase 1: *17/20*
+  - Phase 2: *22/27*
   - Phase 3 Stage 1: *20/20*
   - Phase 3 Stage 2: *17/20 + dissertations*
   - Phase 4 Stage 1: at least *> 16/25 + dissertations*
