@@ -13,7 +13,7 @@ A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligênc
 ### 2027
 * TODO
 
----
+#
 
 ### Syllabus
 * [IOAI Kazakhstan Syllabus](https://ioai-official.org/wp-content/uploads/2025/10/Syllabus.pdf) 
@@ -32,14 +32,14 @@ A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligênc
 * [jaredliw/ioai-tsp-2025](https://github.com/jaredliw/ioai-tsp-2025)
 * [babidisrc/introducao-a-ML](https://github.com/babidisrc/introducao-a-ML)
 
----
+#
 * [ONIA 2025 Archive](https://www.oniabrasil.com.br/page1.html)
 * [ONIA 2026 Archive](https://www.oniabrasil.com.br/page2.html)
 
 ### Compiled Study Playlist
 [Machine Learning](https://www.youtube.com/playlist?list=PLjn45pXnqU0DY8RDF2FL8PKrAHZlALK2m)
 
----
+#
 
 ## Exercises
 
