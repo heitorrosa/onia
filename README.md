@@ -27,6 +27,7 @@ A repository dedicated to study for the ONIA (Olimpíada Nacional de Inteligênc
 * [open-cu/awesome-ioia-tasks](https://github.com/open-cu/awesome-ioai-tasks)
 * [NOIC-IA/Problem-Solutions](https://github.com/NOIC-IA/Problem-Solutions)
 * [mgcvale/onia](https://github.com/mgcvale/onia)
+* [goncalofrankefranco/onia](https://github.com/goncalofrankefranco/onia)
 * [stefanasandei/roai-solved](https://github.com/stefanasandei/roai-solved)
 * [zHary27/machine-learning-problems](https://github.com/zHary27/machine-learning-problems)
 * [jaredliw/ioai-tsp-2025](https://github.com/jaredliw/ioai-tsp-2025)
