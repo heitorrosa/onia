@@ -1,0 +1,54 @@
+<!--title: A acurácia inflada-->
+<!--
+  Gêmeo estático do frame `eixo3-acuracia-inflada.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o cursor vira tabela, e a tabela mostra a inflação.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+
+  NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
+  navegador ele aparece com acentos quebrados, porque não tem <meta charset>:
+  na página do WordPress (UTF-8) ele renderiza certo.
+-->
+<figure class="noic-frame-static">
+<figcaption><strong>Fig. 3</strong> (versão estática): quanto a fração do teste que o treino já viu (ρ) infla a acurácia observada, para uma acurácia real de 90%.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">Fração vazada (ρ)</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Acurácia observada</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">A distância do número real</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">0%</td>
+        <td style="padding:7px 8px 7px 0">90%</td>
+        <td style="padding:7px 0">nenhuma</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">10%</td>
+        <td style="padding:7px 8px 7px 0">91%</td>
+        <td style="padding:7px 0">1 ponto</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">25%</td>
+        <td style="padding:7px 8px 7px 0">92,5%</td>
+        <td style="padding:7px 0">2,5 pontos</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 8px 7px 0">50%</td>
+        <td style="padding:7px 8px 7px 0">95%</td>
+        <td style="padding:7px 0">5 pontos</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    A fórmula que liga as colunas:
+    \(a_{\text{obs}} = \rho + (1 - \rho)\, a_{\text{real}}\)
+    - a acurácia observada é a fração vazada, acertada por memória, mais a fração limpa, acertada na taxa real. Com metade do teste vazado o número do relatório não quer dizer mais nada.
+  </p>
+
+  <p style="margin:0"><strong>Ponto notável</strong> - a inflação é linear em ρ, e por isso o vazamento pequeno é mais perigoso que o grande: o grande aparece na estreia e o pequeno passa.</p>
+</figure>

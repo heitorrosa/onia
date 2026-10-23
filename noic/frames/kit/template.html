@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<!--
+  NOIC frame kit — shell único.
+  O MathJax da página do WordPress NÃO entra no documento do iframe: cada frame
+  carrega o seu (mesmo CDN que o site já usa). Degradação: se o CDN não
+  responder, `kit.js` converte a matemática em texto legível.
+-->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+{{CSS}}
+</style>
+</head>
+<body>
+<script>
+{{JS}}
+</script>
+{{BODY}}
+</body>
+</html>

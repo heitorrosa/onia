@@ -1,0 +1,130 @@
+<!--title: A curva de treino e validação-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 4: a curva de treino e validação</p>
+  <h1>A curva de treino e validação</h1>
+  <p class="sub">Mova o controle e veja as três curvas: o acerto no treino, na validação limpa e na validação contaminada.</p>
+
+  <div class="sim one">
+    <div class="ctl">
+      <span class="name">registros no treino</span>
+      <span class="val" id="nv">250</span>
+      <input type="range" id="n" min="50" max="1000" step="50" value="250" aria-label="número de registros no treino">
+      <div class="scale"><span>50</span><span>1.000</span></div>
+    </div>
+  </div>
+
+  <div class="chart">
+    <svg viewBox="0 0 560 198" role="img" aria-label="acurácia de treino, validação limpa e validação contaminada em função do tamanho do treino">
+      <g id="gGrid"></g>
+      <polyline id="lTr" class="ln" points=""></polyline>
+      <polyline id="lVa" class="ln" points=""></polyline>
+      <polyline id="lCv" class="ln dash" points=""></polyline>
+      <line id="vMk" class="vline" x1="0" y1="12" x2="0" y2="166"></line>
+      <circle id="p1" class="pt" r="3.4"></circle>
+      <circle id="p2" class="pt" r="3.4"></circle>
+      <circle id="p3" class="pt" r="3.4"></circle>
+    </svg>
+  </div>
+
+  <div class="readout" style="margin-top:12px">
+    <span>com</span>
+    <b id="rn">250</b>
+    <span>no treino, acerta</span>
+    <b id="rt">98,0%</b>
+    <span>nele,</span>
+    <b id="rv">82,0%</b>
+    <span>na validação limpa e</span>
+    <b id="rc">93,0%</b>
+    <span>na contaminada.</span>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">o vazamento apaga a distância entre treino e validação. Uma curva de validação que encosta na de treino não é um modelo que aprendeu muito, é um teste que deixou de ser teste.</p>
+  </div>
+
+  <p class="foot">O estado é forma: a linha de cima é o treino, a de baixo é a validação limpa e a tracejada é a contaminada. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  // ancoras: n de treino, acuracia
+  var N = [50, 100, 250, 500, 1000];
+  var TR = [96.0, 97.0, 98.0, 98.7, 99.2];
+  var VA = [72.0, 77.0, 82.0, 84.5, 86.5];
+  var CV = [88.0, 90.5, 93.0, 94.2, 95.0];
+
+  var L = 46, R = 14, T = 12, B = 166;      // area do grafico
+  var LO = 60, HI = 100;                    // eixo y
+  var XL = Math.log10(50), XH = Math.log10(1000);
+
+  function px(n) { return L + (Math.log10(n) - XL) / (XH - XL) * (546 - L); }
+  function py(v) { return T + (HI - v) / (HI - LO) * (B - T); }
+  function pts(arr) { return N.map(function (n, i) { return px(n).toFixed(1) + ',' + py(arr[i]).toFixed(1); }).join(' '); }
+
+  document.getElementById('lTr').setAttribute('points', pts(TR));
+  document.getElementById('lVa').setAttribute('points', pts(VA));
+  document.getElementById('lCv').setAttribute('points', pts(CV));
+
+  // grade e eixo
+  var g = document.getElementById('gGrid');
+  var NS = 'http://www.w3.org/2000/svg';
+  [60, 70, 80, 90, 100].forEach(function (v) {
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', L); l.setAttribute('x2', 546);
+    l.setAttribute('y1', py(v).toFixed(1)); l.setAttribute('y2', py(v).toFixed(1));
+    l.setAttribute('class', 'grid');
+    g.appendChild(l);
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', L - 8); t.setAttribute('y', (py(v) + 4).toFixed(1));
+    t.setAttribute('text-anchor', 'end'); t.setAttribute('class', 'tick');
+    t.textContent = v + '%';
+    g.appendChild(t);
+  });
+  N.forEach(function (n) {
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', px(n).toFixed(1)); t.setAttribute('y', B + 16);
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'tick');
+    t.textContent = n;
+    g.appendChild(t);
+  });
+  var ax = document.createElementNS(NS, 'line');
+  ax.setAttribute('x1', L); ax.setAttribute('x2', 546);
+  ax.setAttribute('y1', B); ax.setAttribute('y2', B);
+  ax.setAttribute('class', 'ax');
+  g.appendChild(ax);
+
+  function interp(arr, n) {
+    if (n <= N[0]) return arr[0];
+    if (n >= N[N.length - 1]) return arr[arr.length - 1];
+    for (var i = 1; i < N.length; i++) {
+      if (n <= N[i]) {
+        var t = (n - N[i - 1]) / (N[i] - N[i - 1]);
+        return arr[i - 1] + t * (arr[i] - arr[i - 1]);
+      }
+    }
+    return arr[arr.length - 1];
+  }
+  function fmt(v) { return v.toFixed(1).replace('.', ',') + '%'; }
+
+  var el = document.getElementById('n');
+  function render() {
+    var n = Number(el.value);
+    var tr = interp(TR, n), va = interp(VA, n), cv = interp(CV, n);
+    var x = px(n).toFixed(1);
+    document.getElementById('vMk').setAttribute('x1', x);
+    document.getElementById('vMk').setAttribute('x2', x);
+    document.getElementById('p1').setAttribute('cx', x); document.getElementById('p1').setAttribute('cy', py(tr).toFixed(1));
+    document.getElementById('p2').setAttribute('cx', x); document.getElementById('p2').setAttribute('cy', py(va).toFixed(1));
+    document.getElementById('p3').setAttribute('cx', x); document.getElementById('p3').setAttribute('cy', py(cv).toFixed(1));
+    document.getElementById('nv').textContent = n;
+    document.getElementById('rn').textContent = n;
+    document.getElementById('rt').textContent = fmt(tr);
+    document.getElementById('rv').textContent = fmt(va);
+    document.getElementById('rc').textContent = fmt(cv);
+  }
+  el.addEventListener('input', render);
+  render();
+})();
+</script>

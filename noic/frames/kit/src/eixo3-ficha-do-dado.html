@@ -1,0 +1,134 @@
+<!--title: O que o modelo recebe de um registro-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 3: o que o modelo recebe</p>
+  <h1>O que o modelo recebe de um registro</h1>
+  <p class="sub">O mesmo registro, em três formatos. Em todos os casos, o que chega ao modelo é uma lista de números de tamanho fixo, e o nome da coluna não vai junto.</p>
+
+  <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px">
+    <button class="btn" type="button" data-k="tabela" aria-pressed="true">Tabela</button>
+    <button class="btn" type="button" data-k="imagem" aria-pressed="false">Imagem</button>
+    <button class="btn" type="button" data-k="texto" aria-pressed="false">Texto</button>
+  </div>
+
+  <div id="vis"></div>
+
+  <div class="readout" style="margin-top:16px">
+    <span>o modelo recebeu</span>
+    <b id="n">3</b>
+    <span id="noun">números</span>
+  </div>
+
+  <div class="eq">
+    <div id="vec">[0.16, 0.85, 0.30]</div>
+    <div class="cap" id="cap">Cada coluna virou um número, e o número foi reescalado (170 → 0.85). São duas operações: a coluna virou número, e o número mudou de escala. O modelo não viu o valor cru nem o nome "altura (cm)": recebeu 0.85, e não sabe o que aquilo é.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">a ingestão é uma função: o mesmo registro produz sempre o mesmo vetor. É por isso que o experimento dá para repetir, e é por isso que a função pode ser mudada sem que ninguém perceba.</p>
+  </div>
+
+  <p class="foot">O estado é forma: o botão do formato ativo ganha contorno e peso; a palavra fora do vocabulário ganha borda tracejada e opacidade menor. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  var vis = document.getElementById('vis');
+  var vec = document.getElementById('vec');
+  var cap = document.getElementById('cap');
+  var n = document.getElementById('n');
+  var noun = document.getElementById('noun');
+  var botoes = Array.prototype.slice.call(document.querySelectorAll('.btn[data-k]'));
+
+  /* ---- caso 1: tabela (estruturado) ------------------------------------ */
+  var COLS = ['idade', 'altura (cm)', 'horas de estudo', 'label'];
+  var ROW = ['16', '170', '3', '1'];
+  var VEC_T = ['0.16', '0.85', '0.30'];
+
+  function borda() { return 'border:1px solid currentColor;padding:6px 9px;'; }
+
+  function tabela() {
+    var h = '<table style="border-collapse:collapse;font-size:13px;width:100%;max-width:430px"><thead><tr>';
+    for (var i = 0; i < COLS.length; i++) {
+      h += '<th style="' + borda() + 'text-align:left;font-weight:600">' + COLS[i] + '</th>';
+    }
+    h += '</tr></thead><tbody><tr>';
+    for (var j = 0; j < ROW.length; j++) {
+      h += '<td style="' + borda() + '">' + ROW[j] + '</td>';
+    }
+    h += '</tr></tbody></table>';
+    h += '<p style="font-size:12.5px;margin:10px 0 0;opacity:.85">a linha vira <b>3</b> números (o label fica de fora) e o lote junta 32 linhas: <b>[32, 3]</b></p>';
+    return h;
+  }
+
+  /* ---- caso 2: imagem (não estruturado -> pixels) ---------------------- */
+  function imagem() {
+    var on = {};
+    for (var c = 8; c <= 20; c++) { on[5 * 28 + c] = 1; on[6 * 28 + c] = 1; }
+    for (var r = 7; r <= 21; r++) {
+      var col = Math.round(18 - (r - 7) * 0.47);
+      on[r * 28 + col] = 1;
+      if (col > 0) on[r * 28 + col - 1] = 1;
+    }
+    var h = '<div class="pxgrid" role="img" aria-label="imagem de 28 por 28 pixels">';
+    for (var i = 0; i < 784; i++) {
+      h += '<i class="' + (on[i] ? 'on' : '') + '"></i>';
+    }
+    h += '</div>';
+    h += '<p style="font-size:12.5px;margin:10px 0 0;opacity:.85">28 × 28 = <b>784</b> pixels; o lote de 32 imagens é <b>[32, 784]</b></p>';
+    return h;
+  }
+
+  /* ---- caso 3: texto (não estruturado -> tokens) ------------------------ */
+  var VOC = { a: 12, cidade: 4801, 'é': 7, um: 88, grande: 233, dado: 64, modelo: 91 };
+  var FRASE = ['a', 'cidade', 'é', 'um', 'porto', 'grande'];
+
+  function texto() {
+    var h = '<div style="display:flex;flex-wrap:wrap;gap:7px">';
+    var ids = [];
+    for (var i = 0; i < FRASE.length; i++) {
+      var w = FRASE[i];
+      var dentro = Object.prototype.hasOwnProperty.call(VOC, w);
+      var id = dentro ? VOC[w] : '<unk>';
+      ids.push(dentro ? String(VOC[w]) : '<unk>');
+      h += '<span class="tok' + (dentro ? '' : ' out') + '"><b>' + w + '</b><span>' + id + '</span></span>';
+    }
+    h += '</div>';
+    h += '<p style="font-size:12.5px;margin:10px 0 0;opacity:.85">um token por palavra: a frase tem <b>6</b> tokens, e o lote de 32 frases é <b>[32, 6]</b></p>';
+    return { html: h, ids: ids };
+  }
+
+  function render(k) {
+    var ids = null;
+    if (k === 'tabela') {
+      vis.innerHTML = tabela();
+      vec.textContent = '[' + VEC_T.join(', ') + ']';
+      cap.innerHTML = 'Cada coluna virou um número, e o número foi reescalado (170 → 0.85). São duas operações: a coluna virou número, e o número mudou de escala. O modelo não viu o valor cru nem o nome "altura (cm)": recebeu 0.85, e não sabe o que aquilo é.';
+      n.textContent = '3';
+      noun.textContent = 'números (e 1 label)';
+    } else if (k === 'imagem') {
+      vis.innerHTML = imagem();
+      vec.textContent = '[0.00, 0.00, 0.12, … 0.00]  (784 valores)';
+      cap.innerHTML = 'A imagem virou uma lista de <b>784</b> intensidades. O modelo viu os pixels; a foto, que tem gato, cachorro e o mundo, ficou do lado de fora da função.';
+      n.textContent = '784';
+      noun.textContent = 'números';
+    } else {
+      var t = texto();
+      vis.innerHTML = t.html;
+      vec.textContent = '[' + t.ids.join(', ') + ']';
+      cap.innerHTML = 'Cada token virou o índice dele no vocabulário. "porto" não está no vocabulário: virou <b>&lt;unk&gt;</b> , e 1 token e 5 letras valem o mesmo.';
+      n.textContent = '6';
+      noun.textContent = 'números';
+    }
+    botoes.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-k') === k ? 'true' : 'false');
+    });
+  }
+
+  botoes.forEach(function (b) {
+    b.addEventListener('click', function () { render(b.getAttribute('data-k')); });
+  });
+  render('tabela');
+})();
+</script>

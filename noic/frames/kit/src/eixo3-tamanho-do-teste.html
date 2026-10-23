@@ -1,0 +1,71 @@
+<!--title: O tamanho do teste-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 2: o tamanho do teste</p>
+  <h1>O tamanho do teste</h1>
+  <p class="sub">Mova o controle que mede quantos registros ficam no teste e veja a margem de erro da acurácia encolher com a raiz do número de registros.</p>
+
+  <div class="sim">
+    <div class="ctl">
+      <span class="name">registros no teste (n)</span>
+      <span class="val" id="nval">100</span>
+      <input type="range" id="n" min="50" max="10000" step="50" value="100" aria-label="número de registros no conjunto de teste">
+      <div class="scale"><span>50</span><span>10 mil</span></div>
+    </div>
+    <div class="gauge">
+      <div class="row">
+        <span class="name">margem</span>
+        <span class="bar"><i id="gm" style="width:20%"></i></span>
+        <span class="val" id="vm">±10,0</span>
+      </div>
+      <div class="row">
+        <span class="name">acurácia</span>
+        <span class="bar alt"><i id="ga" style="width:91%"></i></span>
+        <span class="val" id="va">91%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="readout" style="margin-top:14px">
+    <span>num teste de</span>
+    <b id="nro">100</b>
+    <span>registros, a acurácia de 91% pode ser de</span>
+    <b id="nrange">86% a 96%</b>
+  </div>
+
+  <div class="eq">
+    <div>\[m = 1{,}96\sqrt{\frac{p(1-p)}{n}}\]</div>
+    <div class="cap">leitura: a margem cai com a raiz do número de registros, então quadruplicar o teste corta a margem pela metade. Com p perto de 0,91 e 100 registros a margem é de 5,6 pontos, e com 10 mil é de 0,6 ponto. A acurácia de 91% num teste de 100 pode ser de 85 a 96 no mundo.</div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">a mesma acurácia significa coisas diferentes dependendo do tamanho do teste. A barra tracejada é a acurácia medida, e a margem é a faixa em que o número pode estar. Quem lê 91,3% num teste de 100 está lendo ruído disfarçado de precisão.</p>
+  </div>
+
+  <p class="foot">O estado é forma: a barra da margem é contínua e a da acurácia é tracejada e mais clara. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  var n = document.getElementById('n');
+
+  function render() {
+    var v = Number(n.value);
+    var se = 100 * Math.sqrt(0.91 * 0.09 / v);
+    var m = 1.96 * se;
+    var lo = Math.max(0, Math.floor(91 - m));
+    var hi = Math.min(100, Math.floor(91 + m));
+    document.getElementById('nval').textContent = v;
+    document.getElementById('nro').textContent = v;
+    document.getElementById('vm').textContent = '±' + m.toFixed(1).replace('.', ',');
+    document.getElementById('gm').style.width = Math.min(100, m * 2) + '%';
+    document.getElementById('va').textContent = '91%';
+    document.getElementById('ga').style.width = '91%';
+    document.getElementById('nrange').textContent = lo + '% a ' + hi + '%';
+  }
+
+  n.addEventListener('input', render);
+  render();
+})();
+</script>

@@ -1,0 +1,117 @@
+<!--title: A concordância entre anotadores-->
+<style>
+  .itens2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 12px; margin-top: 2px; }
+  .item2 { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px;
+           border-top: 1px solid currentColor; padding: 6px 0 2px; }
+  .item2 .txt { font-size: 11px; line-height: 1.35; }
+  .item2 .txt b { font-weight: 650; }
+  .item2 .meta { display: block; opacity: .6; }
+  .item2 .opts { display: flex; gap: 4px; }
+  .item2 .choice { width: auto; margin: 0; padding: 3px 6px; font-size: 11px; white-space: nowrap; }
+  @media (max-width: 520px) { .itens2 { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap">
+
+  <p class="kicker">Fig. 3: a concordância entre anotadores</p>
+  <h1>A concordância entre anotadores</h1>
+  <p class="sub" style="margin-bottom:8px">Você é o anotador A. Marque o label de cada item e o frame calcula o quanto você e o anotador B concordaram.</p>
+
+  <div class="itens2" id="itens"></div>
+
+  <div class="readout" style="margin-top:8px">
+    <span>concordância</span>
+    <b id="k">1</b>
+    <span>de 6 itens, <span id="pc">17%</span> (sem resposta: <span id="un">5</span>)</span>
+  </div>
+
+  <div class="eq" style="margin-top:8px">
+    <div>\[\displaystyle c = \frac{1}{n}\sum_{i=1}^{n}\mathbb{1}\left[y_i^{(a)} = y_i^{(b)}\right]\]</div>
+    <div class="cap">leitura: a concordância (inter-annotator agreement) é a fração dos itens em que o label do anotador A é igual ao do anotador B. Aqui <b>n = 6</b>, o número de itens anotados em dobro.</div>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <p class="label">Ponto notável</p>
+<p class="sub" style="margin:0">a discordância pode vir da instrução ambígua, do anotador desatento ou do item difícil: a concordância diz o quanto as duas pessoas leram igual, e não diz onde a coisa falhou.</p>
+  </div>
+
+  <p class="foot" style="margin-top:8px;font-size:10.5px">O estado é forma: o label que concorda fica em negrito, o que discorda fica com opacidade menor, e o glifo (✓ ou ✗) carrega o veredito. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  var ITENS = [
+    { t: 'tweet curto: "choveu o dia inteiro, perdi o ônibus"',
+      o: ['negativa', 'positiva'], b: 'negativa' },
+    { t: 'foto: "pôr do sol sobre o mar"',
+      o: ['positiva', 'negativa'], b: 'positiva' },
+    { t: 'raio-x do pulmão: "lesão no lobo superior"',
+      o: ['anormal', 'normal'], b: 'anormal' },
+    { t: 'notícia: "a cidade reduziu as internações"',
+      o: ['positiva', 'negativa'], b: 'positiva' },
+    { t: 'resenha: "comida boa, atendimento rápido"',
+      o: ['positiva', 'negativa'], b: 'positiva' },
+    { t: 'reclamação: "cobrança indevida de R$ 300"',
+      o: ['negativa', 'positiva'], b: 'negativa' }
+  ];
+
+  var resp = [null, null, null, null, null, null];
+  resp[0] = ITENS[0].b; /* o primeiro item já vem respondido */
+
+  var caixa = document.getElementById('itens');
+  var html = '';
+  for (var i = 0; i < ITENS.length; i++) {
+    html += '<div class="item2">';
+    html += '<div class="txt"><b>' + (i + 1) + '.</b> ' + ITENS[i].t +
+            '<span class="meta">anotador B: ' + ITENS[i].b + ' · você: <span id="st' + i + '">sem resposta</span></span></div>';
+    html += '<div class="opts">';
+    for (var j = 0; j < ITENS[i].o.length; j++) {
+      html += '<button class="choice" data-i="' + i + '" data-l="' + ITENS[i].o[j] + '"><span class="mark">·</span>' + ITENS[i].o[j] + '</button>';
+    }
+    html += '</div></div>';
+  }
+  caixa.innerHTML = html;
+
+  var botoes = caixa.querySelectorAll('.choice');
+
+  function render() {
+    var concord = 0, sem = 0;
+    for (var i = 0; i < ITENS.length; i++) {
+      var a = resp[i];
+      if (a === null) sem++; else if (a === ITENS[i].b) concord++;
+      var st = document.getElementById('st' + i);
+      if (st) st.textContent = (a === null) ? 'sem resposta' : a;
+    }
+    for (var k = 0; k < botoes.length; k++) {
+      var b = botoes[k];
+      var i2 = Number(b.getAttribute('data-i'));
+      var l = b.getAttribute('data-l');
+      b.removeAttribute('data-verdict');
+      b.removeAttribute('aria-pressed');
+      b.querySelector('.mark').textContent = '·';
+      if (resp[i2] !== null) {
+        b.setAttribute('aria-pressed', 'true');
+        if (l === resp[i2]) {
+          b.setAttribute('data-verdict', 'right');
+          b.querySelector('.mark').textContent = '✓';
+        } else {
+          b.setAttribute('data-verdict', 'wrong');
+          b.querySelector('.mark').textContent = '✗';
+        }
+      }
+    }
+    document.getElementById('k').textContent = String(concord);
+    document.getElementById('pc').textContent = Math.round(concord / ITENS.length * 100) + '%';
+    document.getElementById('un').textContent = String(sem);
+  }
+
+  for (var m = 0; m < botoes.length; m++) {
+    botoes[m].addEventListener('click', function () {
+      var i = Number(this.getAttribute('data-i'));
+      resp[i] = this.getAttribute('data-l');
+      render();
+    });
+  }
+
+  render();
+})();
+</script>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOIC — revisão do kit de frames (largura real do site)</title>
+<!--
+  Harness de REVISÃO do kit. Não vai para o WordPress.
+
+  Por que existe: a coluna de conteúdo do tema NOIC tem 620px (medido no CSS
+  do site). Um frame projetado numa janela de 1100px esconde o que o aluno
+  vai ver. Aqui cada frame aparece na largura real, dentro de uma coluna
+  com a tipografia do site (Cardo nos títulos, Inter no corpo) — e logo abaixo
+  o gêmeo estático (o que o leitor leva se o JS falhar).
+
+  E, embaixo, o VOCABULÁRIO do theme.css renderizado: todos os componentes
+  que um frame pode usar, vivos, para você mexer em theme.css e recarregar
+  esta página.
+
+  O harness pinta a página como o site (fundo branco, tinta escura) para a
+  conferência ser honesta; o FRAME dentro dele não declara cor nenhuma — é
+  a regra do kit. O harness não vai para o WordPress.
+
+  Uso:  python -m http.server 8792 --bind 127.0.0.1 --directory noic\_exploracao\classes\kit
+        abra http://127.0.0.1:8792/preview.html
+-->
+<link rel="stylesheet" href="theme.css">
+<style>
+  body {
+    margin: 0; padding: 32px 16px 96px;
+    background: #fff; color: #1b1c1e;
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  h1 { font-family: Cardo, Georgia, serif; font-size: 28px; margin: 0 0 4px; font-weight: 600; }
+  h2 { font-family: Cardo, Georgia, serif; font-size: 20px; margin: 0 0 6px; font-weight: 600; }
+  .note { max-width: 620px; color: #55585e; font-size: 14px; margin: 0 0 40px; }
+  .col { max-width: 620px; margin: 0 auto 56px; }
+  .col > h2 { margin-bottom: 14px; }
+  .frame iframe { width: 100%; height: 1400px; border: 1px solid #e2e4e7; border-radius: 8px; display: block; }
+  .twin { margin: 12px 0 0; font-size: 15px; }
+  .twin figcaption { color: #55585e; font-size: 13px; }
+  .demo { border: 1px solid #e2e4e7; border-radius: 8px; padding: 18px 20px; }
+  .demo + .demo { margin-top: 14px; }
+  .demo > .label { margin-top: 0; }
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 720px) { .cols2 { grid-template-columns: 1fr; } }
+</style>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+
+<h1>Revisão do kit de frames</h1>
+<p class="note">
+  Tudo aqui está na <b>largura real do conteúdo do NOIC (620px)</b> — a mesma que
+  o WordPress vai dar. Topo: o frame de referência e o gêmeo estático logo abaixo.
+  Depois: o <b>vocabulário</b> do <code>theme.css</code>, vivo, para você ajustar
+  tokens e componentes e recarregar esta página. Para editar a forma, mexa em
+  <code>kit/theme.css</code>; o <code>build.js</code> recoloca o CSS em cada frame.
+</p>
+
+<!-- ============================ FRAME ============================ -->
+<div class="col">
+  <h2>1 · O frame e o gêmeo</h2>
+  <div class="frame">
+    <iframe src="dist/exemplo-rubrica.html" title="Do prompt vago ao prompt verificável" loading="lazy"></iframe>
+  </div>
+  <div class="twin" id="twin"></div>
+</div>
+
+<!-- ========================== VOCABULÁRIO ========================== -->
+<div class="col">
+  <h2>2 · Vocabulário do <code>theme.css</code> (vivo)</h2>
+  <p class="note" style="margin-bottom:18px">
+    Cada bloco abaixo é um componente real do kit. A forma do frame é
+    <b>um lugar só</b>: <code>kit/theme.css</code>.
+  </p>
+
+  <div class="demo">
+    <p class="kicker">Fig. N — arquétipo A</p>
+    <h1 style="font-size:17px">Título do frame</h1>
+    <p class="sub">Subtítulo: uma frase que diz o que o aluno deve notar.</p>
+
+    <div class="card card--flat">
+      <p class="label">Leitura de número</p>
+      <div class="readout"><b>42</b><span>/ 100 critérios</span></div>
+      <div class="bar" style="margin-top:8px"><i style="width:42%"></i></div>
+      <div class="legend">
+        <span><i class="dot on"></i>dentro</span>
+        <span><i class="dot"></i>fora</span>
+      </div>
+    </div>
+
+    <div class="eq">
+      <div>\(\displaystyle \operatorname{score}(p)=\frac{1}{k}\sum_{i=1}^{k}\mathbb{1}\!\left[c_i(p)\right]\)</div>
+      <div class="cap">\(k\) = número de critérios que a classe se compromete a verificar.</div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <p class="label">Controle + o que responde (arquétipo A)</p>
+    <div class="sim">
+      <div class="ctl">
+        <span class="name">fração do grupo no treino — <b id="qval">20%</b></span>
+        <input type="range" id="q" min="0" max="100" value="20">
+        <div class="scale"><span>0%</span><span>50%</span><span>100%</span></div>
+      </div>
+      <div class="gauge">
+        <div class="row">
+          <span class="name">geral</span>
+          <span class="bar"><i id="g1" style="width:88%"></i></span>
+          <span class="val" id="v1">88%</span>
+        </div>
+        <div class="row">
+          <span class="name">grupo</span>
+          <span class="bar alt"><i id="g2" style="width:40%"></i></span>
+          <span class="val" id="v2">40%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <p class="label">Escolha única com veredito (arquétipo C)</p>
+    <button class="choice" data-verdict="right"><span class="mark">✓</span>Critério verificável por um terceiro</button>
+    <button class="choice" data-verdict="wrong"><span class="mark">✗</span>"Resposta boa"</button>
+    <button class="choice"><span class="mark">·</span>Ainda não escolhida</button>
+    <p class="verdict"><b>Certo:</b> a marca é o glifo e o peso — nunca a cor.</p>
+  </div>
+
+  <div class="demo">
+    <p class="label">Lista de critérios (checkbox)</p>
+    <div class="list">
+      <label><input type="checkbox" checked><span><b>Papel explícito</b><span class="k">para quem é, com que vocabulário</span></span></label>
+      <label><input type="checkbox"><span><b>Limite explícito</b><span class="k">o que NÃO fazer</span></span></label>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+      <button class="btn">Botão</button>
+      <button class="btn ghost">Botão fantasma</button>
+    </div>
+  </div>
+
+  <div class="demo">
+    <p class="label">Diagrama (arquétipo B e D)</p>
+    <svg class="flow" viewBox="0 0 380 200" role="img" aria-label="Fluxo de etapas">
+      <path class="arrow" id="v1a" d="M108 42 H 272" marker-end="url(#vmark)"/>
+      <path class="arrow" id="v2a" d="M300 68 V 130" marker-end="url(#vmark)"/>
+      <defs>
+        <marker id="vmark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path class="mk" d="M0 0 L10 5 L0 10 z"/>
+        </marker>
+      </defs>
+      <g id="vn0"><rect class="node" x="20" y="20" width="88" height="42" rx="9"/><text class="nlabel" x="64" y="38">Especificar</text><text class="nsub" x="64" y="52">critérios</text></g>
+      <g id="vn1"><rect class="node" x="272" y="20" width="88" height="42" rx="9"/><text class="nlabel" x="316" y="38">Gerar</text><text class="nsub" x="316" y="52">saída</text></g>
+      <g id="vn2"><rect class="node" x="272" y="138" width="88" height="42" rx="9"/><text class="nlabel" x="316" y="156">Criticar</text><text class="nsub" x="316" y="170">contra o critério</text></g>
+    </svg>
+  </div>
+
+  <div class="demo">
+    <p class="label">Mapa mental clicável (arquétipo D)</p>
+    <svg class="flow mind" viewBox="0 0 380 210" role="img" aria-label="Mapa mental: 4 vértices ligados a um centro">
+      <path class="link" id="ml0" d="M150 80 L 130 56"/>
+      <path class="link" id="ml1" d="M230 80 L 250 56"/>
+      <path class="link" id="ml2" d="M150 124 L 130 156"/>
+      <path class="link" id="ml3" d="M230 124 L 250 156"/>
+      <g id="mc"><rect class="vtx" x="150" y="80" width="80" height="44" rx="9"/><text class="vlabel" x="190" y="98">O que a aula</text><text class="vlabel" x="190" y="113">ensina</text></g>
+      <g id="mv0" tabindex="0" role="button" aria-label="Vértice 1"><rect class="vtx" x="20" y="16" width="110" height="40" rx="9"/><text class="vlabel" x="75" y="33">Especificar</text><text class="vsub" x="75" y="47">os critérios</text></g>
+      <g id="mv1" tabindex="0" role="button" aria-label="Vértice 2"><rect class="vtx" x="250" y="16" width="110" height="40" rx="9"/><text class="vlabel" x="305" y="33">Gerar</text><text class="vsub" x="305" y="47">a saída</text></g>
+      <g id="mv2" tabindex="0" role="button" aria-label="Vértice 3"><rect class="vtx" x="20" y="156" width="110" height="40" rx="9"/><text class="vlabel" x="75" y="173">Criticar</text><text class="vsub" x="75" y="187">contra o critério</text></g>
+      <g id="mv3" tabindex="0" role="button" aria-label="Vértice 4"><rect class="vtx" x="250" y="156" width="110" height="40" rx="9"/><text class="vlabel" x="305" y="173">Refinar</text><text class="vsub" x="305" y="187">o prompt</text></g>
+    </svg>
+    <p class="verdict" id="mindmsg">Clique num vértice: o vértice e a ligação acendem.</p>
+  </div>
+
+  <div class="demo">
+    <p class="foot" style="margin-top:0">Rodapé: uma frase sobre o que o frame é e o que o aluno deve levar. <b>Negrito</b> marca o essencial.</p>
+  </div>
+</div>
+
+<script src="kit.js"></script>
+<script>
+/* gêmeo estático do frame de referência (vive em estatico/) */
+fetch('estatico/exemplo-rubrica-estatico.html')
+  .then(function (r) { return r.ok ? r.text() : null; })
+  .then(function (t) { if (t) document.getElementById('twin').innerHTML = t; })
+  .catch(function () { /* sem servidor: o gêmeo não carrega, e tudo bem */ });
+
+/* demo do arquétipo A: 1 controle, 2 barras que respondem */
+var q = document.getElementById('q');
+function sim() {
+  var p = Number(q.value) / 100;
+  var geral = 80 + 15 * p;                 /* acurácia geral sobe */
+  var grupo = 10 + 60 * Math.pow(p, 0.7);  /* acurácia do grupo sobe mais devagar */
+  document.getElementById('qval').textContent = q.value + '%';
+  document.getElementById('g1').style.width = geral + '%';
+  document.getElementById('g2').style.width = grupo + '%';
+  document.getElementById('v1').textContent = Math.round(geral) + '%';
+  document.getElementById('v2').textContent = Math.round(grupo) + '%';
+}
+q.addEventListener('input', sim);
+sim();
+
+/* demo do diagrama: o nó ativo acende por forma (traço + preenchimento) */
+if (window.NOIC) {
+  var STEPS = [['vn0', 'v1a'], ['vn1', 'v2a'], ['vn2', null]];
+  var step = 0;
+  NOIC.highlight(STEPS, 0);
+  setInterval(function () { step = (step + 1) % STEPS.length; NOIC.highlight(STEPS, step); },
+             NOIC.reducedMotion ? 4000 : 1800);
+}
+
+/* demo do mapa mental (arquétipo D): clicar num vértice acende ele e a ligação */
+(function () {
+  var pairs = [['mv0', 'ml0'], ['mv1', 'ml1'], ['mv2', 'ml2'], ['mv3', 'ml3']];
+  var msg = document.getElementById('mindmsg');
+  function pick(i) {
+    pairs.forEach(function (p, j) {
+      var v = document.getElementById(p[0]).querySelector('.vtx');
+      var l = document.getElementById(p[1]);
+      v.classList.toggle('on', j === i);
+      l.classList.toggle('on', j === i);
+    });
+    msg.innerHTML = '<b>' + document.getElementById(pairs[i][0]).querySelector('.vlabel').textContent +
+                    '</b> — vértice e ligação acesos; o resto continua vazado.';
+  }
+  pairs.forEach(function (p, i) {
+    var g = document.getElementById(p[0]);
+    g.addEventListener('click', function () { pick(i); });
+    g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i); } });
+  });
+  pick(0);
+})();
+</script>
+
+</body>
+</html>

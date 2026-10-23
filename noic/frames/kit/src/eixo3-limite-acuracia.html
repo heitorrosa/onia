@@ -1,0 +1,68 @@
+<!--title: O limite de acurácia-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 4: o limite de acurácia</p>
+  <h1>O limite de acurácia</h1>
+<p class="sub">Mova o controle que mede a fração de labels errados e veja o teto que o dado impõe sobre a acurácia de um modelo que acerta o mundo.</p>
+
+  <div class="sim">
+    <div class="ctl">
+      <span class="name">fração de labels errados (ε)</span>
+      <span class="val" id="epsval">10%</span>
+      <input type="range" id="eps" min="0" max="20" step="1" value="10" aria-label="fração de labels errados em porcentagem">
+      <div class="scale"><span>0%</span><span>20%</span></div>
+    </div>
+    <div class="gauge">
+      <div class="row">
+        <span class="name">teto do dado</span>
+        <span class="bar"><i id="gteto" style="width:90%"></i></span>
+        <span class="val" id="vteto">90%</span>
+      </div>
+      <div class="row">
+        <span class="name">acurácia do modelo</span>
+        <span class="bar alt"><i id="gmod" style="width:87%"></i></span>
+        <span class="val" id="vmod">87%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="readout" style="margin-top:14px">
+    <span>ε, labels errados</span>
+    <b id="epsro">10%</b>
+    <span>δ, erro do modelo: 3 pontos fixos</span>
+  </div>
+
+  <div class="eq">
+    <div>\[\text{acurácia} \le 1 - \varepsilon\]</div>
+<div class="cap">leitura: o teto é do dado, e vale para quem acerta o mundo. Com ε = 10% de labels errados, mesmo o modelo perfeito (δ = 0) chega a 90% de acurácia, e um modelo com δ = 3 pontos de erro próprio chega a 87% no pior caso. Um modelo que aprende o erro dos anotadores passa do teto, e aí a acurácia alta está medindo o erro.</div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <p class="label">Ponto notável</p>
+<p class="sub" style="margin:0">com 10% de labels errados, mesmo um modelo perfeito chega a 90% de acurácia: o erro do dado é um teto, não um detalhe. Quem passa do teto aprendeu o erro.</p>
+  </div>
+
+  <p class="foot">O estado é forma: a barra do teto do dado é contínua e cheia, a do modelo é tracejada e mais clara. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  var eps = document.getElementById('eps');
+  var DELTA = 3; /* δ: erro do modelo, fixo em 3 pontos */
+
+  function render() {
+    var e = Number(eps.value);
+    var teto = 100 - e;
+    var modelo = teto - DELTA;
+    document.getElementById('epsval').textContent = e + '%';
+    document.getElementById('epsro').textContent = e + '%';
+    document.getElementById('gteto').style.width = teto + '%';
+    document.getElementById('gmod').style.width = modelo + '%';
+    document.getElementById('vteto').textContent = teto + '%';
+    document.getElementById('vmod').textContent = modelo + '%';
+  }
+
+  eps.addEventListener('input', render);
+  render();
+})();
+</script>

@@ -1,0 +1,65 @@
+<!--title: A curva de treino e validação-->
+<!--
+  Gêmeo estático do frame `eixo3-curva-treino-val.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o cursor vira tabela, e a tabela mostra as três curvas.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+
+  NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
+  navegador ele aparece com acentos quebrados, porque não tem <meta charset>:
+  na página do WordPress (UTF-8) ele renderiza certo.
+-->
+<figure class="noic-frame-static">
+<figcaption><strong>Fig. 4</strong> (versão estática): o acerto no treino, na validação limpa e na validação contaminada, em função do tamanho do treino.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">Registros no treino</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Treino</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Validação limpa</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">Validação contaminada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">50</td>
+        <td style="padding:7px 8px 7px 0">96,0%</td>
+        <td style="padding:7px 8px 7px 0">72,0%</td>
+        <td style="padding:7px 0">88,0%</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">100</td>
+        <td style="padding:7px 8px 7px 0">97,0%</td>
+        <td style="padding:7px 8px 7px 0">77,0%</td>
+        <td style="padding:7px 0">90,5%</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">250</td>
+        <td style="padding:7px 8px 7px 0">98,0%</td>
+        <td style="padding:7px 8px 7px 0">82,0%</td>
+        <td style="padding:7px 0">93,0%</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">500</td>
+        <td style="padding:7px 8px 7px 0">98,7%</td>
+        <td style="padding:7px 8px 7px 0">84,5%</td>
+        <td style="padding:7px 0">94,2%</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 8px 7px 0">1.000</td>
+        <td style="padding:7px 8px 7px 0">99,2%</td>
+        <td style="padding:7px 8px 7px 0">86,5%</td>
+        <td style="padding:7px 0">95,0%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    A conta da distância entre as curvas:
+    \(\text{distância} = a_{\text{treino}} - a_{\text{validação}}\)
+    - com 50 registros a validação limpa fica 24 pontos atrás do treino, e a contaminada fica 8; com 1.000, a distância da limpa cai para 12,7 e a da contaminada para 4,2.
+  </p>
+
+  <p style="margin:0"><strong>Ponto notável</strong> - o vazamento não levanta só o número: ele apaga a distância. Uma curva de validação que encosta na de treino não é um modelo que aprendeu muito, é um teste que deixou de ser teste.</p>
+</figure>

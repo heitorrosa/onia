@@ -1,0 +1,74 @@
+<!--title: A concordância entre anotadores-->
+<!--
+  Gêmeo estático do frame `eixo3-concordancia-anotadores.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o clique vira tabela, e a tabela mostra o veredito.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+
+  NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
+  navegador ele aparece com acentos quebrados, porque não tem <meta charset>:
+  na página do WordPress (UTF-8) ele renderiza certo.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 3</strong> (versão estática): seis itens anotados em dobro, pelo anotador A e pelo anotador B, e o quanto os dois concordaram.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:5px 8px 5px 0;font-weight:600">Item</th>
+        <th style="padding:5px 8px 5px 0;font-weight:600">Anotador A</th>
+        <th style="padding:5px 8px 5px 0;font-weight:600">Anotador B</th>
+        <th style="padding:5px 0 5px 0;font-weight:600">Concordou</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:5px 8px 5px 0">tweet curto: "choveu o dia inteiro, perdi o ônibus"</td>
+        <td style="padding:5px 8px 5px 0">negativa</td>
+        <td style="padding:5px 8px 5px 0">negativa</td>
+        <td style="padding:5px 0">✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:5px 8px 5px 0">foto: "pôr do sol sobre o mar"</td>
+        <td style="padding:5px 8px 5px 0">negativa</td>
+        <td style="padding:5px 8px 5px 0">positiva</td>
+        <td style="padding:5px 0">✗</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:5px 8px 5px 0">raio-x do pulmão: "lesão no lobo superior"</td>
+        <td style="padding:5px 8px 5px 0">normal</td>
+        <td style="padding:5px 8px 5px 0">anormal</td>
+        <td style="padding:5px 0">✗</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:5px 8px 5px 0">notícia: "a cidade reduziu as internações"</td>
+        <td style="padding:5px 8px 5px 0">positiva</td>
+        <td style="padding:5px 8px 5px 0">positiva</td>
+        <td style="padding:5px 0">✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:5px 8px 5px 0">resenha: "comida boa, atendimento rápido"</td>
+        <td style="padding:5px 8px 5px 0">positiva</td>
+        <td style="padding:5px 8px 5px 0">positiva</td>
+        <td style="padding:5px 0">✓</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 8px 5px 0">reclamação: "cobrança indevida de R$ 300"</td>
+        <td style="padding:5px 8px 5px 0">negativa</td>
+        <td style="padding:5px 8px 5px 0">negativa</td>
+        <td style="padding:5px 0">✓</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    <strong>Concordância: 4 de 6 itens, 67%.</strong>
+    A fórmula que liga as colunas:
+    \(\displaystyle c = \frac{1}{n}\sum_{i=1}^{n}\mathbb{1}\left[y_i^{(a)} = y_i^{(b)}\right]\)
+    - a concordância (inter-annotator agreement) é a fração dos itens em que o label do anotador A é igual ao do anotador B. Aqui n = 6, o número de itens anotados em dobro.
+  </p>
+
+<p style="margin:0 0 .6em"><strong>Ponto notável</strong> - a discordância pode vir da instrução ambígua, do anotador desatento ou do item difícil: a concordância diz o quanto as duas pessoas leram igual, e não diz onde a coisa falhou.</p>
+
+  <p style="margin:0">Quando a concordância está baixa, a primeira pergunta não é "quem anotou errado", e sim "o que se pediu".</p>
+</figure>

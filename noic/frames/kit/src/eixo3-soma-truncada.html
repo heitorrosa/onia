@@ -1,0 +1,70 @@
+<!--title: A soma truncada-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 2: a soma truncada</p>
+  <h1>A soma truncada</h1>
+  <p class="sub">O dataset é a soma dos registros que foram coletados. Move o cursor: quem não foi coletado não existe para o modelo.</p>
+
+  <div class="sim">
+    <div class="ctl">
+      <span class="name">coletei de</span>
+      <span class="val" id="qval">100 de 1.000</span>
+      <input type="range" id="q" min="1" max="1000" step="1" value="100" aria-label="quantos registros foram coletados">
+      <div class="scale"><span>1</span><span>500</span><span>1.000</span></div>
+    </div>
+    <div class="gauge">
+      <div class="row">
+        <span class="name">população</span>
+        <span class="bar"><i style="width:100%"></i></span>
+        <span class="val">1.000</span>
+      </div>
+      <div class="row">
+        <span class="name">coletado</span>
+        <span class="bar alt"><i id="gcol" style="width:10%"></i></span>
+        <span class="val" id="vcol">100</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="readout">
+    <span>o modelo viu</span>
+    <b id="n">100</b>
+    <span>registros de 1.000</span>
+  </div>
+
+  <div class="eq">
+    <div>\(\displaystyle D = \sum_{i \in S} r_i, \qquad S \subset \text{universo}\)</div>
+    <div class="cap">o dataset é a soma de um subconjunto: quem ficou de fora não entra na conta.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">se a coleta foi de 100%, ainda pode faltar quem nunca foi procurado.</p>
+  </div>
+
+  <p class="foot">O estado é forma: o valor numérico e o contorno dizem o que está ativo. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var qval = document.getElementById('qval');
+  var gcol = document.getElementById('gcol');
+  var vcol = document.getElementById('vcol');
+  var n = document.getElementById('n');
+
+  /* 1000 em português: ponto de milhar */
+  function mil(x) { return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+  function render() {
+    var v = Number(q.value);
+    qval.textContent = mil(v) + ' de 1.000';
+    gcol.style.width = (v / 10) + '%';
+    vcol.textContent = mil(v);
+    n.textContent = mil(v);
+  }
+
+  q.addEventListener('input', render);
+  render();
+})();
+</script>

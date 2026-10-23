@@ -1,0 +1,139 @@
+<!--title: Do prompt vago ao prompt verificável-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 1: exemplo de frame</p>
+  <h1>Do prompt vago ao prompt verificável</h1>
+  <p class="sub">Marque os critérios que a sua resposta terá de satisfazer. O que não tem critério não pode ser avaliado — e o que não pode ser avaliado não pode ser melhorado.</p>
+
+  <div class="grid">
+
+    <!-- esquerda: o prompt e os critérios -->
+    <div>
+      <div class="card card--flat">
+        <p class="label">Prompt</p>
+        <textarea id="p" spellcheck="false" rows="7">Resuma o texto abaixo para o aluno do 3º ano do ensino médio, com vocabulário acessível e exemplos do cotidiano, em aproximadamente 200 palavras, e indique quais afirmações dependem de dados externos ao texto.</textarea>
+
+        <p class="label" style="margin-top:16px">Critérios de aceitação</p>
+        <div class="list" id="crits"></div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn" id="apply">Aplicar critérios no prompt</button>
+          <button class="btn ghost" id="reset">Voltar ao vago</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- direita: leitura + ciclo -->
+    <div>
+      <div class="card">
+        <p class="label">Verificabilidade</p>
+        <div class="readout"><b id="sc">0</b><span id="scl">/ 0 critérios declarados</span></div>
+        <div class="bar" style="margin-top:8px"><i id="barfill"></i></div>
+        <div class="legend" id="leg"></div>
+
+        <div class="eq">
+          <div id="eqtex">\(\displaystyle \operatorname{score}(p)=\frac{1}{k}\sum_{i=1}^{k}\mathbb{1}\!\left[c_i(p)\right]\)</div>
+          <div class="cap" id="eqcap">\(k\) = número de critérios que a classe se compromete a verificar. Sem \(k\) explícito, qualquer "resposta boa" é opinião.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="label">Ciclo de trabalho</p>
+        <svg class="flow" viewBox="0 0 380 210" role="img" aria-label="Ciclo: Especificar, Gerar, Criticar, Refinar">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path class="mk" d="M0 0 L10 5 L0 10 z"/>
+            </marker>
+          </defs>
+          <path class="arrow" id="a1" d="M108 42 H 272" marker-end="url(#ah)"/>
+          <path class="arrow" id="a2" d="M300 68 V 130" marker-end="url(#ah)"/>
+          <path class="arrow" id="a3" d="M272 160 H 108" marker-end="url(#ah)"/>
+          <path class="arrow loop" id="a4" d="M20 159 H 10 V 41 H 17" marker-end="url(#ah)"/>
+          <g id="n0"><rect class="node" x="20" y="20" width="88" height="42" rx="9"/><text class="nlabel" x="64" y="38">Especificar</text><text class="nsub" x="64" y="52">critérios</text></g>
+          <g id="n1"><rect class="node" x="272" y="20" width="88" height="42" rx="9"/><text class="nlabel" x="316" y="38">Gerar</text><text class="nsub" x="316" y="52">saída</text></g>
+          <g id="n2"><rect class="node" x="272" y="138" width="88" height="42" rx="9"/><text class="nlabel" x="316" y="156">Criticar</text><text class="nsub" x="316" y="170">contra o critério</text></g>
+          <g id="n3"><rect class="node" x="20" y="138" width="88" height="42" rx="9"/><text class="nlabel" x="64" y="156">Refinar</text><text class="nsub" x="64" y="170">o prompt</text></g>
+          <text class="nsub" x="190" y="24" style="font-style:italic">o que a aula treina</text>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="foot">Este frame existe para mostrar o <b>frame sem cor declarada</b>: nenhuma cor é definida aqui dentro — só a tinta do navegador e opacidades. O estado é marcado por forma (traço mais grosso, ponto cheio, peso do tipo) e por glifo (✓ / ✗), nunca por cor. E o resultado é lido em número, como no caderno.</p>
+</div>
+
+<script>
+(function () {
+  var CRITS = [
+    { id: 'papel',  label: 'Papel explícito',           hint: 'para quem é, com que vocabulário', add: 'Você é um professor de Física do 3º ano do ensino médio, especialista em Eletrodinâmica, que explica conceitos com rigor mas com vocabulário acessível.' },
+    { id: 'tarefa', label: 'Tarefa única e delimitada',  hint: 'um verbo, um entregável',           add: 'Tarefa: reescreva o texto como um resumo estruturado.' },
+    { id: 'tom',    label: 'Formato de saída',           hint: 'seções, tamanho, suporte visual',   add: 'Formato de saída: 4 seções (o que é, por que importa, analogia do cotidiano, o que confunde), até 200 palavras, 1 analogia e 0 fórmulas.' },
+    { id: 'fonte',  label: 'Critério de fidelidade',     hint: 'como sei que está certo',           add: 'Critério de fidelidade: toda afirmação factual deve ser rastreável a um trecho do texto; se não for, marque como [não informado].' },
+    { id: 'limite', label: 'Limite explícito',           hint: 'o que NÃO fazer',                   add: 'Limite: não invente exemplos, números ou definições que não estejam no texto.' }
+  ];
+
+  var state = Object.create(null);
+  var box = document.getElementById('crits');
+  var ta = document.getElementById('p');
+  var BASE = ta.value;
+
+  CRITS.forEach(function (c) {
+    var l = document.createElement('label');
+    l.innerHTML = '<input type="checkbox" data-id="' + c.id + '"><span><b>' + c.label + '</b><span class="k">' + c.hint + '</span></span>';
+    box.appendChild(l);
+    l.querySelector('input').addEventListener('change', function (e) {
+      state[c.id] = e.target.checked;
+      render();
+    });
+  });
+
+  var sc = document.getElementById('sc');
+  var scl = document.getElementById('scl');
+  var fill = document.getElementById('barfill');
+  var leg = document.getElementById('leg');
+  var eqcap = document.getElementById('eqcap');
+
+  function on() { return CRITS.filter(function (c) { return state[c.id]; }); }
+
+  function render() {
+    var list = on();
+    var k = list.length;
+    var total = CRITS.length;
+    fill.style.width = (k / total * 100) + '%';
+    sc.textContent = k;
+    scl.textContent = k
+      ? '/ ' + k + ' critérios declarados — a saída agora pode ser verificada'
+      : '/ 0 critérios declarados — o prompt ainda não é auditável';
+    leg.innerHTML = CRITS.map(function (c) {
+      return '<span><i class="dot' + (state[c.id] ? ' on' : '') + '"></i>' + c.label + '</span>';
+    }).join('');
+    eqcap.innerHTML = k
+      ? 'Com \\(k = ' + k + '\\) critérios explícitos, a avaliação deixa de ser gosto e vira contagem: \\(\\operatorname{score}(p)=\\frac{1}{' + k + '}\\sum_{i=1}^{' + k + '}\\mathbb{1}[c_i(p)]\\). Cada \\(c_i\\) é verificável por um terceiro.'
+      : '\\(k\\) = número de critérios que a classe se compromete a verificar. Sem \\(k\\) explícito, qualquer "resposta boa" é opinião.';
+  }
+
+  document.getElementById('apply').addEventListener('click', function () {
+    var list = on();
+    ta.value = list.length ? list.map(function (c) { return c.add; }).join('\n\n') + '\n\n' + BASE : BASE;
+    ta.focus();
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    Object.keys(state).forEach(function (k) { delete state[k]; });
+    box.querySelectorAll('input').forEach(function (i) { i.checked = false; });
+    ta.value = BASE;
+    render();
+  });
+
+  /* ciclo animado do diagrama de etapas */
+  var steps = [['n0', 'a1'], ['n1', 'a2'], ['n2', 'a3'], ['n3', 'a4']];
+  var idx = 0;
+  NOIC.cycle(function () {
+    NOIC.highlight(steps, idx);
+    idx = (idx + 1) % steps.length;
+  }, 1600);
+
+  render();
+})();
+</script>

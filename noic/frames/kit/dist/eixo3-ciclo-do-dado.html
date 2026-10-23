@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O ciclo de vida do dado</title>
+<!--
+  NOIC frame kit — shell único.
+  O MathJax da página do WordPress NÃO entra no documento do iframe: cada frame
+  carrega o seu (mesmo CDN que o site já usa). Degradação: se o CDN não
+  responder, `kit.js` converte a matemática em texto legível.
+-->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+/* ============================================================================
+   NOIC FRAME KIT — frame SEM cor definida
+   ----------------------------------------------------------------------------
+   REGRA: o frame não declara NENHUMA cor. Zero hex, zero rgb(), zero nome de
+   cor. Tudo o que aparece sai de `currentColor` (a tinta do próprio navegador)
+   e de opacidades. A cor de acento da classe pertence à PÁGINA (WordPress),
+   nunca ao frame.
+
+   Estado interativo é marcado por FORMA, nunca por matiz:
+     · glifo (✓ / ✗) + texto
+     · peso da fonte
+     · contorno (outline) e borda
+     · preenchido vs. vazado (o ponto da legenda, a barra)
+   ========================================================================== */
+
+:root {
+  /* métrica (aqui não há cor nenhuma) ------------------------------------ */
+  --r:      8px;          /* raio padrão */
+  --r-sm:   5px;
+  --gap:    14px;
+  --pad:    14px;
+  --fs:     15px;         /* corpo */
+  --fs-sm:  13px;
+  --fs-xs:  11.5px;       /* micro-rótulo */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;   /* o frame se mistura com a página */
+  color: inherit;            /* tinta padrão do navegador (o site do NOIC é branco) */
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 16px 22px;
+}
+
+/* --- micro-rótulo: o "Em que C é coulomb" do frame ---------------------- */
+.label,
+.kicker {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 700;
+  opacity: .6;
+  margin: 0 0 8px;
+}
+.kicker { margin: 0 0 3px; }
+
+h1 { font-size: 17px; line-height: 1.3; margin: 0 0 4px; letter-spacing: -.01em; font-weight: 650; }
+h2 { font-size: var(--fs-sm); margin: 0 0 8px; font-weight: 650; }
+.sub { font-size: var(--fs-sm); margin: 0 0 var(--gap); opacity: .78; }
+
+/* --- blocos: a separação é um fio na tinta, não uma cor ------------------ */
+.card { position: relative; padding: var(--pad) 0 0; }
+.card + .card { margin-top: var(--gap); }
+.card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: currentColor; opacity: .16;
+}
+.card--flat { padding-top: 0; }
+.card--flat::before { display: none; }
+
+.grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: var(--gap); align-items: start; }
+@media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+/* --- equação: a régua da esquerda é tinta, o fundo é o da página --------- */
+.eq {
+  margin-top: var(--gap);
+  padding: 10px 0 10px 12px;
+  border-left: 3px solid currentColor;
+  font-size: var(--fs-sm);
+}
+.eq .cap { font-size: var(--fs-xs); margin-top: 6px; opacity: .78; }
+.eq .cap b { font-weight: 600; }
+
+/* --- controles ----------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: inherit; font-size: var(--fs-sm); font-weight: 550;
+  padding: 7px 12px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.btn:hover { text-decoration: underline; }
+.btn.ghost { border-color: transparent; }
+.btn.ghost:hover { text-decoration: underline; }
+.btn[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.btn:focus-visible, .choice:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid currentColor; outline-offset: 2px;
+}
+
+input[type="checkbox"] { accent-color: currentColor; width: 15px; height: 15px; }
+input[type="range"] { accent-color: currentColor; width: 100%; }
+
+textarea, input[type="text"] {
+  width: 100%; font: inherit; font-size: var(--fs-sm);
+  padding: 9px 10px; color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  resize: vertical;
+}
+
+/* --- leitura de número: o "display" do quadro --------------------------- */
+.readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; }
+.readout b { font-size: 28px; line-height: 1; font-weight: 650; font-variant-numeric: tabular-nums; }
+.readout span { font-size: var(--fs-sm); opacity: .78; }
+
+/* --- barra: moldura na tinta, preenchimento na tinta --------------------- */
+.bar { height: 12px; border: 1px solid currentColor; border-radius: 999px; overflow: hidden; display: flex; }
+.bar i { display: block; height: 100%; width: 0; background: currentColor; transition: width .3s cubic-bezier(.2,.7,.3,1); }
+
+/* --- legenda: ponto vazado = fora, ponto cheio = dentro ------------------ */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 9px; font-size: var(--fs-xs); opacity: .85; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; border: 1px solid currentColor; }
+.dot.on { background: currentColor; }
+
+/* --- simulador (arquétipo A): 1 controle + o que responde ----------------- */
+.sim { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+@media (min-width: 560px) { .sim { grid-template-columns: 1.05fr .95fr; } }
+.sim.one { grid-template-columns: 1fr; }
+.sim .ctl { display: flex; flex-direction: column; gap: 7px; }
+.sim .ctl .name { font-size: var(--fs-xs); opacity: .6; }
+.sim .ctl .val { font-size: 20px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.sim .ctl .scale { display: flex; justify-content: space-between; font-size: var(--fs-xs); opacity: .55; }
+
+/* duas barras: geral (contínua, cheia) × grupo (tracejada, clara) */
+.gauge { display: flex; flex-direction: column; gap: 9px; }
+.gauge .row { display: grid; grid-template-columns: minmax(4.2em, 5.4em) minmax(0, 1fr) minmax(3.4em, 4.6em); align-items: center; gap: 9px; }
+.gauge .row .name { font-size: var(--fs-xs); opacity: .6; }
+.gauge .row .val { font-size: var(--fs-xs); font-variant-numeric: tabular-nums; text-align: right; }
+.bar.alt { border-style: dashed; }
+.bar.alt i { opacity: .45; }
+
+/* --- mapa mental navegável (arquétipo D) ---------------------------------- */
+/* Um SVG de vértices e ligações; o clique num vértice acende o vértice e a
+   ligação correspondente. Sem cor: o vértice ativo ganha traço mais grosso,
+   preenchimento e um anel de foco. */
+.mind .link { stroke: currentColor; stroke-width: 1.2; fill: none; opacity: .35; }
+.mind .link.on { stroke-width: 2.4; opacity: 1; }
+.mind .vtx { fill: none; stroke: currentColor; stroke-width: 1.4; cursor: pointer; }
+.mind .vtx:hover { stroke-width: 2.4; }
+.mind .vtx.on { stroke-width: 2.8; fill: currentColor; fill-opacity: .12; }
+.mind .vlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.mind .vsub { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.mind .vtx:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* --- lista de critérios -------------------------------------------------- */
+.list { display: flex; flex-direction: column; gap: 7px; }
+.list label { display: flex; gap: 9px; align-items: flex-start; font-size: var(--fs-sm); cursor: pointer; }
+.list .k { font-size: var(--fs-xs); display: block; opacity: .6; }
+
+/* --- escolha única (arquétipo C) ---------------------------------------- */
+.choice {
+  display: block; width: 100%; text-align: left;
+  font: inherit; font-size: var(--fs-sm);
+  padding: 9px 11px; margin-bottom: 7px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.choice:hover { text-decoration: underline; }
+.choice[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.choice .mark { font-weight: 700; margin-right: 6px; }
+.choice[data-verdict="right"] { font-weight: 650; }
+.choice[data-verdict="wrong"] { opacity: .6; }
+
+.verdict { font-size: var(--fs-sm); margin-top: 8px; min-height: 1.5em; opacity: .85; }
+.verdict b { font-weight: 600; }
+
+/* --- svg do frame -------------------------------------------------------- */
+.flow { width: 100%; height: auto; }
+.flow .node { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.flow .node.on { stroke-width: 2.6; fill: currentColor; fill-opacity: .12; }
+.flow .nlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.flow .nsub   { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.flow .arrow  { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.flow .arrow.on { stroke-width: 2.6; }
+.flow .mk     { fill: currentColor; }
+.flow .loop   { stroke-dasharray: 5 4; animation: dash 1.6s linear infinite; }
+.flow .gridline { stroke: currentColor; stroke-width: 1; opacity: .16; }
+.flow .axis   { stroke: currentColor; stroke-width: 1.2; opacity: .5; }
+@keyframes dash { to { stroke-dashoffset: -18; } }
+
+/* --- grade de pixels (imagem -> números) ---------------------------------- */
+/* A imagem vira uma grade de células: vazada = fundo, cheia = pixel. */
+.pxgrid {
+  display: grid; grid-template-columns: repeat(28, 1fr); gap: 1px;
+  width: 264px; max-width: 100%;
+}
+.pxgrid i { display: block; aspect-ratio: 1; background: currentColor; opacity: .08; }
+.pxgrid i.on { opacity: 1; }
+
+/* --- token (texto -> número) --------------------------------------------- */
+/* A palavra em cima, o índice do vocabulário embaixo. Fora do vocabulário:
+   borda tracejada e opacidade menor. */
+.tok {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 5px 9px; border: 1px solid currentColor; border-radius: var(--r-sm);
+  font-size: var(--fs-xs);
+}
+.tok b { font-size: var(--fs-sm); font-weight: 650; }
+.tok.out { border-style: dashed; opacity: .7; }
+
+/* --- rodapé -------------------------------------------------------------- */
+.foot { margin-top: var(--gap); font-size: var(--fs-xs); opacity: .78; }
+.foot b { font-weight: 600; }
+
+/* --- grafico de linhas (curva de aprendizado) ---------------------------- */
+/* Sem cor: as linhas sao a tinta da pagina, e a separacao vem do traco. */
+.chart { margin: 10px 0 0; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid { stroke: currentColor; stroke-opacity: .14; stroke-width: 1; }
+.chart .ax { stroke: currentColor; stroke-opacity: .45; stroke-width: 1; }
+.chart .ln { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.chart .ln.dash { stroke-dasharray: 5 4; stroke-opacity: .6; }
+.chart .tick { font-size: 11px; fill: currentColor; opacity: .6; }
+.chart .vline { stroke: currentColor; stroke-opacity: .3; stroke-dasharray: 2 3; }
+.chart .pt { fill: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow .loop { animation: none; }
+  .bar i { transition: none; }
+}
+</style>
+</head>
+<body>
+<script>
+/* ============================================================================
+   NOIC FRAME KIT — JS compartilhado
+   ----------------------------------------------------------------------------
+   Só o que os frames realmente precisam:
+     1. NOIC.degradeMath() — degradação do MathJax (se o CDN não responder, a
+                      fórmula continua legível em texto);
+     2. NOIC.reducedMotion — respeitar prefers-reduced-motion;
+     3. NOIC.cycle(fn, ms) e NOIC.highlight(steps, i) — o ciclo de etapas
+                      do diagrama, com a seta de estado aceso.
+   Sem dependência, sem build, sem rede além do MathJax.
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var reduced = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Degradação do MathJax ------------------------------------------------- */
+  /* Se o CDN não respondeu em 2.5s, cada container mjx vira texto plano com
+     a expressão original entre \( \) — legível, sem depender de rede. */
+  function degradeMath() {
+    if (global.MathJax && global.MathJax.typesetPromise) return;   /* MathJax carregou */
+    var nodes = document.querySelectorAll('mjx-container');
+    for (var i = 0; i < nodes.length; i++) {
+      var src = nodes[i].querySelector('[data-latex]') || nodes[i];
+      var tex = src.getAttribute && src.getAttribute('data-latex');
+      if (!tex) tex = nodes[i].textContent;
+      var span = document.createElement('code');
+      span.textContent = tex;
+      span.style.fontFamily = 'ui-monospace, Consolas, monospace';
+      span.style.fontSize = '13px';
+      nodes[i].replaceWith(span);
+    }
+  }
+  global.setTimeout(degradeMath, 2500);
+
+  /* Preferência de movimento ------------------------------------------------ */
+  function cycle(fn, ms) {
+    if (reduced) { fn(0); return null; }
+    return global.setInterval(function () { fn(Date.now()); }, ms);
+  }
+
+  global.NOIC = {
+    reducedMotion: reduced,
+    degradeMath: degradeMath,
+    cycle: cycle,
+    /* marca o nó ativo de um diagrama de etapas: [ [idNo, idSeta], ... ]
+       Como o frame não declara cor, "ativo" é Forma: o nó ganha traço mais
+       grosso e um preenchimento de 12% da tinta; a seta, idem. */
+    highlight: function (steps, index) {
+      steps.forEach(function (s) {
+        var n = document.getElementById(s[0]);
+        var a = document.getElementById(s[1]);
+        if (n) { n.querySelector('.node').classList.remove('on'); }
+        if (a) { a.classList.remove('on'); }
+      });
+      var cur = steps[index % steps.length];
+      var cn = document.getElementById(cur[0]);
+      var ca = document.getElementById(cur[1]);
+      if (cn) { cn.querySelector('.node').classList.add('on'); }
+      if (ca) { ca.classList.add('on'); }
+    }
+  };
+})(window);
+</script>
+<div class="wrap">
+
+  <p class="kicker">Fig. 2: o fluxo do dado</p>
+  <h1>O ciclo de vida do dado</h1>
+  <p class="sub">O dado passa por quatro etapas antes de chegar ao modelo. Só a última decide o que a acurácia mede, e é nela que o dado vaza.</p>
+
+  <svg class="flow" viewBox="0 0 420 170" role="img" aria-label="Fluxo do dado em quatro etapas: coletar, limpar, anotar, dividir">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path class="mk" d="M0 0 L10 5 L0 10 z"/>
+      </marker>
+    </defs>
+
+    <path class="arrow" id="s1" d="M94 62 H 110" marker-end="url(#ah)"/>
+    <path class="arrow" id="s2" d="M200 62 H 216" marker-end="url(#ah)"/>
+    <path class="arrow" id="s3" d="M306 62 H 322" marker-end="url(#ah)"/>
+
+    <g id="d0" class="hit" tabindex="0" role="button" aria-label="Etapa 1, coletar" style="cursor:pointer"><title>Coletar: a mesma pessoa coletada duas vezes.</title><rect class="node" x="6" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="50" y="58">Coletar</text><text class="nsub" x="50" y="72">o mundo cru</text></g>
+    <g id="d1" class="hit" tabindex="0" role="button" aria-label="Etapa 2, limpar" style="cursor:pointer"><title>Limpar: linha duplicada, campo ausente.</title><rect class="node" x="112" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="156" y="58">Limpar</text><text class="nsub" x="156" y="72" textLength="76" lengthAdjust="spacingAndGlyphs">duplicado, ausente</text></g>
+    <g id="d2" class="hit" tabindex="0" role="button" aria-label="Etapa 3, anotar" style="cursor:pointer"><title>Anotar: o label está errado e ninguém nota.</title><rect class="node" x="218" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="262" y="58">Anotar</text><text class="nsub" x="262" y="72">o label</text></g>
+    <g id="d3" class="hit" tabindex="0" role="button" aria-label="Etapa 4, dividir" style="cursor:pointer"><title>Dividir: a mesma linha (ou a mesma pessoa) nos dois conjuntos.</title><rect class="node" x="324" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="368" y="58">Dividir</text><text class="nsub" x="368" y="72">treino e teste</text></g>
+
+    <g id="tag" style="display:none">
+      <path class="arrow" d="M368 84 V 100"/>
+      <rect class="node" x="140" y="100" width="272" height="54" rx="9" style="stroke-dasharray:5 4"/>
+      <text class="nlabel" x="276" y="122">vazamento</text>
+      <text class="nsub" x="276" y="141" style="opacity:1">a mesma pessoa entra no treino e no teste</text>
+    </g>
+  </svg>
+
+  <div class="readout" style="margin:10px 0 12px">
+    <b id="agora-nome">Coletar</b>
+    <span id="agora-desc">a mesma pessoa coletada duas vezes.</span>
+  </div>
+
+  <div class="list">
+    <p style="margin:0"><b>Coletar</b>: a mesma pessoa coletada duas vezes.</p>
+    <p style="margin:0"><b>Limpar</b>: linha duplicada, campo ausente.</p>
+    <p style="margin:0"><b>Anotar</b>: o label está errado e ninguém nota.</p>
+    <p style="margin:0"><b>Dividir</b>: a mesma linha (ou a mesma pessoa) nos dois conjuntos.</p>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">o vazamento não é erro do modelo: é erro da divisão, e aparece como uma acurácia alta que não significa nada</p>
+  </div>
+
+  <p class="foot">Clique numa etapa (ou use o teclado) para parar o ciclo e ficar nela. A tag de vazamento só aparece com a etapa <b>Dividir</b> acesa: é a única que decide o que a acurácia mede. O estado é forma: traço mais grosso e preenchimento de 12% da tinta.</p>
+</div>
+
+<script>
+(function () {
+  var steps = [['d0', 's1'], ['d1', 's2'], ['d2', 's3'], ['d3', null]];
+  var textos = [
+    ['Coletar', 'a mesma pessoa coletada duas vezes.'],
+    ['Limpar', 'linha duplicada, campo ausente.'],
+    ['Anotar', 'o label está errado e ninguém nota.'],
+    ['Dividir', 'a mesma linha (ou a mesma pessoa) nos dois conjuntos.']
+  ];
+  var tag = document.getElementById('tag');
+  var nome = document.getElementById('agora-nome');
+  var desc = document.getElementById('agora-desc');
+  /* sem movimento, o frame para na etapa que importa, e a tag continua visível */
+  var idx = NOIC.reducedMotion ? 3 : 0;
+  var timer = null;
+
+  function mostra(i) {
+    NOIC.highlight(steps, i);
+    tag.style.display = (i === 3) ? '' : 'none';
+    nome.textContent = textos[i][0];
+    desc.textContent = textos[i][1];
+  }
+
+  /* clicar (ou usar o teclado) assume o controle do frame e para o ciclo */
+  function escolhe(i) {
+    if (timer) { clearInterval(timer); timer = null; }
+    mostra(i);
+  }
+
+  var nos = document.querySelectorAll('.flow .hit');
+  for (var i = 0; i < nos.length; i++) {
+    (function (i) {
+      nos[i].addEventListener('click', function () { escolhe(i); });
+      nos[i].addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); escolhe(i); }
+      });
+    })(i);
+  }
+
+  timer = NOIC.cycle(function () {
+    mostra(idx);
+    idx = (idx + 1) % steps.length;
+  }, 1800);
+})();
+</script>
+</body>
+</html>

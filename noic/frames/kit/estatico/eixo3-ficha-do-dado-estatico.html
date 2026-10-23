@@ -1,0 +1,53 @@
+<!--
+  Gêmeo estático do frame `eixo3-ficha-do-dado.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o seletor de formato vira tabela.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+
+  NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
+  navegador ele aparece com acentos quebrados, porque não tem <meta charset>:
+  na página do WordPress (UTF-8) ele renderiza certo.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 3</strong> (versão estática) - o mesmo registro em três formatos, e o que sobra quando ele vira a entrada do modelo.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">Formato</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">O que o registro é</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">O que o modelo recebe</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">O que fica de fora</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0"><strong>Tabela</strong><br><em>estruturado</em></td>
+        <td style="padding:7px 8px 7px 0">Uma linha com colunas: idade, altura (cm), horas de estudo, e o label.</td>
+        <td style="padding:7px 8px 7px 0">3 números, um por coluna: [0.16, 0.85, 0.30]. Lote de 32: [32, 3].</td>
+        <td style="padding:7px 0">O nome das colunas ("altura (cm)") e o valor original (170).</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0"><strong>Imagem</strong><br><em>não estruturado</em></td>
+        <td style="padding:7px 8px 7px 0">Uma foto de 28 × 28 pixels (o formato do MNIST).</td>
+        <td style="padding:7px 8px 7px 0">784 números, um por pixel. Lote de 32: [32, 784].</td>
+        <td style="padding:7px 0">A foto: o que há nela além dos pixels.</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 8px 7px 0"><strong>Texto</strong><br><em>não estruturado</em></td>
+        <td style="padding:7px 8px 7px 0">Uma frase: "a cidade é um porto grande".</td>
+        <td style="padding:7px 8px 7px 0">6 números, um por token: [12, 4801, 7, 88, &lt;unk&gt;, 233].</td>
+        <td style="padding:7px 0">A palavra fora do vocabulário: "porto" virou &lt;unk&gt;.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    A ingestão é uma função: \(\displaystyle \phi : r_i \mapsto x_i \in \mathbb{R}^{d}\).
+    O mesmo registro produz sempre o mesmo vetor - e é por isso que o experimento dá para repetir.
+  </p>
+
+  <p style="margin:0 0 .6em"><strong>Ponto notável</strong> - no extremo em que \(\phi\) não distingue dois registros, dois registros diferentes viram o mesmo ponto: a informação existia na planilha e sumiu na hora de virar vetor. No outro extremo, o registro chega intacto, com nome e data, e ninguém consegue treinar nada com isso.</p>
+
+  <p style="margin:0">O que se ganha com a tradução: um vetor é um <strong>ponto</strong>, e um modelo é uma função sobre pontos. Com ponto dá para medir distância, somar e ajustar. Com "Ana, 16 anos", não.</p>
+</figure>

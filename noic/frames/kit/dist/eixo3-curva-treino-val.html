@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A curva de treino e validação</title>
+<!--
+  NOIC frame kit — shell único.
+  O MathJax da página do WordPress NÃO entra no documento do iframe: cada frame
+  carrega o seu (mesmo CDN que o site já usa). Degradação: se o CDN não
+  responder, `kit.js` converte a matemática em texto legível.
+-->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+/* ============================================================================
+   NOIC FRAME KIT — frame SEM cor definida
+   ----------------------------------------------------------------------------
+   REGRA: o frame não declara NENHUMA cor. Zero hex, zero rgb(), zero nome de
+   cor. Tudo o que aparece sai de `currentColor` (a tinta do próprio navegador)
+   e de opacidades. A cor de acento da classe pertence à PÁGINA (WordPress),
+   nunca ao frame.
+
+   Estado interativo é marcado por FORMA, nunca por matiz:
+     · glifo (✓ / ✗) + texto
+     · peso da fonte
+     · contorno (outline) e borda
+     · preenchido vs. vazado (o ponto da legenda, a barra)
+   ========================================================================== */
+
+:root {
+  /* métrica (aqui não há cor nenhuma) ------------------------------------ */
+  --r:      8px;          /* raio padrão */
+  --r-sm:   5px;
+  --gap:    14px;
+  --pad:    14px;
+  --fs:     15px;         /* corpo */
+  --fs-sm:  13px;
+  --fs-xs:  11.5px;       /* micro-rótulo */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;   /* o frame se mistura com a página */
+  color: inherit;            /* tinta padrão do navegador (o site do NOIC é branco) */
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 16px 22px;
+}
+
+/* --- micro-rótulo: o "Em que C é coulomb" do frame ---------------------- */
+.label,
+.kicker {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 700;
+  opacity: .6;
+  margin: 0 0 8px;
+}
+.kicker { margin: 0 0 3px; }
+
+h1 { font-size: 17px; line-height: 1.3; margin: 0 0 4px; letter-spacing: -.01em; font-weight: 650; }
+h2 { font-size: var(--fs-sm); margin: 0 0 8px; font-weight: 650; }
+.sub { font-size: var(--fs-sm); margin: 0 0 var(--gap); opacity: .78; }
+
+/* --- blocos: a separação é um fio na tinta, não uma cor ------------------ */
+.card { position: relative; padding: var(--pad) 0 0; }
+.card + .card { margin-top: var(--gap); }
+.card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: currentColor; opacity: .16;
+}
+.card--flat { padding-top: 0; }
+.card--flat::before { display: none; }
+
+.grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: var(--gap); align-items: start; }
+@media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+/* --- equação: a régua da esquerda é tinta, o fundo é o da página --------- */
+.eq {
+  margin-top: var(--gap);
+  padding: 10px 0 10px 12px;
+  border-left: 3px solid currentColor;
+  font-size: var(--fs-sm);
+}
+.eq .cap { font-size: var(--fs-xs); margin-top: 6px; opacity: .78; }
+.eq .cap b { font-weight: 600; }
+
+/* --- controles ----------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: inherit; font-size: var(--fs-sm); font-weight: 550;
+  padding: 7px 12px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.btn:hover { text-decoration: underline; }
+.btn.ghost { border-color: transparent; }
+.btn.ghost:hover { text-decoration: underline; }
+.btn[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.btn:focus-visible, .choice:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid currentColor; outline-offset: 2px;
+}
+
+input[type="checkbox"] { accent-color: currentColor; width: 15px; height: 15px; }
+input[type="range"] { accent-color: currentColor; width: 100%; }
+
+textarea, input[type="text"] {
+  width: 100%; font: inherit; font-size: var(--fs-sm);
+  padding: 9px 10px; color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  resize: vertical;
+}
+
+/* --- leitura de número: o "display" do quadro --------------------------- */
+.readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; }
+.readout b { font-size: 28px; line-height: 1; font-weight: 650; font-variant-numeric: tabular-nums; }
+.readout span { font-size: var(--fs-sm); opacity: .78; }
+
+/* --- barra: moldura na tinta, preenchimento na tinta --------------------- */
+.bar { height: 12px; border: 1px solid currentColor; border-radius: 999px; overflow: hidden; display: flex; }
+.bar i { display: block; height: 100%; width: 0; background: currentColor; transition: width .3s cubic-bezier(.2,.7,.3,1); }
+
+/* --- legenda: ponto vazado = fora, ponto cheio = dentro ------------------ */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 9px; font-size: var(--fs-xs); opacity: .85; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; border: 1px solid currentColor; }
+.dot.on { background: currentColor; }
+
+/* --- simulador (arquétipo A): 1 controle + o que responde ----------------- */
+.sim { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+@media (min-width: 560px) { .sim { grid-template-columns: 1.05fr .95fr; } }
+.sim.one { grid-template-columns: 1fr; }
+.sim .ctl { display: flex; flex-direction: column; gap: 7px; }
+.sim .ctl .name { font-size: var(--fs-xs); opacity: .6; }
+.sim .ctl .val { font-size: 20px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.sim .ctl .scale { display: flex; justify-content: space-between; font-size: var(--fs-xs); opacity: .55; }
+
+/* duas barras: geral (contínua, cheia) × grupo (tracejada, clara) */
+.gauge { display: flex; flex-direction: column; gap: 9px; }
+.gauge .row { display: grid; grid-template-columns: minmax(4.2em, 5.4em) minmax(0, 1fr) minmax(3.4em, 4.6em); align-items: center; gap: 9px; }
+.gauge .row .name { font-size: var(--fs-xs); opacity: .6; }
+.gauge .row .val { font-size: var(--fs-xs); font-variant-numeric: tabular-nums; text-align: right; }
+.bar.alt { border-style: dashed; }
+.bar.alt i { opacity: .45; }
+
+/* --- mapa mental navegável (arquétipo D) ---------------------------------- */
+/* Um SVG de vértices e ligações; o clique num vértice acende o vértice e a
+   ligação correspondente. Sem cor: o vértice ativo ganha traço mais grosso,
+   preenchimento e um anel de foco. */
+.mind .link { stroke: currentColor; stroke-width: 1.2; fill: none; opacity: .35; }
+.mind .link.on { stroke-width: 2.4; opacity: 1; }
+.mind .vtx { fill: none; stroke: currentColor; stroke-width: 1.4; cursor: pointer; }
+.mind .vtx:hover { stroke-width: 2.4; }
+.mind .vtx.on { stroke-width: 2.8; fill: currentColor; fill-opacity: .12; }
+.mind .vlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.mind .vsub { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.mind .vtx:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* --- lista de critérios -------------------------------------------------- */
+.list { display: flex; flex-direction: column; gap: 7px; }
+.list label { display: flex; gap: 9px; align-items: flex-start; font-size: var(--fs-sm); cursor: pointer; }
+.list .k { font-size: var(--fs-xs); display: block; opacity: .6; }
+
+/* --- escolha única (arquétipo C) ---------------------------------------- */
+.choice {
+  display: block; width: 100%; text-align: left;
+  font: inherit; font-size: var(--fs-sm);
+  padding: 9px 11px; margin-bottom: 7px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.choice:hover { text-decoration: underline; }
+.choice[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.choice .mark { font-weight: 700; margin-right: 6px; }
+.choice[data-verdict="right"] { font-weight: 650; }
+.choice[data-verdict="wrong"] { opacity: .6; }
+
+.verdict { font-size: var(--fs-sm); margin-top: 8px; min-height: 1.5em; opacity: .85; }
+.verdict b { font-weight: 600; }
+
+/* --- svg do frame -------------------------------------------------------- */
+.flow { width: 100%; height: auto; }
+.flow .node { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.flow .node.on { stroke-width: 2.6; fill: currentColor; fill-opacity: .12; }
+.flow .nlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.flow .nsub   { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.flow .arrow  { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.flow .arrow.on { stroke-width: 2.6; }
+.flow .mk     { fill: currentColor; }
+.flow .loop   { stroke-dasharray: 5 4; animation: dash 1.6s linear infinite; }
+.flow .gridline { stroke: currentColor; stroke-width: 1; opacity: .16; }
+.flow .axis   { stroke: currentColor; stroke-width: 1.2; opacity: .5; }
+@keyframes dash { to { stroke-dashoffset: -18; } }
+
+/* --- grade de pixels (imagem -> números) ---------------------------------- */
+/* A imagem vira uma grade de células: vazada = fundo, cheia = pixel. */
+.pxgrid {
+  display: grid; grid-template-columns: repeat(28, 1fr); gap: 1px;
+  width: 264px; max-width: 100%;
+}
+.pxgrid i { display: block; aspect-ratio: 1; background: currentColor; opacity: .08; }
+.pxgrid i.on { opacity: 1; }
+
+/* --- token (texto -> número) --------------------------------------------- */
+/* A palavra em cima, o índice do vocabulário embaixo. Fora do vocabulário:
+   borda tracejada e opacidade menor. */
+.tok {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 5px 9px; border: 1px solid currentColor; border-radius: var(--r-sm);
+  font-size: var(--fs-xs);
+}
+.tok b { font-size: var(--fs-sm); font-weight: 650; }
+.tok.out { border-style: dashed; opacity: .7; }
+
+/* --- rodapé -------------------------------------------------------------- */
+.foot { margin-top: var(--gap); font-size: var(--fs-xs); opacity: .78; }
+.foot b { font-weight: 600; }
+
+/* --- grafico de linhas (curva de aprendizado) ---------------------------- */
+/* Sem cor: as linhas sao a tinta da pagina, e a separacao vem do traco. */
+.chart { margin: 10px 0 0; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid { stroke: currentColor; stroke-opacity: .14; stroke-width: 1; }
+.chart .ax { stroke: currentColor; stroke-opacity: .45; stroke-width: 1; }
+.chart .ln { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.chart .ln.dash { stroke-dasharray: 5 4; stroke-opacity: .6; }
+.chart .tick { font-size: 11px; fill: currentColor; opacity: .6; }
+.chart .vline { stroke: currentColor; stroke-opacity: .3; stroke-dasharray: 2 3; }
+.chart .pt { fill: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow .loop { animation: none; }
+  .bar i { transition: none; }
+}
+</style>
+</head>
+<body>
+<script>
+/* ============================================================================
+   NOIC FRAME KIT — JS compartilhado
+   ----------------------------------------------------------------------------
+   Só o que os frames realmente precisam:
+     1. NOIC.degradeMath() — degradação do MathJax (se o CDN não responder, a
+                      fórmula continua legível em texto);
+     2. NOIC.reducedMotion — respeitar prefers-reduced-motion;
+     3. NOIC.cycle(fn, ms) e NOIC.highlight(steps, i) — o ciclo de etapas
+                      do diagrama, com a seta de estado aceso.
+   Sem dependência, sem build, sem rede além do MathJax.
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var reduced = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Degradação do MathJax ------------------------------------------------- */
+  /* Se o CDN não respondeu em 2.5s, cada container mjx vira texto plano com
+     a expressão original entre \( \) — legível, sem depender de rede. */
+  function degradeMath() {
+    if (global.MathJax && global.MathJax.typesetPromise) return;   /* MathJax carregou */
+    var nodes = document.querySelectorAll('mjx-container');
+    for (var i = 0; i < nodes.length; i++) {
+      var src = nodes[i].querySelector('[data-latex]') || nodes[i];
+      var tex = src.getAttribute && src.getAttribute('data-latex');
+      if (!tex) tex = nodes[i].textContent;
+      var span = document.createElement('code');
+      span.textContent = tex;
+      span.style.fontFamily = 'ui-monospace, Consolas, monospace';
+      span.style.fontSize = '13px';
+      nodes[i].replaceWith(span);
+    }
+  }
+  global.setTimeout(degradeMath, 2500);
+
+  /* Preferência de movimento ------------------------------------------------ */
+  function cycle(fn, ms) {
+    if (reduced) { fn(0); return null; }
+    return global.setInterval(function () { fn(Date.now()); }, ms);
+  }
+
+  global.NOIC = {
+    reducedMotion: reduced,
+    degradeMath: degradeMath,
+    cycle: cycle,
+    /* marca o nó ativo de um diagrama de etapas: [ [idNo, idSeta], ... ]
+       Como o frame não declara cor, "ativo" é Forma: o nó ganha traço mais
+       grosso e um preenchimento de 12% da tinta; a seta, idem. */
+    highlight: function (steps, index) {
+      steps.forEach(function (s) {
+        var n = document.getElementById(s[0]);
+        var a = document.getElementById(s[1]);
+        if (n) { n.querySelector('.node').classList.remove('on'); }
+        if (a) { a.classList.remove('on'); }
+      });
+      var cur = steps[index % steps.length];
+      var cn = document.getElementById(cur[0]);
+      var ca = document.getElementById(cur[1]);
+      if (cn) { cn.querySelector('.node').classList.add('on'); }
+      if (ca) { ca.classList.add('on'); }
+    }
+  };
+})(window);
+</script>
+<div class="wrap">
+
+  <p class="kicker">Fig. 4: a curva de treino e validação</p>
+  <h1>A curva de treino e validação</h1>
+  <p class="sub">Mova o controle e veja as três curvas: o acerto no treino, na validação limpa e na validação contaminada.</p>
+
+  <div class="sim one">
+    <div class="ctl">
+      <span class="name">registros no treino</span>
+      <span class="val" id="nv">250</span>
+      <input type="range" id="n" min="50" max="1000" step="50" value="250" aria-label="número de registros no treino">
+      <div class="scale"><span>50</span><span>1.000</span></div>
+    </div>
+  </div>
+
+  <div class="chart">
+    <svg viewBox="0 0 560 198" role="img" aria-label="acurácia de treino, validação limpa e validação contaminada em função do tamanho do treino">
+      <g id="gGrid"></g>
+      <polyline id="lTr" class="ln" points=""></polyline>
+      <polyline id="lVa" class="ln" points=""></polyline>
+      <polyline id="lCv" class="ln dash" points=""></polyline>
+      <line id="vMk" class="vline" x1="0" y1="12" x2="0" y2="166"></line>
+      <circle id="p1" class="pt" r="3.4"></circle>
+      <circle id="p2" class="pt" r="3.4"></circle>
+      <circle id="p3" class="pt" r="3.4"></circle>
+    </svg>
+  </div>
+
+  <div class="readout" style="margin-top:12px">
+    <span>com</span>
+    <b id="rn">250</b>
+    <span>no treino, acerta</span>
+    <b id="rt">98,0%</b>
+    <span>nele,</span>
+    <b id="rv">82,0%</b>
+    <span>na validação limpa e</span>
+    <b id="rc">93,0%</b>
+    <span>na contaminada.</span>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">o vazamento apaga a distância entre treino e validação. Uma curva de validação que encosta na de treino não é um modelo que aprendeu muito, é um teste que deixou de ser teste.</p>
+  </div>
+
+  <p class="foot">O estado é forma: a linha de cima é o treino, a de baixo é a validação limpa e a tracejada é a contaminada. Nenhuma cor: o frame herda a tinta da página.</p>
+</div>
+
+<script>
+(function () {
+  // ancoras: n de treino, acuracia
+  var N = [50, 100, 250, 500, 1000];
+  var TR = [96.0, 97.0, 98.0, 98.7, 99.2];
+  var VA = [72.0, 77.0, 82.0, 84.5, 86.5];
+  var CV = [88.0, 90.5, 93.0, 94.2, 95.0];
+
+  var L = 46, R = 14, T = 12, B = 166;      // area do grafico
+  var LO = 60, HI = 100;                    // eixo y
+  var XL = Math.log10(50), XH = Math.log10(1000);
+
+  function px(n) { return L + (Math.log10(n) - XL) / (XH - XL) * (546 - L); }
+  function py(v) { return T + (HI - v) / (HI - LO) * (B - T); }
+  function pts(arr) { return N.map(function (n, i) { return px(n).toFixed(1) + ',' + py(arr[i]).toFixed(1); }).join(' '); }
+
+  document.getElementById('lTr').setAttribute('points', pts(TR));
+  document.getElementById('lVa').setAttribute('points', pts(VA));
+  document.getElementById('lCv').setAttribute('points', pts(CV));
+
+  // grade e eixo
+  var g = document.getElementById('gGrid');
+  var NS = 'http://www.w3.org/2000/svg';
+  [60, 70, 80, 90, 100].forEach(function (v) {
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', L); l.setAttribute('x2', 546);
+    l.setAttribute('y1', py(v).toFixed(1)); l.setAttribute('y2', py(v).toFixed(1));
+    l.setAttribute('class', 'grid');
+    g.appendChild(l);
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', L - 8); t.setAttribute('y', (py(v) + 4).toFixed(1));
+    t.setAttribute('text-anchor', 'end'); t.setAttribute('class', 'tick');
+    t.textContent = v + '%';
+    g.appendChild(t);
+  });
+  N.forEach(function (n) {
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', px(n).toFixed(1)); t.setAttribute('y', B + 16);
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'tick');
+    t.textContent = n;
+    g.appendChild(t);
+  });
+  var ax = document.createElementNS(NS, 'line');
+  ax.setAttribute('x1', L); ax.setAttribute('x2', 546);
+  ax.setAttribute('y1', B); ax.setAttribute('y2', B);
+  ax.setAttribute('class', 'ax');
+  g.appendChild(ax);
+
+  function interp(arr, n) {
+    if (n <= N[0]) return arr[0];
+    if (n >= N[N.length - 1]) return arr[arr.length - 1];
+    for (var i = 1; i < N.length; i++) {
+      if (n <= N[i]) {
+        var t = (n - N[i - 1]) / (N[i] - N[i - 1]);
+        return arr[i - 1] + t * (arr[i] - arr[i - 1]);
+      }
+    }
+    return arr[arr.length - 1];
+  }
+  function fmt(v) { return v.toFixed(1).replace('.', ',') + '%'; }
+
+  var el = document.getElementById('n');
+  function render() {
+    var n = Number(el.value);
+    var tr = interp(TR, n), va = interp(VA, n), cv = interp(CV, n);
+    var x = px(n).toFixed(1);
+    document.getElementById('vMk').setAttribute('x1', x);
+    document.getElementById('vMk').setAttribute('x2', x);
+    document.getElementById('p1').setAttribute('cx', x); document.getElementById('p1').setAttribute('cy', py(tr).toFixed(1));
+    document.getElementById('p2').setAttribute('cx', x); document.getElementById('p2').setAttribute('cy', py(va).toFixed(1));
+    document.getElementById('p3').setAttribute('cx', x); document.getElementById('p3').setAttribute('cy', py(cv).toFixed(1));
+    document.getElementById('nv').textContent = n;
+    document.getElementById('rn').textContent = n;
+    document.getElementById('rt').textContent = fmt(tr);
+    document.getElementById('rv').textContent = fmt(va);
+    document.getElementById('rc').textContent = fmt(cv);
+  }
+  el.addEventListener('input', render);
+  render();
+})();
+</script>
+</body>
+</html>

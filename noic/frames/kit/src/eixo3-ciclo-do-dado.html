@@ -1,0 +1,96 @@
+<!--title: O ciclo de vida do dado-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 2: o fluxo do dado</p>
+  <h1>O ciclo de vida do dado</h1>
+  <p class="sub">O dado passa por quatro etapas antes de chegar ao modelo. Só a última decide o que a acurácia mede, e é nela que o dado vaza.</p>
+
+  <svg class="flow" viewBox="0 0 420 170" role="img" aria-label="Fluxo do dado em quatro etapas: coletar, limpar, anotar, dividir">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path class="mk" d="M0 0 L10 5 L0 10 z"/>
+      </marker>
+    </defs>
+
+    <path class="arrow" id="s1" d="M94 62 H 110" marker-end="url(#ah)"/>
+    <path class="arrow" id="s2" d="M200 62 H 216" marker-end="url(#ah)"/>
+    <path class="arrow" id="s3" d="M306 62 H 322" marker-end="url(#ah)"/>
+
+    <g id="d0" class="hit" tabindex="0" role="button" aria-label="Etapa 1, coletar" style="cursor:pointer"><title>Coletar: a mesma pessoa coletada duas vezes.</title><rect class="node" x="6" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="50" y="58">Coletar</text><text class="nsub" x="50" y="72">o mundo cru</text></g>
+    <g id="d1" class="hit" tabindex="0" role="button" aria-label="Etapa 2, limpar" style="cursor:pointer"><title>Limpar: linha duplicada, campo ausente.</title><rect class="node" x="112" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="156" y="58">Limpar</text><text class="nsub" x="156" y="72" textLength="76" lengthAdjust="spacingAndGlyphs">duplicado, ausente</text></g>
+    <g id="d2" class="hit" tabindex="0" role="button" aria-label="Etapa 3, anotar" style="cursor:pointer"><title>Anotar: o label está errado e ninguém nota.</title><rect class="node" x="218" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="262" y="58">Anotar</text><text class="nsub" x="262" y="72">o label</text></g>
+    <g id="d3" class="hit" tabindex="0" role="button" aria-label="Etapa 4, dividir" style="cursor:pointer"><title>Dividir: a mesma linha (ou a mesma pessoa) nos dois conjuntos.</title><rect class="node" x="324" y="40" width="88" height="44" rx="9"/><text class="nlabel" x="368" y="58">Dividir</text><text class="nsub" x="368" y="72">treino e teste</text></g>
+
+    <g id="tag" style="display:none">
+      <path class="arrow" d="M368 84 V 100"/>
+      <rect class="node" x="140" y="100" width="272" height="54" rx="9" style="stroke-dasharray:5 4"/>
+      <text class="nlabel" x="276" y="122">vazamento</text>
+      <text class="nsub" x="276" y="141" style="opacity:1">a mesma pessoa entra no treino e no teste</text>
+    </g>
+  </svg>
+
+  <div class="readout" style="margin:10px 0 12px">
+    <b id="agora-nome">Coletar</b>
+    <span id="agora-desc">a mesma pessoa coletada duas vezes.</span>
+  </div>
+
+  <div class="list">
+    <p style="margin:0"><b>Coletar</b>: a mesma pessoa coletada duas vezes.</p>
+    <p style="margin:0"><b>Limpar</b>: linha duplicada, campo ausente.</p>
+    <p style="margin:0"><b>Anotar</b>: o label está errado e ninguém nota.</p>
+    <p style="margin:0"><b>Dividir</b>: a mesma linha (ou a mesma pessoa) nos dois conjuntos.</p>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">o vazamento não é erro do modelo: é erro da divisão, e aparece como uma acurácia alta que não significa nada</p>
+  </div>
+
+  <p class="foot">Clique numa etapa (ou use o teclado) para parar o ciclo e ficar nela. A tag de vazamento só aparece com a etapa <b>Dividir</b> acesa: é a única que decide o que a acurácia mede. O estado é forma: traço mais grosso e preenchimento de 12% da tinta.</p>
+</div>
+
+<script>
+(function () {
+  var steps = [['d0', 's1'], ['d1', 's2'], ['d2', 's3'], ['d3', null]];
+  var textos = [
+    ['Coletar', 'a mesma pessoa coletada duas vezes.'],
+    ['Limpar', 'linha duplicada, campo ausente.'],
+    ['Anotar', 'o label está errado e ninguém nota.'],
+    ['Dividir', 'a mesma linha (ou a mesma pessoa) nos dois conjuntos.']
+  ];
+  var tag = document.getElementById('tag');
+  var nome = document.getElementById('agora-nome');
+  var desc = document.getElementById('agora-desc');
+  /* sem movimento, o frame para na etapa que importa, e a tag continua visível */
+  var idx = NOIC.reducedMotion ? 3 : 0;
+  var timer = null;
+
+  function mostra(i) {
+    NOIC.highlight(steps, i);
+    tag.style.display = (i === 3) ? '' : 'none';
+    nome.textContent = textos[i][0];
+    desc.textContent = textos[i][1];
+  }
+
+  /* clicar (ou usar o teclado) assume o controle do frame e para o ciclo */
+  function escolhe(i) {
+    if (timer) { clearInterval(timer); timer = null; }
+    mostra(i);
+  }
+
+  var nos = document.querySelectorAll('.flow .hit');
+  for (var i = 0; i < nos.length; i++) {
+    (function (i) {
+      nos[i].addEventListener('click', function () { escolhe(i); });
+      nos[i].addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); escolhe(i); }
+      });
+    })(i);
+  }
+
+  timer = NOIC.cycle(function () {
+    mostra(idx);
+    idx = (idx + 1) % steps.length;
+  }, 1800);
+})();
+</script>

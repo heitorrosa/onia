@@ -1,0 +1,54 @@
+<!--
+  Gêmeo estático do frame `eixo3-soma-truncada.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o cursor vira tabela, e a tabela mostra a fração.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+
+  NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
+  navegador ele aparece com acentos quebrados, porque não tem <meta charset>:
+  na página do WordPress (UTF-8) ele renderiza certo.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 2</strong> (versão estática) - o que o aluno deve levar sem abrir a interação: o dataset é a soma dos registros que foram coletados, e quem não foi coletado não entra na conta.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">Coleta</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">População</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Fração</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">O que o modelo viu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">100 de 1.000</td>
+        <td style="padding:7px 8px 7px 0">1.000</td>
+        <td style="padding:7px 8px 7px 0">10%</td>
+        <td style="padding:7px 0">100 registros de 1.000</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">10.000 de 1.000.000</td>
+        <td style="padding:7px 8px 7px 0">1.000.000</td>
+        <td style="padding:7px 8px 7px 0">1%</td>
+        <td style="padding:7px 0">10.000 registros de 1.000.000</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 8px 7px 0">todos</td>
+        <td style="padding:7px 8px 7px 0">1.000</td>
+        <td style="padding:7px 8px 7px 0">100%</td>
+        <td style="padding:7px 0">1.000 registros de 1.000</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    A fórmula que liga as colunas:
+    \(\displaystyle D = \sum_{i \in S} r_i, \qquad S \subset \text{universo}\)
+    - o dataset é a soma de um subconjunto: quem ficou de fora não entra na conta.
+  </p>
+
+  <p style="margin:0 0 .6em"><strong>Ponto notável</strong> - se a coleta foi de 100%, ainda pode faltar quem nunca foi procurado.</p>
+
+  <p style="margin:0">Quem não foi coletado não existe para o modelo.</p>
+</figure>
