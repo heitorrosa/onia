@@ -3,43 +3,42 @@
   Gêmeo estático do frame `eixo3-tamanho-do-teste.html`.
   Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
   É a MESMA ideia sem JS: o cursor vira tabela, e a tabela mostra a margem.
-  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
 
   NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
   navegador ele aparece com acentos quebrados, porque não tem <meta charset>:
   na página do WordPress (UTF-8) ele renderiza certo.
 -->
 <figure class="noic-frame-static">
-<figcaption><strong>Fig. 2</strong> (versão estática): a margem de erro da acurácia medida encolhe com a raiz do número de registros no teste, para uma acurácia de 91%.</figcaption>
+<figcaption><strong>Fig. 2</strong> (versão estática): a margem de erro da acurácia medida encolhe com a raiz do número de registros no teste, para uma acurácia de 90%.</figcaption>
 
   <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
     <thead>
       <tr style="text-align:left;border-bottom:2px solid currentColor">
         <th style="padding:7px 8px 7px 0;font-weight:600">Registros no teste (n)</th>
         <th style="padding:7px 8px 7px 0;font-weight:600">Margem de erro (95%)</th>
-        <th style="padding:7px 0 7px 0;font-weight:600">Onde a acurácia de 91% pode estar</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">Onde a acurácia de 90% pode estar</th>
       </tr>
     </thead>
     <tbody>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">100</td>
-        <td style="padding:7px 8px 7px 0">±5,6 pontos</td>
-        <td style="padding:7px 0">85% a 96%</td>
+        <td style="padding:7px 8px 7px 0">±5,9 pontos</td>
+        <td style="padding:7px 0">84% a 96%</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">400</td>
-        <td style="padding:7px 8px 7px 0">±2,8 pontos</td>
-        <td style="padding:7px 0">88% a 93%</td>
+        <td style="padding:7px 8px 7px 0">±2,9 pontos</td>
+        <td style="padding:7px 0">87% a 93%</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
-        <td style="padding:7px 8px 7px 0">2.500</td>
-        <td style="padding:7px 8px 7px 0">±1,1 ponto</td>
-        <td style="padding:7px 0">89% a 92%</td>
+        <td style="padding:7px 8px 7px 0">1.000</td>
+        <td style="padding:7px 8px 7px 0">±1,9 ponto</td>
+        <td style="padding:7px 0">88% a 92%</td>
       </tr>
       <tr>
         <td style="padding:7px 8px 7px 0">10.000</td>
         <td style="padding:7px 8px 7px 0">±0,6 ponto</td>
-        <td style="padding:7px 0">90% a 91%</td>
+        <td style="padding:7px 0">89% a 91%</td>
       </tr>
     </tbody>
   </table>
@@ -47,8 +46,8 @@
   <p style="margin:0 0 .6em">
     A fórmula que liga as colunas:
     \(m = 1{,}96\sqrt{\frac{p(1-p)}{n}}\)
-    - a margem cai com a raiz do número de registros, então quadruplicar o teste corta a margem pela metade. Com p perto de 0,91 a margem de 95 por cento é de 5,6 pontos com 100 registros e de 0,6 ponto com 10 mil. A barra tracejada do frame é a acurácia medida, e a margem é a faixa em que o número pode estar.
+    - a margem cai com a raiz do número de registros, então quadruplicar o teste corta a margem pela metade. Com p igual a 0,90 a margem de 95 por cento é de 5,9 pontos com 100 registros e de 0,6 ponto com 10 mil. A barra tracejada do frame é a acurácia medida, e a margem é a faixa em que o número pode estar.
   </p>
 
-  <p style="margin:0"><strong>Ponto notável</strong> - quem lê 91,3% num teste de 100 está lendo ruído disfarçado de precisão. O número só é tão preciso quanto o teste que o mediu.</p>
+  <p style="margin:0"><strong>Ponto notável</strong> - quem lê 90,3% num teste de 100 está lendo ruído disfarçado de precisão. O número só é tão preciso quanto o teste que o mediu.</p>
 </figure>

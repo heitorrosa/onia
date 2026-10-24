@@ -5,11 +5,12 @@ Material do Departamento de Inteligência Artificial para o *Guia ONIA* (WordPre
 ```
 noic/
   classes/          uma pasta por aula
-    template.html   shell da página de aula (só revisão local)
-    build.js        gera o index.html de cada aula
+    build-elementor.js   gera o fragmento para o Elementor de cada aula
+    build-math-svg.js    troca a matemática por SVG (roda depois do anterior)
+    format-html.js       reindenta um fragmento sem regenerar
     <slug>/
       aula.md       o texto da aula — a fonte (é o que vai para o WordPress)
-      index.html    a página de revisão local (gerada; nunca editar à mão)
+      elementor.html  o fragmento para colar na aba Code do Elementor (gerado)
   frames/           os frames interativos e seus gêmeos estáticos
     kit/            o kit: theme.css, template.html, kit.js, build.js, check.js,
                     measure.js, check-classe.js, RECEITAS-frame.md, preview.html
@@ -34,7 +35,7 @@ noic/
 ## Revisar local
 
 ```powershell
-node noic\classes\build.js      # gera a página de cada aula
+node noic\classes\build-elementor.js   # gera o fragmento do Elementor
 python -m http.server 8793 --bind 127.0.0.1 --directory noic
 # http://127.0.0.1:8793/classes/eixo3-dataset-e-rotulos/index.html
 ```
