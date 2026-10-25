@@ -1,0 +1,77 @@
+<!--title: O grupo que o modelo não viu-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 2: o grupo que o modelo não viu</p>
+  <h1>O grupo que o modelo não viu</h1>
+  <p class="sub">O modelo aprende a média do conjunto de treino, e a média não é o grupo. Com o grupo raro fora do treino, o acerto geral continua alto e o acerto do próprio grupo desaba.</p>
+
+  <div class="eq">
+    <div>\(\displaystyle a_{\mathrm{geral}}(q)=72+23q \qquad a_{B}(q)=22+66\,q^{0{,}6}\)</div>
+    <div class="cap">\(q\) = fração do grupo B no conjunto de treino, de 0 a 1. O teste mantém o grupo em \(f = 0{,}1\): quem sai do treino não sai da avaliação. Os coeficientes são de um modelo didático da classe, e o que importa é a <b>forma</b> das duas curvas: a geral sobe depressa, a do grupo sobe devagar.</div>
+  </div>
+
+  <div class="sim">
+    <div class="ctl">
+      <span class="name">fração do grupo B no conjunto de treino</span>
+      <span class="val" id="qval">0%</span>
+      <input type="range" id="q" min="0" max="100" step="5" value="0" aria-label="fração do grupo B no conjunto de treino">
+      <div class="scale"><span>0%</span><span>50%</span><span>100%</span></div>
+    </div>
+    <div class="gauge">
+      <div class="row" style="grid-template-columns:7.4em 1fr 4.4em">
+        <span class="name">acerto geral</span>
+        <span class="bar"><i id="g1" style="width:72%"></i></span>
+        <span class="val" id="v1">72%</span>
+      </div>
+      <div class="row" style="grid-template-columns:7.4em 1fr 4.4em">
+        <span class="name">acerto do grupo B</span>
+        <span class="bar alt"><i id="g2" style="width:22%"></i></span>
+        <span class="val" id="v2">22%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="readout">
+    <span id="outtxt">o modelo acerta 72% no geral e 22% no grupo B: uma diferença de</span>
+    <b id="dif">50</b>
+    <span>pontos</span>
+  </div>
+
+  <p style="margin:6px 0 0">a média é uma média: ela some com quem tem o pior desempenho</p>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">com 0% do grupo no treino, o modelo ainda acerta 72% no geral, e o grupo fica em 22%. A média não mostra o erro.</p>
+  </div>
+
+  <p class="foot">O estado é forma: a barra do acerto do grupo B é <b>tracejada</b> e mais clara; a do acerto geral é contínua e cheia. O número entra só no resultado.</p>
+</div>
+
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var qval = document.getElementById('qval');
+  var g1 = document.getElementById('g1');
+  var g2 = document.getElementById('g2');
+  var v1 = document.getElementById('v1');
+  var v2 = document.getElementById('v2');
+  var outtxt = document.getElementById('outtxt');
+  var dif = document.getElementById('dif');
+
+  function render() {
+    var p = Number(q.value) / 100;
+    var geral = Math.round(72 + 23 * p);
+    var grupo = Math.round(22 + 66 * Math.pow(p, 0.6));
+    qval.textContent = q.value + '%';
+    g1.style.width = geral + '%';
+    g2.style.width = grupo + '%';
+    v1.textContent = geral + '%';
+    v2.textContent = grupo + '%';
+    outtxt.textContent = 'o modelo acerta ' + geral + '% no geral e ' + grupo + '% no grupo B: uma diferença de';
+    dif.textContent = Math.abs(geral - grupo);
+  }
+
+  q.addEventListener('input', render);
+  render();
+})();
+</script>

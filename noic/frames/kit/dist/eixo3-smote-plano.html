@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O plano do SMOTE</title>
+<!--
+  NOIC frame kit — shell único.
+  O MathJax da página do WordPress NÃO entra no documento do iframe: cada frame
+  carrega o seu (mesmo CDN que o site já usa). Degradação: se o CDN não
+  responder, `kit.js` converte a matemática em texto legível.
+-->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+/* ============================================================================
+   NOIC FRAME KIT — frame SEM cor definida
+   ----------------------------------------------------------------------------
+   REGRA: o frame não declara NENHUMA cor. Zero hex, zero rgb(), zero nome de
+   cor. Tudo o que aparece sai de `currentColor` (a tinta do próprio navegador)
+   e de opacidades. A cor de acento da classe pertence à PÁGINA (WordPress),
+   nunca ao frame.
+
+   Estado interativo é marcado por FORMA, nunca por matiz:
+     · glifo (✓ / ✗) + texto
+     · peso da fonte
+     · contorno (outline) e borda
+     · preenchido vs. vazado (o ponto da legenda, a barra)
+   ========================================================================== */
+
+:root {
+  /* métrica (aqui não há cor nenhuma) ------------------------------------ */
+  --r:      8px;          /* raio padrão */
+  --r-sm:   5px;
+  --gap:    14px;
+  --pad:    14px;
+  --fs:     15px;         /* corpo */
+  --fs-sm:  13px;
+  --fs-xs:  11.5px;       /* micro-rótulo */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;   /* o frame se mistura com a página */
+  color: inherit;            /* tinta padrão do navegador (o site do NOIC é branco) */
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 16px 22px;
+}
+
+/* --- micro-rótulo: o "Em que C é coulomb" do frame ---------------------- */
+.label,
+.kicker {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 700;
+  opacity: .6;
+  margin: 0 0 8px;
+}
+.kicker { margin: 0 0 3px; }
+
+h1 { font-size: 17px; line-height: 1.3; margin: 0 0 4px; letter-spacing: -.01em; font-weight: 650; }
+h2 { font-size: var(--fs-sm); margin: 0 0 8px; font-weight: 650; }
+.sub { font-size: var(--fs-sm); margin: 0 0 var(--gap); opacity: .78; }
+
+/* --- blocos: a separação é um fio na tinta, não uma cor ------------------ */
+.card { position: relative; padding: var(--pad) 0 0; }
+.card + .card { margin-top: var(--gap); }
+.card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: currentColor; opacity: .16;
+}
+.card--flat { padding-top: 0; }
+.card--flat::before { display: none; }
+
+.grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: var(--gap); align-items: start; }
+@media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+/* --- equação: a régua da esquerda é tinta, o fundo é o da página --------- */
+.eq {
+  margin-top: var(--gap);
+  padding: 10px 0 10px 12px;
+  border-left: 3px solid currentColor;
+  font-size: var(--fs-sm);
+}
+.eq .cap { font-size: var(--fs-xs); margin-top: 6px; opacity: .78; }
+.eq .cap b { font-weight: 600; }
+
+/* --- controles ----------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: inherit; font-size: var(--fs-sm); font-weight: 550;
+  padding: 7px 12px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.btn:hover { text-decoration: underline; }
+.btn.ghost { border-color: transparent; }
+.btn.ghost:hover { text-decoration: underline; }
+.btn[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.btn:focus-visible, .choice:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid currentColor; outline-offset: 2px;
+}
+
+input[type="checkbox"] { accent-color: currentColor; width: 15px; height: 15px; }
+input[type="range"] { accent-color: currentColor; width: 100%; }
+
+textarea, input[type="text"] {
+  width: 100%; font: inherit; font-size: var(--fs-sm);
+  padding: 9px 10px; color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  resize: vertical;
+}
+
+/* --- leitura de número: o "display" do quadro --------------------------- */
+.readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; }
+.readout b { font-size: 28px; line-height: 1; font-weight: 650; font-variant-numeric: tabular-nums; }
+.readout span { font-size: var(--fs-sm); opacity: .78; }
+
+/* --- barra: moldura na tinta, preenchimento na tinta --------------------- */
+.bar { height: 12px; border: 1px solid currentColor; border-radius: 999px; overflow: hidden; display: flex; }
+.bar i { display: block; height: 100%; width: 0; background: currentColor; transition: width .3s cubic-bezier(.2,.7,.3,1); }
+
+/* --- legenda: ponto vazado = fora, ponto cheio = dentro ------------------ */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 9px; font-size: var(--fs-xs); opacity: .85; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; border: 1px solid currentColor; }
+.dot.on { background: currentColor; }
+
+/* --- simulador (arquétipo A): 1 controle + o que responde ----------------- */
+.sim { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+@media (min-width: 560px) { .sim { grid-template-columns: 1.05fr .95fr; } }
+.sim.one { grid-template-columns: 1fr; }
+.sim .ctl { display: flex; flex-direction: column; gap: 7px; }
+.sim .ctl .name { font-size: var(--fs-xs); opacity: .6; }
+.sim .ctl .val { font-size: 20px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.sim .ctl .scale { display: flex; justify-content: space-between; font-size: var(--fs-xs); opacity: .55; }
+
+/* duas barras: geral (contínua, cheia) × grupo (tracejada, clara) */
+.gauge { display: flex; flex-direction: column; gap: 9px; }
+.gauge .row { display: grid; grid-template-columns: minmax(4.2em, 5.4em) minmax(0, 1fr) minmax(3.4em, 4.6em); align-items: center; gap: 9px; }
+.gauge .row .name { font-size: var(--fs-xs); opacity: .6; }
+.gauge .row .val { font-size: var(--fs-xs); font-variant-numeric: tabular-nums; text-align: right; }
+.bar.alt { border-style: dashed; }
+.bar.alt i { opacity: .45; }
+
+/* --- mapa mental navegável (arquétipo D) ---------------------------------- */
+/* Um SVG de vértices e ligações; o clique num vértice acende o vértice e a
+   ligação correspondente. Sem cor: o vértice ativo ganha traço mais grosso,
+   preenchimento e um anel de foco. */
+.mind .link { stroke: currentColor; stroke-width: 1.2; fill: none; opacity: .35; }
+.mind .link.on { stroke-width: 2.4; opacity: 1; }
+.mind .vtx { fill: none; stroke: currentColor; stroke-width: 1.4; cursor: pointer; }
+.mind .vtx:hover { stroke-width: 2.4; }
+.mind .vtx.on { stroke-width: 2.8; fill: currentColor; fill-opacity: .12; }
+.mind .vlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.mind .vsub { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.mind .vtx:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* --- lista de critérios -------------------------------------------------- */
+.list { display: flex; flex-direction: column; gap: 7px; }
+.list label { display: flex; gap: 9px; align-items: flex-start; font-size: var(--fs-sm); cursor: pointer; }
+.list .k { font-size: var(--fs-xs); display: block; opacity: .6; }
+
+/* --- escolha única (arquétipo C) ---------------------------------------- */
+.choice {
+  display: block; width: 100%; text-align: left;
+  font: inherit; font-size: var(--fs-sm);
+  padding: 9px 11px; margin-bottom: 7px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.choice:hover { text-decoration: underline; }
+.choice[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.choice .mark { font-weight: 700; margin-right: 6px; }
+.choice[data-verdict="right"] { font-weight: 650; }
+.choice[data-verdict="wrong"] { opacity: .6; }
+
+.verdict { font-size: var(--fs-sm); margin-top: 8px; min-height: 1.5em; opacity: .85; }
+.verdict b { font-weight: 600; }
+
+/* --- svg do frame -------------------------------------------------------- */
+.flow { width: 100%; height: auto; }
+.flow .node { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.flow .node.on { stroke-width: 2.6; fill: currentColor; fill-opacity: .12; }
+.flow .nlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.flow .nsub   { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.flow .arrow  { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.flow .arrow.on { stroke-width: 2.6; }
+.flow .mk     { fill: currentColor; }
+.flow .loop   { stroke-dasharray: 5 4; animation: dash 1.6s linear infinite; }
+.flow .gridline { stroke: currentColor; stroke-width: 1; opacity: .16; }
+.flow .axis   { stroke: currentColor; stroke-width: 1.2; opacity: .5; }
+@keyframes dash { to { stroke-dashoffset: -18; } }
+
+/* --- grade de pixels (imagem -> números) ---------------------------------- */
+/* A imagem vira uma grade de células: vazada = fundo, cheia = pixel. */
+.pxgrid {
+  display: grid; grid-template-columns: repeat(28, 1fr); gap: 1px;
+  width: 264px; max-width: 100%;
+}
+.pxgrid i { display: block; aspect-ratio: 1; background: currentColor; opacity: .08; }
+.pxgrid i.on { opacity: 1; }
+
+/* --- token (texto -> número) --------------------------------------------- */
+/* A palavra em cima, o índice do vocabulário embaixo. Fora do vocabulário:
+   borda tracejada e opacidade menor. */
+.tok {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 5px 9px; border: 1px solid currentColor; border-radius: var(--r-sm);
+  font-size: var(--fs-xs);
+}
+.tok b { font-size: var(--fs-sm); font-weight: 650; }
+.tok.out { border-style: dashed; opacity: .7; }
+
+/* --- rodapé -------------------------------------------------------------- */
+.foot { margin-top: var(--gap); font-size: var(--fs-xs); opacity: .78; }
+.foot b { font-weight: 600; }
+
+/* --- grafico de linhas (curva de aprendizado) ---------------------------- */
+/* Sem cor: as linhas sao a tinta da pagina, e a separacao vem do traco. */
+.chart { margin: 10px 0 0; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid { stroke: currentColor; stroke-opacity: .14; stroke-width: 1; }
+.chart .ax { stroke: currentColor; stroke-opacity: .45; stroke-width: 1; }
+.chart .ln { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.chart .ln.dash { stroke-dasharray: 5 4; stroke-opacity: .6; }
+.chart .tick { font-size: 11px; fill: currentColor; opacity: .6; }
+.chart .vline { stroke: currentColor; stroke-opacity: .3; stroke-dasharray: 2 3; }
+.chart .pt { fill: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow .loop { animation: none; }
+  .bar i { transition: none; }
+}
+</style>
+</head>
+<body>
+<script>
+/* ============================================================================
+   NOIC FRAME KIT — JS compartilhado
+   ----------------------------------------------------------------------------
+   Só o que os frames realmente precisam:
+     1. NOIC.degradeMath() — degradação do MathJax (se o CDN não responder, a
+                      fórmula continua legível em texto);
+     2. NOIC.reducedMotion — respeitar prefers-reduced-motion;
+     3. NOIC.cycle(fn, ms) e NOIC.highlight(steps, i) — o ciclo de etapas
+                      do diagrama, com a seta de estado aceso.
+   Sem dependência, sem build, sem rede além do MathJax.
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var reduced = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Degradação do MathJax ------------------------------------------------- */
+  /* Se o CDN não respondeu em 2.5s, cada container mjx vira texto plano com
+     a expressão original entre \( \) — legível, sem depender de rede. */
+  function degradeMath() {
+    if (global.MathJax && global.MathJax.typesetPromise) return;   /* MathJax carregou */
+    var nodes = document.querySelectorAll('mjx-container');
+    for (var i = 0; i < nodes.length; i++) {
+      var src = nodes[i].querySelector('[data-latex]') || nodes[i];
+      var tex = src.getAttribute && src.getAttribute('data-latex');
+      if (!tex) tex = nodes[i].textContent;
+      var span = document.createElement('code');
+      span.textContent = tex;
+      span.style.fontFamily = 'ui-monospace, Consolas, monospace';
+      span.style.fontSize = '13px';
+      nodes[i].replaceWith(span);
+    }
+  }
+  global.setTimeout(degradeMath, 2500);
+
+  /* Preferência de movimento ------------------------------------------------ */
+  function cycle(fn, ms) {
+    if (reduced) { fn(0); return null; }
+    return global.setInterval(function () { fn(Date.now()); }, ms);
+  }
+
+  global.NOIC = {
+    reducedMotion: reduced,
+    degradeMath: degradeMath,
+    cycle: cycle,
+    /* marca o nó ativo de um diagrama de etapas: [ [idNo, idSeta], ... ]
+       Como o frame não declara cor, "ativo" é Forma: o nó ganha traço mais
+       grosso e um preenchimento de 12% da tinta; a seta, idem. */
+    highlight: function (steps, index) {
+      steps.forEach(function (s) {
+        var n = document.getElementById(s[0]);
+        var a = document.getElementById(s[1]);
+        if (n) { n.querySelector('.node').classList.remove('on'); }
+        if (a) { a.classList.remove('on'); }
+      });
+      var cur = steps[index % steps.length];
+      var cn = document.getElementById(cur[0]);
+      var ca = document.getElementById(cur[1]);
+      if (cn) { cn.querySelector('.node').classList.add('on'); }
+      if (ca) { ca.classList.add('on'); }
+    }
+  };
+})(window);
+</script>
+<div class="wrap">
+
+  <p class="kicker">Fig. 3: o plano do SMOTE</p>
+  <h1>Inventar um ponto entre dois</h1>
+  <p class="sub">Sete pontos do grupo num canto, quarenta do resto espalhados. Cada clique sorteia um ponto do grupo, acha o vizinho mais próximo dele e cria outro no meio do caminho. Três cruzes paradas perto da borda são casos de teste: elas não se movem, e o que muda é se a região do grupo chega até elas.</p>
+
+  <div class="eq">
+    <div>\(x_{\text{novo}} = (1-\lambda)\,x_1 + \lambda\,x_2,\quad \lambda \sim U(0,1)\)</div>
+    <div class="cap">\(x_2\) é o vizinho mais próximo de \(x_1\) entre os pontos do grupo, e \(\lambda\) é sorteado. O ponto novo fica no segmento entre os dois, nunca fora dele.</div>
+  </div>
+
+  <div class="plot-grid">
+
+    <div>
+      <svg class="plot" viewBox="0 0 240 210" role="img" aria-label="Plano de duas classes: sete quadrados do grupo num canto, quarenta círculos do resto espalhados, a região hachurada que o classificador de três vizinhos dá ao grupo e três casos de teste perto da borda">
+        <defs>
+          <clipPath id="recorte"><path id="recorteD" d=""/></clipPath>
+        </defs>
+        <g id="grid"></g>
+        <rect class="frame" x="55" y="15" width="170" height="170"/>
+        <g id="rest"></g>
+        <path class="fantasma" id="fantasma" d=""/>
+        <g clip-path="url(#recorte)">
+          <path class="hach" id="hachura" d=""/>
+        </g>
+        <path class="regiao" id="regiao" d=""/>
+        <g id="seg"></g>
+        <g id="grp"></g>
+        <g id="sondas"></g>
+        <text class="tick" x="55" y="203">0</text>
+        <text class="tick" x="136" y="203">50</text>
+        <text class="tick" x="219" y="203">100</text>
+        <text class="tick" x="30" y="188">0</text>
+        <text class="tick" x="30" y="104">50</text>
+        <text class="tick" x="26" y="20">100</text>
+      </svg>
+      <div class="legend">
+        <span><i class="sq"></i> grupo</span>
+        <span><i class="ci"></i> resto</span>
+        <span><i class="di"></i> sintético</span>
+        <span><svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M0 9L4 5M2 9L8 3M6 9L12 3" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/></svg> região do grupo</span>
+        <span><i class="ls"></i> borda inicial</span>
+        <span><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1L9 9M9 1L1 9" fill="none" stroke="currentColor" stroke-width="1.4"/></svg> caso de teste</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="readout"><b id="flips">0</b><span>de 3 casos de teste mudaram de lado</span></div>
+      <p class="frase" id="fraseFlip">a região do grupo ainda não chegou a nenhum caso de teste.</p>
+
+      <div class="readout" style="margin-top:10px"><b id="ns">0</b><span>pontos sintéticos</span></div>
+      <div class="readout" style="margin-top:6px"><b id="ng">7</b><span>pontos no grupo agora</span></div>
+      <p class="frase" id="frase">a região do grupo cobre 34,1% do plano, e no começo cobria 34,1%.</p>
+
+      <div class="btns">
+        <button class="btn" id="um">inventar um ponto</button>
+        <button class="btn" id="vinte">inventar 20</button>
+        <button class="btn ghost" id="volta">recomeçar</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">A região é a do classificador de três vizinhos mais próximos: cada célula do plano fica com o grupo quando dois dos seus três pontos mais próximos são do grupo. Inventar pontos não cria dado nenhum, mas engrossa a densidade local, e a região cresce um fio para o lado que ficou mais denso. As cruzes não mudam de posição nem de valor; só a região passa por cima delas.</p>
+</div>
+
+<style>
+.plot-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; align-items: start; }
+.plot { width: 100%; height: auto; display: block; }
+.plot .grid { stroke: currentColor; stroke-opacity: .12; stroke-width: 1; }
+.plot .frame { fill: none; stroke: currentColor; stroke-opacity: .38; stroke-width: 1; }
+.plot .tick { font-size: 9px; fill: currentColor; opacity: .55; }
+.plot .rest { fill: none; stroke: currentColor; stroke-opacity: .5; stroke-width: 1.2; }
+.plot .grp { fill: currentColor; fill-opacity: .08; stroke: currentColor; stroke-width: 1.8; }
+.plot .syn { fill: none; stroke: currentColor; stroke-width: 1.4; }
+.plot .seg { stroke: currentColor; stroke-width: 1.3; stroke-dasharray: 3 3; stroke-opacity: .8; }
+.plot .hach { fill: none; stroke: currentColor; stroke-opacity: .34; stroke-width: .9; }
+.plot .regiao { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.plot .fantasma { fill: none; stroke: currentColor; stroke-width: 1; stroke-dasharray: 4 3; stroke-opacity: .45; }
+.plot .sonda { fill: none; stroke: currentColor; stroke-width: 1.3; }
+.plot .sonda.mudou { stroke-width: 2.8; }
+.plot .anel { fill: none; stroke: currentColor; stroke-opacity: .55; stroke-width: 1.1; }
+.legend i { display: inline-block; width: 9px; height: 9px; border: 1px solid currentColor; }
+.legend i.ci { border-radius: 50%; transform: scale(.7); }
+.legend i.di { transform: rotate(45deg) scale(.8); }
+.legend i.ls { height: 0; border: 0; border-top: 1px dashed currentColor; width: 12px; opacity: .55; }
+.frase { font-size: var(--fs-sm); margin: 8px 0 0; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+</style>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var N = 101;                       /* grade de 1 em 1 unidade sobre 0..100 */
+  var PX = function (x) { return 55 + x * 1.7; };
+  var PY = function (y) { return 185 - y * 1.7; };
+
+  /* posições fixas: o grupo num canto, o resto espalhado */
+  var BASE = [[5, 5], [9, 9], [13, 6], [7, 14], [11, 17], [30, 44], [38, 52]];
+  var RESTO = [
+    [50, 88], [57, 94], [64, 86], [70, 96], [78, 90], [85, 96], [92, 88], [97, 80],
+    [52, 78], [60, 72], [67, 80], [74, 86], [82, 78], [89, 84], [95, 72],
+    [48, 66], [56, 62], [63, 58], [70, 66], [77, 58], [84, 64], [91, 60], [97, 54],
+    [52, 52], [59, 48], [66, 44], [73, 50], [80, 44], [87, 50], [94, 46],
+    [46, 94], [62, 98], [76, 98], [88, 98], [98, 66], [90, 52], [48, 58], [55, 86], [72, 72], [86, 72]
+  ];
+  /* casos de teste: fixos, do lado do resto, a menos de duas unidades da borda inicial */
+  var SONDAS = [[8.5, 80], [23, 73.5], [45.5, 39]];
+
+  var grupo = BASE.slice();
+  var pontos = [];                   /* triplas x, y, 1 = grupo / 0 = resto */
+  var rest = document.getElementById('rest');
+  var segs = document.getElementById('seg');
+  var grp = document.getElementById('grp');
+  var sondas = document.getElementById('sondas');
+  var regiao = document.getElementById('regiao');
+  var fantasma = document.getElementById('fantasma');
+  var recorte = document.getElementById('recorteD');
+  var nsEl = document.getElementById('ns');
+  var ngEl = document.getElementById('ng');
+  var flipsEl = document.getElementById('flips');
+  var frase = document.getElementById('frase');
+  var fraseFlip = document.getElementById('fraseFlip');
+  var mInicial = null;
+  var ladoInicial = null;
+
+  function el(tag, at) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in at) e.setAttribute(k, at[k]);
+    return e;
+  }
+
+  var grade = document.getElementById('grid');
+  [20, 40, 60, 80].forEach(function (v) {
+    grade.appendChild(el('line', { class: 'grid', x1: PX(v), y1: PY(0), x2: PX(v), y2: PY(100) }));
+    grade.appendChild(el('line', { class: 'grid', x1: PX(0), y1: PY(v), x2: PX(100), y2: PY(v) }));
+  });
+
+  /* a hachura é fixa: um feixe de diagonais que o recorte da região limita */
+  (function () {
+    var d = '';
+    for (var c = -170; c <= 170; c += 3.4) {
+      d += 'M' + (55 + c) + ' 185L' + (55 + c + 170) + ' 15';
+    }
+    document.getElementById('hachura').setAttribute('d', d);
+  })();
+
+  RESTO.forEach(function (p) {
+    rest.appendChild(el('circle', { class: 'rest', cx: PX(p[0]), cy: PY(p[1]), r: 2.2 }));
+  });
+
+  function refaz() {
+    pontos = [];
+    grupo.forEach(function (p) { pontos.push(p[0], p[1], 1); });
+    RESTO.forEach(function (p) { pontos.push(p[0], p[1], 0); });
+  }
+
+  /* três vizinhos mais próximos: empate de votos decide pelo mais próximo */
+  function classe(x, y) {
+    var b0 = 1e9, b1 = 1e9, b2 = 1e9, g0 = 0, g1 = 0, g2 = 0;
+    for (var i = 0; i < pontos.length; i += 3) {
+      var dx = pontos[i] - x, dy = pontos[i + 1] - y, d = dx * dx + dy * dy, g = pontos[i + 2];
+      if (d < b0) { b2 = b1; g2 = g1; b1 = b0; g1 = g0; b0 = d; g0 = g; }
+      else if (d < b1) { b2 = b1; g2 = g1; b1 = d; g1 = g; }
+      else if (d < b2) { b2 = d; g2 = g; }
+    }
+    var v = g0 + g1 + g2;
+    return v > 1 ? 1 : (v < 1 ? 0 : g0);
+  }
+
+  function mascara() {
+    var m = new Uint8Array(N * N);
+    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) m[i * N + j] = classe(i, j);
+    return m;
+  }
+
+  /* área da região: uma faixa horizontal de retângulos por linha da grade */
+  function caminhoArea(m) {
+    var d = '';
+    for (var j = 0; j < N; j++) {
+      var i = 0;
+      while (i < N) {
+        if (!m[i * N + j]) { i++; continue; }
+        var s = i;
+        while (i < N && m[i * N + j]) i++;
+        var w = 1.7 * (i - s);
+        d += 'M' + PX(s) + ' ' + PY(j) + 'h' + w + 'v1.7h-' + w + 'Z';
+      }
+    }
+    return d;
+  }
+
+  /* borda da região: as arestas entre célula do grupo e célula do resto */
+  function caminhoBorda(m) {
+    var d = '';
+    function fora(i, j) {
+      return i < 0 || i >= N || j < 0 || j >= N || !m[i * N + j];
+    }
+    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) {
+      if (!m[i * N + j]) continue;
+      if (fora(i - 1, j)) d += 'M' + PX(i) + ' ' + PY(j) + 'L' + PX(i) + ' ' + PY(j + 1);
+      if (fora(i + 1, j)) d += 'M' + PX(i + 1) + ' ' + PY(j) + 'L' + PX(i + 1) + ' ' + PY(j + 1);
+      if (fora(i, j - 1)) d += 'M' + PX(i) + ' ' + PY(j) + 'L' + PX(i + 1) + ' ' + PY(j);
+      if (fora(i, j + 1)) d += 'M' + PX(i) + ' ' + PY(j + 1) + 'L' + PX(i + 1) + ' ' + PY(j + 1);
+    }
+    return d;
+  }
+
+  function areaPct(m) {
+    var c = 0;
+    for (var i = 0; i < m.length; i++) c += m[i];
+    return 100 * c / m.length;
+  }
+
+  function num(v) { return v.toFixed(1).replace('.', ','); }
+
+  function desenhaSondas() {
+    while (sondas.firstChild) sondas.removeChild(sondas.firstChild);
+    var mudaram = 0;
+    SONDAS.forEach(function (p, i) {
+      var cx = PX(p[0]), cy = PY(p[1]);
+      var agora = classe(p[0], p[1]);
+      var mudou = agora !== ladoInicial[i];
+      if (mudou) mudaram++;
+      var g = el('g', { class: 'sonda' + (mudou ? ' mudou' : '') });
+      if (mudou) g.appendChild(el('circle', { class: 'anel', cx: cx, cy: cy, r: 6.4 }));
+      g.appendChild(el('line', { x1: cx - 3.2, y1: cy - 3.2, x2: cx + 3.2, y2: cy + 3.2 }));
+      g.appendChild(el('line', { x1: cx + 3.2, y1: cy - 3.2, x2: cx - 3.2, y2: cy + 3.2 }));
+      sondas.appendChild(g);
+    });
+    return mudaram;
+  }
+
+  function desenha() {
+    refaz();
+    var m = mascara();
+    recorte.setAttribute('d', caminhoArea(m));
+    regiao.setAttribute('d', caminhoBorda(m));
+
+    while (grp.firstChild) grp.removeChild(grp.firstChild);
+    grupo.forEach(function (p, i) {
+      var cx = PX(p[0]), cy = PY(p[1]);
+      if (i < BASE.length) {
+        grp.appendChild(el('rect', { class: 'grp', x: cx - 3.6, y: cy - 3.6, width: 7.2, height: 7.2 }));
+      } else {
+        grp.appendChild(el('path', {
+          class: 'syn',
+          d: 'M' + cx + ' ' + (cy - 4.2) + 'L' + (cx + 4.2) + ' ' + cy +
+             'L' + cx + ' ' + (cy + 4.2) + 'L' + (cx - 4.2) + ' ' + cy + 'Z'
+        }));
+      }
+    });
+
+    var m0 = mInicial;
+    if (m0 === null) {
+      m0 = m;
+      mInicial = m.slice();
+      fantasma.setAttribute('d', caminhoBorda(m0));
+      ladoInicial = SONDAS.map(function (p) { return classe(p[0], p[1]); });
+    }
+
+    var mudaram = desenhaSondas();
+
+    nsEl.textContent = grupo.length - BASE.length;
+    ngEl.textContent = grupo.length;
+    flipsEl.textContent = mudaram;
+    fraseFlip.textContent = mudaram > 0
+      ? 'a região do grupo cresceu até o caso de teste, e o dado dele não mudou.'
+      : 'a região do grupo ainda não chegou a nenhum caso de teste.';
+    frase.textContent = 'a região do grupo cobre ' + num(areaPct(m)) +
+      '% do plano, e no começo cobria ' + num(areaPct(m0)) + '%.';
+  }
+
+  function inventa() {
+    var i = Math.floor(Math.random() * grupo.length);
+    var p = grupo[i], viz = -1, melhor = Infinity;
+    for (var k = 0; k < grupo.length; k++) {
+      if (k === i) continue;
+      var dx = grupo[k][0] - p[0], dy = grupo[k][1] - p[1];
+      var d = dx * dx + dy * dy;
+      if (d < melhor) { melhor = d; viz = k; }
+    }
+    if (viz < 0) return;
+    var q = grupo[viz];
+    var lam = Math.random();
+
+    /* o segmento aparece por um instante: é o que o clique está fazendo */
+    if (!NOIC.reducedMotion) {
+      var l = el('line', { class: 'seg', x1: PX(p[0]), y1: PY(p[1]), x2: PX(q[0]), y2: PY(q[1]) });
+      segs.appendChild(l);
+      setTimeout(function () { if (l.parentNode) l.parentNode.removeChild(l); }, 900);
+    }
+    grupo.push([(1 - lam) * p[0] + lam * q[0], (1 - lam) * p[1] + lam * q[1]]);
+  }
+
+  document.getElementById('um').addEventListener('click', function () {
+    inventa();
+    desenha();
+  });
+  document.getElementById('vinte').addEventListener('click', function () {
+    for (var n = 0; n < 20; n++) inventa();
+    desenha();
+  });
+  document.getElementById('volta').addEventListener('click', function () {
+    grupo = BASE.slice();
+    mInicial = null;
+    ladoInicial = null;
+    while (segs.firstChild) segs.removeChild(segs.firstChild);
+    desenha();
+  });
+
+  desenha();
+})();
+</script>
+</body>
+</html>

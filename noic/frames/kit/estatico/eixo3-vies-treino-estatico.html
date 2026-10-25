@@ -1,0 +1,60 @@
+<!--
+  Gêmeo estático do frame `eixo3-vies-treino.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o simulador vira tabela, e a tabela mostra o número.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+
+  NOTA: este arquivo é um FRAGMENTO (sem <html>/<head>). Aberto sozinho no
+  navegador ele aparece com acentos quebrados, porque não tem <meta charset> —
+  na página do WordPress (UTF-8) ele renderiza certo.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 2</strong> (versão estática): o que o aluno deve levar sem abrir a interação. A acurácia geral sobe depressa quando o grupo raro entra no treino, e a acurácia do próprio grupo sobe devagar. A diferença entre as duas é o que a média apaga.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">Fração do grupo B no treino</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Acerto geral</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Acerto do grupo B</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">Diferença</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">0%</td>
+        <td style="padding:7px 8px 7px 0">72%</td>
+        <td style="padding:7px 8px 7px 0">22%</td>
+        <td style="padding:7px 0">50 pontos</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">20%</td>
+        <td style="padding:7px 8px 7px 0">77%</td>
+        <td style="padding:7px 8px 7px 0">47%</td>
+        <td style="padding:7px 0">30 pontos</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">50%</td>
+        <td style="padding:7px 8px 7px 0">84%</td>
+        <td style="padding:7px 8px 7px 0">66%</td>
+        <td style="padding:7px 0">18 pontos</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 8px 7px 0">100%</td>
+        <td style="padding:7px 8px 7px 0">95%</td>
+        <td style="padding:7px 8px 7px 0">88%</td>
+        <td style="padding:7px 0">7 pontos</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    A fórmula que liga as três colunas:
+    \(\displaystyle a_{\mathrm{geral}}(q)=72+23q \qquad a_{B}(q)=22+66\,q^{0{,}6}\)
+    com \(q\) = fração do grupo B no conjunto de treino, de 0 a 1. O teste mantém o grupo em \(f = 0{,}1\). A diferença é \(|a_{\mathrm{geral}}-a_{B}|\).
+  </p>
+
+  <p style="margin:0 0 .6em"><strong>Ponto notável.</strong> Com 0% do grupo no treino, o modelo ainda acerta 72% no geral, e o grupo fica em 22%: a média não mostra o erro.</p>
+
+  <p style="margin:0">A média é uma média: ela some com quem tem o pior desempenho.</p>
+</figure>

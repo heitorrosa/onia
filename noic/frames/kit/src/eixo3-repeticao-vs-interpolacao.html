@@ -1,0 +1,106 @@
+<!--title: Copiar a linha ou interpolar-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 4: copiar a linha ou interpolar</p>
+  <h1>A contagem sobe, o espaço não</h1>
+  <p class="sub">As mesmas cinco linhas do grupo, tratadas de dois jeitos. À esquerda, copiadas quatro vezes no mesmo lugar. À direita, os mesmos cinco pontos mais quinze inventados entre vizinhos. A contagem final é igual; a área que o grupo ocupa, não.</p>
+
+  <svg class="panels" viewBox="0 0 360 208" role="img" aria-label="Dois painéis na mesma escala: à esquerda os cinco pontos copiados quatro vezes, à direita os cinco pontos mais quinze interpolados entre vizinhos">
+    <text class="cap" x="28" y="18">copiar a linha, 4 vezes</text>
+    <text class="cap" x="197" y="18">interpolar, 15 pontos novos</text>
+
+    <rect class="frame" x="28" y="28" width="135" height="135"/>
+    <rect class="frame" x="197" y="28" width="135" height="135"/>
+    <g id="grade"></g>
+
+    <g id="copias"></g>
+    <g id="interp"></g>
+
+    <text class="cap" x="95" y="180" style="text-anchor:middle">5 linhas, 4 cópias cada</text>
+    <text class="cap" x="264" y="180" style="text-anchor:middle">20 linhas, 20 posições</text>
+  </svg>
+
+  <div class="readout" style="margin-top:12px">
+    <b id="aL">400</b><span>unidades² copiando</span>
+    <b id="aR" style="margin-left:10px">1502</b><span>unidades² interpolando</span>
+  </div>
+  <p class="frase">Contar linha é fácil; ocupar espaço é outra coisa. As duas receitas dobram o número de linhas do grupo, e só a segunda cobre um pedaço do plano que as cinco originais não cobriam.</p>
+
+  <p class="foot">A área é a união de um disco de raio 5 em torno de cada ponto distinto, contada numa grade de 1 unidade². Copiar não move nenhum ponto: a união é a mesma das cinco linhas. Interpolar cria pontos entre elas, e a união cresce.</p>
+</div>
+
+<style>
+.panels { width: 100%; height: auto; display: block; }
+.panels .frame { fill: none; stroke: currentColor; stroke-opacity: .35; stroke-width: 1; }
+.panels .grade { stroke: currentColor; stroke-opacity: .1; stroke-width: 1; }
+.panels .cap { font-size: 10.5px; fill: currentColor; opacity: .62; }
+.panels .base { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.panels .copy { fill: none; stroke: currentColor; stroke-width: 1.2; }
+.panels .link { stroke: currentColor; stroke-opacity: .26; stroke-width: 1; }
+.panels .syn { fill: currentColor; }
+</style>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var L = function (x) { return 28 + x * 1.35; };
+  var R = function (x) { return 197 + x * 1.35; };
+  var Y = function (y) { return 163 - y * 1.35; };
+
+  /* as cinco linhas do grupo, e as posições fixas do que é inventado entre elas */
+  var BASE = [[18, 72], [42, 84], [74, 66], [58, 34], [24, 38]];
+  var SEGS = [
+    [0, 1, [0.25, 0.5, 0.75]],
+    [1, 2, [0.3, 0.6]],
+    [2, 3, [0.35, 0.65]],
+    [3, 4, [0.4, 0.7]],
+    [4, 0, [0.3, 0.6]],
+    [0, 2, [0.5]],
+    [1, 3, [0.45]],
+    [2, 4, [0.5]],
+    [0, 3, [0.55]]
+  ];
+
+  function el(tag, at) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in at) e.setAttribute(k, at[k]);
+    return e;
+  }
+
+  var grade = document.getElementById('grade');
+  [L, R].forEach(function (f) {
+    [20, 40, 60, 80].forEach(function (v) {
+      grade.appendChild(el('line', { class: 'grade', x1: f(v), y1: Y(0), x2: f(v), y2: Y(100) }));
+      grade.appendChild(el('line', { class: 'grade', x1: f(0), y1: Y(v), x2: f(100), y2: Y(v) }));
+    });
+  });
+
+  /* esquerda: as cinco linhas desenhadas quatro vezes, no mesmo lugar */
+  var copias = document.getElementById('copias');
+  BASE.forEach(function (p) {
+    [7.8, 6.2, 4.6, 3].forEach(function (r, k) {
+      copias.appendChild(el('circle', {
+        class: 'copy', cx: L(p[0]), cy: Y(p[1]), r: r, 'stroke-opacity': 0.9 / (k + 1)
+      }));
+    });
+  });
+
+  /* direita: os cinco pontos, os segmentos e os pontos inventados */
+  var interp = document.getElementById('interp');
+  SEGS.forEach(function (s) {
+    var a = BASE[s[0]], b = BASE[s[1]];
+    interp.appendChild(el('line', { class: 'link', x1: R(a[0]), y1: Y(a[1]), x2: R(b[0]), y2: Y(b[1]) }));
+  });
+  SEGS.forEach(function (s) {
+    var a = BASE[s[0]], b = BASE[s[1]];
+    s[2].forEach(function (t) {
+      interp.appendChild(el('circle', {
+        class: 'syn', cx: R((1 - t) * a[0] + t * b[0]), cy: Y((1 - t) * a[1] + t * b[1]), r: 2
+      }));
+    });
+  });
+  BASE.forEach(function (p) {
+    interp.appendChild(el('circle', { class: 'base', cx: R(p[0]), cy: Y(p[1]), r: 3.2 }));
+  });
+})();
+</script>
