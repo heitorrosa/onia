@@ -1,56 +1,62 @@
 <!--
   Gêmeo estático do frame `eixo3-limiar-por-grupo.html`.
   Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
-  A MESMA ideia sem JS: o slider vira a tabela de limiares.
+  A MESMA ideia sem JS: o slider vira as três matrizes da tabela.
   Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
 -->
 <figure class="noic-frame-static">
-  <figcaption><strong>Fig. 6</strong> (versão estática): o que o aluno deve levar sem abrir a interação. Um limiar só aplica a mesma régua a duas distribuições deslocadas, e as taxas de erro saem diferentes; um limiar por grupo iguala as taxas e move a acurácia geral.</figcaption>
+  <figcaption><strong>Fig. 7</strong> (versão estática): o que o aluno deve levar sem abrir a interação. A matriz de confusão dos dois grupos no limiar 80 e a do grupo no limiar 75, que é o limiar próprio cinco pontos abaixo.</figcaption>
 
   <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
     <thead>
       <tr style="text-align:left;border-bottom:2px solid currentColor">
-        <th style="padding:7px 8px 7px 0;font-weight:600">Limiar</th>
-        <th style="padding:7px 8px 7px 0;font-weight:600">Grupo: acerto</th>
-        <th style="padding:7px 8px 7px 0;font-weight:600">Grupo: falso positivo</th>
-        <th style="padding:7px 8px 7px 0;font-weight:600">Resto: acerto</th>
-        <th style="padding:7px 8px 7px 0;font-weight:600">Resto: falso positivo</th>
-        <th style="padding:7px 0;font-weight:600">Acurácia geral</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Célula</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Grupo, t = 80</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Resto, t = 80</th>
+        <th style="padding:7px 0;font-weight:600">Grupo, t = 75</th>
       </tr>
     </thead>
     <tbody>
       <tr style="border-bottom:1px solid currentColor">
-        <td style="padding:7px 8px 7px 0">40</td>
-        <td style="padding:7px 8px 7px 0">80,8%</td>
-        <td style="padding:7px 8px 7px 0">59,1%</td>
-        <td style="padding:7px 8px 7px 0">86,2%</td>
-        <td style="padding:7px 8px 7px 0">69,8%</td>
-        <td style="padding:7px 0">73,5%</td>
+        <td style="padding:7px 8px 7px 0">verdadeiro positivo</td>
+        <td style="padding:7px 8px 7px 0">47 (47,0%)</td>
+        <td style="padding:7px 8px 7px 0">529 (58,8%)</td>
+        <td style="padding:7px 0">59 (59,0%)</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
-        <td style="padding:7px 8px 7px 0">50</td>
-        <td style="padding:7px 8px 7px 0">64,1%</td>
-        <td style="padding:7px 8px 7px 0">40,9%</td>
-        <td style="padding:7px 8px 7px 0">73,1%</td>
-        <td style="padding:7px 8px 7px 0">50,0%</td>
-        <td style="padding:7px 0">67,4%</td>
+        <td style="padding:7px 8px 7px 0">falso positivo</td>
+        <td style="padding:7px 8px 7px 0">5 (5,0%)</td>
+        <td style="padding:7px 8px 7px 0">73 (8,1%)</td>
+        <td style="padding:7px 0">8 (8,0%)</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">falso negativo</td>
+        <td style="padding:7px 8px 7px 0">31 (31,0%)</td>
+        <td style="padding:7px 8px 7px 0">169 (18,8%)</td>
+        <td style="padding:7px 0">19 (19,0%)</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">verdadeiro negativo</td>
+        <td style="padding:7px 8px 7px 0">17 (17,0%)</td>
+        <td style="padding:7px 8px 7px 0">129 (14,3%)</td>
+        <td style="padding:7px 0">14 (14,0%)</td>
       </tr>
       <tr>
-        <td style="padding:7px 8px 7px 0">60</td>
-        <td style="padding:7px 8px 7px 0">43,6%</td>
-        <td style="padding:7px 8px 7px 0">22,7%</td>
-        <td style="padding:7px 8px 7px 0">54,2%</td>
-        <td style="padding:7px 8px 7px 0">30,2%</td>
-        <td style="padding:7px 0">57,0%</td>
+        <td style="padding:7px 8px 7px 0">acurácia do grupo</td>
+        <td style="padding:7px 8px 7px 0">64,0%</td>
+        <td style="padding:7px 8px 7px 0">73,1%</td>
+        <td style="padding:7px 0">73,0%</td>
       </tr>
     </tbody>
   </table>
 
   <p style="margin:0 0 .6em">
-    O modelo didático da figura: o grupo tem 78 aprovados e 22 reprovados, o resto tem 698 e 202, e a nota dos dois segue a mesma forma com a média do grupo 5 pontos abaixo. Com um limiar por grupo, \(t_B = t - 5\): no limiar 50, o grupo passa a acertar 73,1% e a ter 50,0% de falso positivo, as mesmas taxas do resto. A acurácia do grupo sobe de 63,0% para 68,0% e a geral de 67,4% para 67,9%.
+    A matriz do grupo tem 100 fichas, 78 que passaram e 22 que não; a do resto tem 900, com 698 e 202. Cada célula traz a contagem e a taxa sobre o total do grupo. No limiar 80 a régua é a mesma nos dois grupos e o grupo fica 9,1 pontos atrás, porque a nota dele está cinco pontos abaixo.
   </p>
 
-  <p style="margin:0 0 .6em"><strong>Ponto notável.</strong> Um limiar só não é neutro: a mesma régua aplicada a duas distribuições que não estão no mesmo lugar produz taxas de erro diferentes, e a diferença de 9 pontos que aparece no grupo no limiar 50 é a régua, não o modelo.</p>
+  <p style="margin:0 0 .6em">
+    O que muda com o limiar próprio: com \(t_{\text{grupo}} = 75\), o grupo sobe de 64,0% para 73,0% de acurácia, o falso positivo vai de 5,0% para 8,0% e o falso negativo de 31,0% para 19,0%. As taxas de erro dos dois grupos se encontram (falso positivo 36,4% contra 36,1%, falso negativo 24,4% contra 24,2%), e o conjunto vai de 72,2% para 77,1%.
+  </p>
 
-  <p style="margin:0">Igualar as taxas não é de graça: a acurácia geral se move, e quem paga por ela é a fila de aprovados. É por isso que a escolha do limiar é uma decisão, e não um parâmetro técnico.</p>
+  <p style="margin:0"><strong>Ponto notável.</strong> As duas notas têm a mesma forma e só estão deslocadas cinco pontos, e é por isso que o limiar do grupo alinha as curvas. A igualdade de taxas é deste cenário, não uma regra: com formas diferentes, o melhor que sai é a aproximação.</p>
 </figure>
