@@ -1,0 +1,161 @@
+<!--title: A composição do conjunto-->
+<style>
+.chart .num { font-size:12.5px; fill:currentColor; text-anchor:middle; font-weight:600; }
+.chart .nm { font-size:11.5px; fill:currentColor; text-anchor:middle; opacity:.72; }
+.chart .frc { font-size:11.5px; fill:currentColor; text-anchor:middle; font-weight:600; }
+.chart .ax { stroke:currentColor; stroke-width:1.2; opacity:.45; }
+.chart .sw { width:12px; height:12px; display:block; }
+
+.fr3 { display:flex; flex-wrap:wrap; gap:26px; margin-top:14px; }
+.fr3 span { display:flex; flex-direction:column; }
+.fr3 i { font-style:normal; font-size:11px; text-transform:uppercase; letter-spacing:.08em; opacity:.6; }
+.fr3 b { font-size:20px; font-weight:650; font-variant-numeric:tabular-nums; line-height:1.2; }
+.modes { display:flex; flex-direction:column; gap:7px; align-items:flex-start; }
+.modes .name { font-size:11.5px; opacity:.6; }
+</style>
+
+<div class="wrap">
+
+  <p class="kicker">Fig. 4: a composição do conjunto</p>
+  <h1>Como as mil fichas se dividem</h1>
+  <p class="sub">O conjunto inteiro, o treino e o teste. A parte hachurada de cada coluna é o grupo do noturno; a cheia é o resto. A fração de teste é do controle, a proporção do grupo não.</p>
+
+  <div class="sim">
+    <div class="ctl">
+      <span class="name">fração de teste</span>
+      <span class="val" id="tval">10%</span>
+      <input type="range" id="t" min="10" max="50" value="10" step="1" aria-label="fração de teste, de 10 a 50 por cento">
+      <div class="scale"><span>10%</span><span>50%</span></div>
+    </div>
+    <div class="modes">
+      <span class="name">como o corte é feito</span>
+      <button class="btn" type="button" id="m1" aria-pressed="true" aria-label="corte aleatório: sorteia fichas para o teste">corte aleatório</button>
+      <button class="btn" type="button" id="m2" aria-pressed="false" aria-label="corte por grupo: manda turmas inteiras para o teste">corte por grupo</button>
+    </div>
+  </div>
+
+  <div class="chart" style="margin-top:16px">
+    <svg id="svg" viewBox="0 0 520 226" role="img" aria-label="Três colunas empilhadas: conjunto inteiro, treino e teste, com a parte do grupo hachurada no topo"></svg>
+  </div>
+
+  <div class="legend">
+    <span><svg class="sw" viewBox="0 0 12 12" aria-hidden="true"><rect x=".5" y=".5" width="11" height="11" fill="none" stroke="currentColor"/><line x1="1" y1="8" x2="8" y2="1" stroke="currentColor"/><line x1="4" y1="11" x2="11" y2="4" stroke="currentColor"/></svg>grupo (noturno), hachurado</span>
+    <span><svg class="sw" viewBox="0 0 12 12" aria-hidden="true"><rect x=".5" y=".5" width="11" height="11" fill="currentColor" fill-opacity=".88"/></svg>resto, cheio</span>
+  </div>
+
+  <div class="fr3" id="fr3">
+    <span><i>grupo no conjunto</i><b id="f0">10,0%</b></span>
+    <span><i>grupo no treino</i><b id="f1">10,0%</b></span>
+    <span><i>grupo no teste</i><b id="f2">10,0%</b></span>
+  </div>
+
+  <p class="verdict" id="msg">O corte aleatório preserva a proporção em média: o teste repete os 10,0% do conjunto, qualquer que seja a fração de teste.</p>
+
+  <p class="foot">O estado é forma: o grupo é <b>hachurado</b>, o resto é <b>cheio</b>. As alturas são as contagens, na mesma escala para as três colunas.</p>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 1000, GRUPO = 100;                     /* f = 0,1 no conjunto */
+  var TURMA = 50, N_TURMAS = 20;                      /* turmas iguais de 50 */
+  var ORDEM = [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; /* 1 = turma do noturno */
+
+  var SPAN = 152, BASE = 176, CW = 84, X = [46, 218, 390];
+  var svg = document.getElementById('svg');
+  var t = document.getElementById('t');
+  var m1 = document.getElementById('m1');
+  var m2 = document.getElementById('m2');
+  var msg = document.getElementById('msg');
+  var fEl = ['f0', 'f1', 'f2'].map(function (id) { return document.getElementById(id); });
+  var porGrupo = false;
+
+  function mil(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function pct(n) { return n.toFixed(1).replace('.', ',') + '%'; }
+
+  /* os dois cortes. Aleatório: f sobrevive ao corte em média. Por grupo: a
+     turma inteira cai de um lado, então o f do teste salta com k. */
+  function corte(tFrac) {
+    if (!porGrupo) {
+      var nTeste = TOTAL * tFrac;
+      return {
+        teste: { total: nTeste, grupo: GRUPO * tFrac, resto: (TOTAL - GRUPO) * tFrac },
+        k: 0, pedido: nTeste
+      };
+    }
+    var k = Math.max(1, Math.min(N_TURMAS - 1, Math.round(tFrac * N_TURMAS)));
+    var g = 0;
+    for (var i = 0; i < k; i++) { g += ORDEM[i] ? TURMA : 0; }
+    var n = k * TURMA;
+    return { teste: { total: n, grupo: g, resto: n - g }, k: k, pedido: TOTAL * tFrac };
+  }
+
+  function coluna(i, total, grupo) {
+    var resto = total - grupo;
+    var x = X[i], c = x + CW / 2;
+    var hTot = total * SPAN / TOTAL;
+    var hR = resto * SPAN / TOTAL;
+    var hG = grupo * SPAN / TOTAL;
+    var yR = BASE - hR;
+    var yG = yR - hG;
+    var s = '';
+    s += '<rect x="' + x + '" y="' + yR + '" width="' + CW + '" height="' + hR + '" fill="currentColor" opacity=".88"/>';
+    if (hG > 0.4) {
+      s += '<clipPath id="cp' + i + '"><rect x="' + x + '" y="' + yG + '" width="' + CW + '" height="' + hG + '"/></clipPath>';
+      s += '<g clip-path="url(#cp' + i + ')" stroke="currentColor" stroke-width="1.1">';
+      for (var d = -hG; d < CW + hG; d += 6) {
+        s += '<line x1="' + (x + d).toFixed(1) + '" y1="' + (yG + hG).toFixed(1) +
+             '" x2="' + (x + d + hG).toFixed(1) + '" y2="' + yG.toFixed(1) + '"/>';
+      }
+      s += '</g>';
+    }
+    s += '<rect x="' + x + '" y="' + (BASE - hTot) + '" width="' + CW + '" height="' + hTot + '" fill="none" stroke="currentColor" stroke-width="1.2"/>';
+    if (hG > 0.4) {
+      s += '<line x1="' + x + '" y1="' + yG + '" x2="' + (x + CW) + '" y2="' + yG + '" stroke="currentColor" stroke-width="1.2"/>';
+    }
+    return s + '<text class="num" x="' + c + '" y="' + (BASE - hTot - 7) + '">' + mil(total) + '</text>';
+  }
+
+  function render() {
+    var tFrac = Number(t.value) / 100;
+    var r = corte(tFrac);
+    var tr = TOTAL - r.teste.total;
+    var fTeste = r.teste.grupo / r.teste.total * 100;
+    var fTreino = (GRUPO - r.teste.grupo) / tr * 100;
+
+    document.getElementById('tval').textContent = t.value + '%';
+    fEl[0].textContent = pct(GRUPO / TOTAL * 100);
+    fEl[1].textContent = pct(fTreino);
+    fEl[2].textContent = pct(fTeste);
+
+    var nomes = ['conjunto inteiro', 'treino', 'teste'];
+    var contas = [[TOTAL, GRUPO], [tr, GRUPO - r.teste.grupo], [r.teste.total, r.teste.grupo]];
+    var fracs = [GRUPO / TOTAL * 100, fTreino, fTeste];
+    var s = '<line class="ax" x1="28" y1="' + BASE + '" x2="496" y2="' + BASE + '"/>';
+    for (var i = 0; i < 3; i++) {
+      s += coluna(i, contas[i][0], contas[i][1]);
+      s += '<text class="nm" x="' + (X[i] + CW / 2) + '" y="' + (BASE + 17) + '">' + nomes[i] + '</text>';
+      s += '<text class="frc" x="' + (X[i] + CW / 2) + '" y="' + (BASE + 33) + '">grupo ' + pct(fracs[i]) + '</text>';
+    }
+    svg.innerHTML = s;
+
+    m1.setAttribute('aria-pressed', porGrupo ? 'false' : 'true');
+    m2.setAttribute('aria-pressed', porGrupo ? 'true' : 'false');
+
+    if (!porGrupo) {
+      msg.textContent = 'O corte aleatório preserva a proporção em média: o teste repete os 10,0% do conjunto, com ' +
+        mil(r.teste.total) + ' fichas e ' + mil(r.teste.grupo) + ' delas no grupo.';
+    } else {
+      var nt = r.teste.grupo / TURMA;
+      msg.textContent = 'O corte por grupo leva turmas inteiras de 50: ' + nt + ' das 2 turmas do noturno ' +
+        (nt === 1 ? 'caiu' : 'caíram') + ' no teste, que ficou com ' + mil(r.teste.total) + ' fichas e ' +
+        pct(fTeste) + ' do grupo.' +
+        (r.teste.total !== Math.round(r.pedido) ? ' O controle pediu ' + Math.round(r.pedido) + ' fichas.' : '');
+    }
+  }
+
+  t.addEventListener('input', render);
+  m1.addEventListener('click', function () { porGrupo = false; render(); });
+  m2.addEventListener('click', function () { porGrupo = true; render(); });
+  render();
+})();
+</script>

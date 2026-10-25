@@ -331,7 +331,7 @@ textarea, input[type="text"] {
 
   <p class="kicker">Fig. 1 · a rubrica em cinco critérios</p>
   <h1>Quais critérios este prompt cumpre?</h1>
-  <p class="sub">Ligue os critérios que o contrato exige e aplique a rubrica. O escore é a fração deles que o texto satisfaz, então apagar um critério muda a conta sem mudar a saída.</p>
+  <p class="sub">Ligue os critérios que o contrato exige e aplique a rubrica. O score é a fração deles que o texto satisfaz, então apagar um critério muda a conta sem mudar a saída.</p>
 
   <div class="grid">
 
@@ -348,12 +348,12 @@ textarea, input[type="text"] {
     </div>
 
     <div class="card card--flat">
-      <p class="label">escore da rubrica</p>
+      <p class="label">score da rubrica</p>
       <div class="readout"><b id="sc">—</b><span id="scl">nenhuma rubrica aplicada</span></div>
       <div class="bar" style="margin-top:8px"><i id="fill"></i></div>
 
       <div class="eq">
-        <div class="mono">escore = (1/k) * soma de 1[c_i(p)]</div>
+        <div class="mono">score = (1/k) * soma de 1[c_i(p)]</div>
         <div class="cap">k é o número de critérios ligados, e cada c_i é uma pergunta fechada sobre o texto. Com k = 0 a conta não existe: o pedido vago não tira zero, ele fica fora da conta.</div>
       </div>
     </div>
@@ -394,7 +394,7 @@ textarea, input[type="text"] {
                   '<span class="g">·</span>';
     box.appendChild(l);
     ativos[c.id] = true;
-    /* desligar um critério NÃO reaplica a rubrica: o escore sobe
+    /* desligar um critério NÃO reaplica a rubrica: o score sobe
        porque o denominador encolheu, e é isso que o frame mostra. */
     l.querySelector('input').addEventListener('change', function (e) {
       ativos[c.id] = e.target.checked;
@@ -426,7 +426,7 @@ textarea, input[type="text"] {
 
     if (!k) {
       sc.textContent = '—';
-      scl.textContent = 'k = 0: o prompt não tem escore';
+      scl.textContent = 'k = 0: o prompt não tem score';
       fill.style.width = '0%';
       return;
     }

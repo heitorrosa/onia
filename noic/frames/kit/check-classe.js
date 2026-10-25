@@ -144,17 +144,29 @@ async function auditClass(file) {
   ok(greens.length === 0, 'nenhuma cor verde na classe', greens.join(', '));
 
   /* --- interativo: os iframes --- */
-  const iframes = [...md.matchAll(/<iframe\b[\s\S]*?<\/iframe>/gi)].map(m => m[0]);
+  const iframes = [...md.matchAll(/<iframe\b[\s\S]*?<\/iframe>/gi)]
+    .map(m => ({ tag: m[0], antes: md.slice(Math.max(0, m.index - 300), m.index) }));
   ok(iframes.length > 0, `a classe tem ${iframes.length} iframe(s)`);
   const meas = await getMeasured();
   const heights = new Map(meas.map(r => [r.frame, r.height]));
 
-  for (const tag of iframes) {
+  for (const { tag, antes } of iframes) {
     const src = (tag.match(/src="([^"]*)"/) || [, ''])[1];
     const slug = path.basename(src);
     const ttl = (tag.match(/title="([^"]*)"/) || [, ''])[1];
     const sty = (tag.match(/style="([^"]*)"/) || [, ''])[1];
     const h = (sty.match(/height:(\d+)px/) || [])[1];
+
+    /* video de terceiro (figure data-embed="video"): nao e frame do kit e nao
+       pode ser medido em dist/, entao exige so o que a proporcao resolve. */
+    if (/<figure[^>]*data-embed="video"[^>]*>\s*$/.test(antes)) {
+      ok(/loading="lazy"/.test(tag), `${src}: loading="lazy"`);
+      ok(!!ttl && !/[<>]/.test(ttl), `${src}: title descritivo`, ttl);
+      ok(/aspect-ratio:\s*16\s*\/\s*9/.test(sty), `${src}: proporcao 16/9`, sty);
+      ok(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]+$/.test(src),
+        `${src}: dominio www.youtube-nocookie.com`);
+      continue;
+    }
 
     ok(/loading="lazy"/.test(tag), `${slug}: loading="lazy"`);
     ok(/sandbox="allow-scripts"/.test(tag), `${slug}: sandbox="allow-scripts"`);

@@ -41,13 +41,17 @@ document.getElementById('f').onload = function () {
 };
 </script></body></html>`;
 
-const tmp = path.join(dist, '_medir.html');
+/* O wrapper tem nome único por execução: duas sessões rodando em paralelo
+   gravavam o mesmo arquivo e a medição de uma lia a altura da outra. */
+const tag = `${process.pid}_${Date.now().toString(36)}`;
+const tmp = path.join(dist, `_medir_${tag}.html`);
 
 /* dump-dom do Edge, com timeout */
 function dumpDom(url) {
   return new Promise((resolve) => {
     const p = execFile(EDGE, [
       '--headless=new', '--disable-gpu', '--no-sandbox',
+      '--run-all-compositor-stages-before-draw',
       '--virtual-time-budget=9000', '--dump-dom', url
     ], { encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
     let out = '';
@@ -79,7 +83,9 @@ async function measureFrames(width = WIDTH) {
     console.error('dist/ não existe — rode build.js antes.');
     return [];
   }
-  const frames = fs.readdirSync(dist).filter(f => f.endsWith('.html')).sort();
+  const frames = fs.readdirSync(dist)
+    .filter(f => f.endsWith('.html') && !f.startsWith('_'))
+    .sort();
   if (!frames.length) {
     console.error('dist/ está vazio — rode build.js antes.');
     return [];
@@ -92,10 +98,18 @@ async function measureFrames(width = WIDTH) {
   try {
     for (const f of frames) {
       fs.writeFileSync(tmp, wrapper.replace('FRAME', f), 'utf8');
-      const dom = await dumpDom(`http://127.0.0.1:${port}/_medir.html`);
-      const m = dom.match(/data-h="(\d+)"/);
-      results.push({ frame: f, height: m ? Number(m[1]) : 0 });
-      if (!m) console.error(`  ! não consegui medir ${f}`);
+      /* três tentativas: um frame que ainda carrega mede menos, e a altura
+         só pode crescer até o documento estabilizar. Fica a maior. */
+      let best = 0;
+      for (let i = 0; i < 3; i++) {
+        const dom = await dumpDom(`http://127.0.0.1:${port}/${path.basename(tmp)}`);
+        const m = dom.match(/data-h="(\d+)"/);
+        const h = m ? Number(m[1]) : 0;
+        if (h > best) best = h;
+        if (h && h === best && i > 0) break;
+      }
+      results.push({ frame: f, height: best });
+      if (!best) console.error(`  ! não consegui medir ${f}`);
     }
   } finally {
     try { fs.unlinkSync(tmp); } catch (e) { /* o wrapper é temporário */ }

@@ -1,0 +1,51 @@
+<!--
+  Gêmeo estático do frame `eixo3-colunas-do-imbalanco.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  A MESMA ideia sem JS: o slider vira a coluna "fração de teste" da tabela,
+  o botão de modo vira duas tabelas. Sem cor declarada: só a tinta da página.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 4</strong> (versão estática): o conjunto de mil fichas em treino e teste, com 10% de grupo. No corte aleatório a fração do grupo é a mesma nas três colunas em qualquer tamanho de teste; no corte por grupo, turmas inteiras vão para um lado e a fração do teste depende de quais turmas caíram lá.</figcaption>
+
+  <p style="margin:0 0 .4em"><strong>Corte aleatório.</strong> Sorteia fichas, então cada coluna repete a proporção do conjunto, em média.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1.1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">fração de teste</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">fichas no teste</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">grupo no teste</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">grupo no treino</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">10%</td><td style="padding:7px 8px 7px 0">100</td><td style="padding:7px 8px 7px 0">10,0%</td><td style="padding:7px 8px 7px 0">10,0%</td></tr>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">20%</td><td style="padding:7px 8px 7px 0">200</td><td style="padding:7px 8px 7px 0">10,0%</td><td style="padding:7px 8px 7px 0">10,0%</td></tr>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">30%</td><td style="padding:7px 8px 7px 0">300</td><td style="padding:7px 8px 7px 0">10,0%</td><td style="padding:7px 8px 7px 0">10,0%</td></tr>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">40%</td><td style="padding:7px 8px 7px 0">400</td><td style="padding:7px 8px 7px 0">10,0%</td><td style="padding:7px 8px 7px 0">10,0%</td></tr>
+      <tr><td style="padding:7px 8px 7px 0">50%</td><td style="padding:7px 8px 7px 0">500</td><td style="padding:7px 8px 7px 0">10,0%</td><td style="padding:7px 8px 7px 0">10,0%</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .4em"><strong>Corte por grupo.</strong> Vinte turmas de 50 fichas, duas delas do noturno. O corte manda turmas inteiras para o teste, e a fração do grupo salta de 0,0% a 25,0%, e não sobe sempre, conforme as turmas que caem lá.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1.1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">fração de teste</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">fichas no teste</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">grupo no teste</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">grupo no treino</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">10%</td><td style="padding:7px 8px 7px 0">100</td><td style="padding:7px 8px 7px 0">0,0%</td><td style="padding:7px 8px 7px 0">11,1%</td></tr>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">20%</td><td style="padding:7px 8px 7px 0">200</td><td style="padding:7px 8px 7px 0">25,0%</td><td style="padding:7px 8px 7px 0">6,3%</td></tr>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">30%</td><td style="padding:7px 8px 7px 0">300</td><td style="padding:7px 8px 7px 0">16,7%</td><td style="padding:7px 8px 7px 0">7,1%</td></tr>
+      <tr style="border-bottom:1px solid currentColor"><td style="padding:7px 8px 7px 0">40%</td><td style="padding:7px 8px 7px 0">400</td><td style="padding:7px 8px 7px 0">25,0%</td><td style="padding:7px 8px 7px 0">0,0%</td></tr>
+      <tr><td style="padding:7px 8px 7px 0">50%</td><td style="padding:7px 8px 7px 0">500</td><td style="padding:7px 8px 7px 0">20,0%</td><td style="padding:7px 8px 7px 0">0,0%</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">O conjunto inteiro é sempre 1.000 fichas, 100 delas do grupo, ou 10,0%. As três colunas do gráfico são essas contagens na mesma escala: por isso a coluna do teste encolhe até um décimo e a do treino quase não se move.</p>
+
+  <p style="margin:0"><strong>Ponto notável.</strong> O imbalanço do conjunto não é o imbalanço do teste. Com 10% de grupo no arquivo, o sorteio entrega 10% no teste; a turma inteira entrega 0% ou 33%, e nenhum dos dois números mede o modelo: mede quem caiu de cada lado do corte.</p>
+</figure>
