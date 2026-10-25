@@ -1,3 +1,5 @@
 archive/
 *.csv
 idea.md
+node_modules/
+package-lock.json
