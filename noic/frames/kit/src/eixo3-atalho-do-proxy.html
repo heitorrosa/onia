@@ -1,4 +1,4 @@
-<!--title: A coluna que faz o trabalho-->
+<!--title: A coluna CEP como proxy-->
 <style>
 .cols { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
 .cols .col { border:1px solid currentColor; border-radius:5px; padding:5px 10px; font-size:13px; }
@@ -21,8 +21,8 @@
 
 <div class="wrap">
 
-  <p class="kicker">Fig. 8: o atalho</p>
-  <h1>A coluna que faz o trabalho</h1>
+  <p class="kicker">Fig. 8: o proxy</p>
+  <h1>A coluna CEP como proxy</h1>
   <p class="sub">Um modelo de crédito com a coluna CEP e sem ela. A matriz põe os dois lado a lado: a acurácia geral fica onde está e a do grupo perde dez pontos.</p>
 
   <div class="cols" id="cols">
@@ -62,14 +62,14 @@
   </table>
 
   <div class="readout" style="margin-top:14px">
-    <span>o geral fica em</span>
+    <span>a acurácia geral fica em</span>
     <b>72,0%</b>
     <span id="dd">e o grupo cai de 22,0% para 12,0% quando o CEP sai</span>
   </div>
 
   <div class="eq">
-    <div id="eqline">\(\displaystyle a = 0{,}1 \times 22{,}0 + 0{,}9 \times 77{,}6 = 72{,}04\)</div>
-    <div class="cap" id="cap">A linha de baixo é a mesma conta sem o CEP: o grupo troca 22,0 por 12,0, o resto troca 77,6 por 78,7, e a média se move 0,01 ponto, porque a queda do grupo entra dividida por dez e a alta do resto entra multiplicada por nove.</div>
+    <div id="eqline">\(\displaystyle a = (22 + 698)/1000 = 72{,}0\%\)</div>
+    <div class="cap" id="cap">A linha de baixo é a mesma conta sem o CEP: o grupo troca 22 acertos por 12, o resto troca 698 por 708, e o total fica em 720 dos mil nos dois casos. O grupo perde 10 pontos, o resto ganha 1,1, e a acurácia geral não se move.</div>
   </div>
 
   <div class="card" style="margin-top:12px">
@@ -82,12 +82,13 @@
 
 <script>
 (function () {
-  var COM = { geral: 72.04, grupo: 22.0, resto: 77.6 };
-  var SEM = { geral: 72.03, grupo: 12.0, resto: 78.7 };
+  /* acertos, nao taxas: grupo de 100, resto de 900. O total fecha em 720. */
+  var COM = { grupo: 22, resto: 698 };
+  var SEM = { grupo: 12, resto: 708 };
 
-  /* a média tem de fechar com as duas parcelas, nos dois casos */
-  if (Math.abs(0.1 * COM.grupo + 0.9 * COM.resto - COM.geral) > 1e-9) { throw new Error('com CEP'); }
-  if (Math.abs(0.1 * SEM.grupo + 0.9 * SEM.resto - SEM.geral) > 1e-9) { throw new Error('sem CEP'); }
+  /* a media tem de fechar com as duas parcelas, nos dois casos */
+  if (Math.abs(COM.grupo + COM.resto - 720) !== 0) { throw new Error('com CEP'); }
+  if (Math.abs(SEM.grupo + SEM.resto - 720) !== 0) { throw new Error('sem CEP'); }
 
   var rm = document.getElementById('rm');
   var cep = document.getElementById('cep');
@@ -106,11 +107,11 @@
       ? 'e o grupo caiu de 22,0% para 12,0%, enquanto o resto foi de 77,6% para 78,7%'
       : 'e o grupo cai de 22,0% para 12,0% quando o CEP sai';
     eqline.innerHTML = sem
-      ? '\\(\\displaystyle a = 0{,}1 \\times 12{,}0 + 0{,}9 \\times 78{,}7 = 72{,}03\\)'
-      : '\\(\\displaystyle a = 0{,}1 \\times 22{,}0 + 0{,}9 \\times 77{,}6 = 72{,}04\\)';
+      ? '\\(\\displaystyle a = (12 + 708)/1000 = 72{,}0\\%\\)'
+      : '\\(\\displaystyle a = (22 + 698)/1000 = 72{,}0\\%\\)';
     cap.innerHTML = sem
-      ? 'A linha em uso é a de baixo: o grupo fica em 12,0% e o resto em 78,7%, e a média fecha em 72,03%. Sem o atalho o modelo erra mais dentro do grupo, e a manchete não mostra isso.'
-      : 'A linha em uso é a de cima: o grupo fica em 22,0% e o resto em 77,6%, e a média fecha em 72,04%. A manchete é a mesma nos dois mundos.';
+      ? 'A linha em uso é a de baixo: o grupo fica em 12 acertos e o resto em 708, e o total continua em 720 dos mil, ou 72,0%. Sem o atalho o modelo erra mais dentro do grupo, e a acurácia geral não mostra isso.'
+      : 'A linha em uso é a de cima: o grupo fica em 22 acertos e o resto em 698, e o total fecha em 720 dos mil, ou 72,0%. A acurácia geral é a mesma nos dois mundos.';
     if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([eqline]); }
   }
 

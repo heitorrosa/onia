@@ -324,23 +324,23 @@ textarea, input[type="text"] {
 
   <p class="kicker">Fig. 3: a acurácia inflada</p>
   <h1>A acurácia inflada</h1>
-  <p class="sub">Mova o controle que mede a fração do teste que o treino já viu e veja a distância entre a acurácia que aparece no relatório e a acurácia real.</p>
+  <p class="sub">Mova o controle que mede a fração contaminada do teste e veja a distância entre a acurácia observada e a acurácia limpa.</p>
 
   <div class="sim">
     <div class="ctl">
-      <span class="name">fração do teste vazada (ρ)</span>
+      <span class="name">fração contaminada do teste (ρ)</span>
       <span class="val" id="rval">10%</span>
       <input type="range" id="rho" min="0" max="50" step="1" value="10" aria-label="fração do teste que o treino já viu, em porcentagem">
       <div class="scale"><span>0%</span><span>50%</span></div>
     </div>
     <div class="gauge">
       <div class="row">
-        <span class="name">observada</span>
+        <span class="name">acurácia observada</span>
         <span class="bar"><i id="gobs" style="width:91%"></i></span>
         <span class="val" id="vobs">91%</span>
       </div>
       <div class="row">
-        <span class="name">real</span>
+        <span class="name">acurácia limpa</span>
         <span class="bar alt"><i id="greal" style="width:90%"></i></span>
         <span class="val" id="vreal">90%</span>
       </div>
@@ -348,20 +348,20 @@ textarea, input[type="text"] {
   </div>
 
   <div class="readout" style="margin-top:14px">
-    <span>ρ, teste vazado</span>
+    <span>ρ, teste contaminado</span>
     <b id="rro">10%</b>
     <span>a medida sobe</span>
     <b id="rdif">1 ponto</b>
   </div>
 
   <div class="eq">
-    <div>\[a_{\text{obs}} = \rho + (1 - \rho)\, a_{\text{real}}\]</div>
-    <div class="cap">leitura: a acurácia observada é a fração vazada, acertada por memória, mais a fração limpa, acertada na taxa real. Com a acurácia real de 90%, 10% de teste vazado levanta a medida para 91 e passa quase despercebido; metade do teste vazado levanta para 95, e aí o número do relatório não quer dizer mais nada.</div>
+    <div>\[a_{\text{obs}} = \rho + (1 - \rho)\, a_{\text{limpo}}\]</div>
+    <div class="cap">leitura: a acurácia observada é a fração contaminada, acertada com certeza, mais a fração limpa, acertada na taxa \(a_{\text{limpo}}\). Com a acurácia limpa de 90%, 10% de teste contaminado levanta a medida para 91; metade do teste contaminado levanta para 95.</div>
   </div>
 
   <div class="card" style="margin-top:14px">
     <p class="label">Ponto notável</p>
-    <p class="sub" style="margin:0">a inflação é linear em ρ, e o tamanho da mentira é exatamente ρ vezes a diferença entre acertar por memória e acertar de verdade. Por isso o vazamento pequeno é mais perigoso que o grande: o grande aparece na estreia e o pequeno passa.</p>
+    <p class="sub" style="margin:0">a inflação é linear em ρ: a diferença entre a acurácia observada e a limpa é ρ vezes (1 − a_limpo). Com ρ pequeno a medida sobe poucos pontos, dentro da margem de um teste de 100 registros; com ρ grande, a queda aparece em produção.</p>
   </div>
 
 </div>

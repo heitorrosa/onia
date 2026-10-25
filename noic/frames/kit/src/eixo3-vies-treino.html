@@ -3,7 +3,7 @@
 
   <p class="kicker">Fig. 2: o grupo que o modelo não viu</p>
   <h1>O grupo que o modelo não viu</h1>
-  <p class="sub">O modelo aprende a média do conjunto de treino, e a média não é o grupo. Com o grupo raro fora do treino, o acerto geral continua alto e o acerto do próprio grupo desaba.</p>
+  <p class="sub">O modelo aprende a média do conjunto de treino. Com o grupo raro fora do treino, a acurácia geral continua alta e a acurácia do próprio grupo cai.</p>
 
   <div class="eq">
     <div>\(\displaystyle a_{\mathrm{geral}}(q)=0{,}1\,(22+66q)+0{,}9\times 77{,}6 \qquad a_{B}(q)=22+66q\)</div>
@@ -19,12 +19,12 @@
     </div>
     <div class="gauge">
       <div class="row" style="grid-template-columns:7.4em 1fr 4.4em">
-        <span class="name">acerto geral</span>
+        <span class="name">acurácia geral</span>
         <span class="bar"><i id="g1" style="width:72%"></i></span>
         <span class="val" id="v1">72,0%</span>
       </div>
       <div class="row" style="grid-template-columns:7.4em 1fr 4.4em">
-        <span class="name">acerto do grupo B</span>
+        <span class="name">acurácia do grupo B</span>
         <span class="bar alt"><i id="g2" style="width:22%"></i></span>
         <span class="val" id="v2">22,0%</span>
       </div>
@@ -32,19 +32,19 @@
   </div>
 
   <div class="readout">
-    <span id="outtxt">o modelo acerta 72,0% no geral e 22,0% no grupo B: uma diferença de</span>
+    <span id="outtxt">a acurácia é 72,0% no geral e 22,0% no grupo B: uma diferença de</span>
     <b id="dif">50,0</b>
     <span>pontos</span>
   </div>
 
-  <p style="margin:6px 0 0">a média é uma média: ela some com quem tem o pior desempenho</p>
+  <p style="margin:6px 0 0">a acurácia geral mistura os dois grupos pelo tamanho de cada um</p>
 
   <div class="card" style="margin-top:12px">
     <p class="label">Ponto notável</p>
-    <p class="sub" style="margin:0">o grupo ganha 66 pontos ao longo do controle; a manchete ganha 6,6. Não é um modelo diferente: é o mesmo ganho, visto com o peso de 10%.</p>
+    <p class="sub" style="margin:0">o grupo ganha 66 pontos ao longo do controle; a acurácia geral ganha 6,6. O modelo é o mesmo, e o ganho do grupo entra na média com o peso de 10%.</p>
   </div>
 
-  <p class="foot">O estado é forma: a barra do acerto do grupo B é <b>tracejada</b> e mais clara; a do acerto geral é contínua e cheia. O número entra só no resultado.</p>
+  <p class="foot">A barra da acurácia do grupo B é <b>tracejada</b> e mais clara; a da acurácia geral é contínua e cheia. O número entra só no resultado.</p>
 </div>
 
 <script>
@@ -76,7 +76,7 @@
     g2.style.width = grupo + '%';
     v1.textContent = n1(geral) + '%';
     v2.textContent = n1(grupo) + '%';
-    outtxt.textContent = 'o modelo acerta ' + n1(geral) + '% no geral e ' + n1(grupo) + '% no grupo B: uma diferença de';
+    outtxt.textContent = 'a acurácia é ' + n1(geral) + '% no geral e ' + n1(grupo) + '% no grupo B: uma diferença de';
     dif.textContent = n1(Math.abs(geral - grupo));
   }
 

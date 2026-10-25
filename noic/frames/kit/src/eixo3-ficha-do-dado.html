@@ -21,12 +21,12 @@
 
   <div class="eq">
     <div id="vec">[0.16, 0.85, 0.30]</div>
-    <div class="cap" id="cap">Cada coluna virou um número, e o número foi reescalado (170 → 0.85). São duas operações: a coluna virou número, e o número mudou de escala. O modelo não viu o valor cru nem o nome "altura (cm)": recebeu 0.85, e não sabe o que aquilo é.</div>
+    <div class="cap" id="cap">Cada coluna virou um número, e o número foi reescalado (170 → 0.85). São duas operações: o encoding da coluna e o scaling do valor. O modelo recebeu 0.85 e não o valor cru: o nome "altura (cm)" ficou fora.</div>
   </div>
 
   <div class="card" style="margin-top:12px">
     <p class="label">Ponto notável</p>
-    <p class="sub" style="margin:0">a ingestão é uma função: o mesmo registro produz sempre o mesmo vetor. É por isso que o experimento dá para repetir, e é por isso que a função pode ser mudada sem que ninguém perceba.</p>
+    <p class="sub" style="margin:0">a representação é uma função: o mesmo registro produz sempre o mesmo vetor. É por isso que o experimento pode ser repetido, e é por isso que trocar a função muda o que o modelo recebe.</p>
   </div>
 
 </div>
@@ -94,7 +94,7 @@
       h += '<span class="tok' + (dentro ? '' : ' out') + '"><b>' + w + '</b><span>' + id + '</span></span>';
     }
     h += '</div>';
-    h += '<p style="font-size:12.5px;margin:10px 0 0;opacity:.85">um token por palavra: a frase tem <b>6</b> tokens, e o lote de 32 frases é <b>[32, 6]</b></p>';
+    h += '<p style="font-size:12.5px;margin:10px 0 0;opacity:.85">neste exemplo, um token por palavra: a frase tem <b>6</b> tokens, e o lote de 32 frases é <b>[32, 6]</b></p>';
     return { html: h, ids: ids };
   }
 
@@ -103,20 +103,20 @@
     if (k === 'tabela') {
       vis.innerHTML = tabela();
       vec.textContent = '[' + VEC_T.join(', ') + ']';
-      cap.innerHTML = 'Cada coluna virou um número, e o número foi reescalado (170 → 0.85). São duas operações: a coluna virou número, e o número mudou de escala. O modelo não viu o valor cru nem o nome "altura (cm)": recebeu 0.85, e não sabe o que aquilo é.';
+      cap.innerHTML = 'Cada coluna virou um número, e o número foi reescalado (170 → 0.85). São duas operações: o encoding da coluna e o scaling do valor. O modelo recebeu 0.85 e não o valor cru: o nome "altura (cm)" ficou fora.';
       n.textContent = '3';
       noun.textContent = 'números (e 1 label)';
     } else if (k === 'imagem') {
       vis.innerHTML = imagem();
       vec.textContent = '[0.00, 0.00, 0.12, … 0.00]  (784 valores)';
-      cap.innerHTML = 'A imagem virou uma lista de <b>784</b> intensidades. O modelo viu os pixels; a foto, que tem gato, cachorro e o mundo, ficou do lado de fora da função.';
+      cap.innerHTML = 'A imagem virou uma lista de <b>784</b> intensidades: o modelo vê os pixels, não o que a foto representa.';
       n.textContent = '784';
       noun.textContent = 'números';
     } else {
       var t = texto();
       vis.innerHTML = t.html;
       vec.textContent = '[' + t.ids.join(', ') + ']';
-      cap.innerHTML = 'Cada token virou o índice dele no vocabulário. "porto" não está no vocabulário: virou <b>&lt;unk&gt;</b> , e 1 token e 5 letras valem o mesmo.';
+      cap.innerHTML = 'Cada token virou o índice dele no vocabulário. "porto" não está no vocabulário: virou <b>&lt;unk&gt;</b>, e as 5 letras ficaram em 1 token.';
       n.textContent = '6';
       noun.textContent = 'números';
     }

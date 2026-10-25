@@ -324,7 +324,7 @@ textarea, input[type="text"] {
 
   <p class="kicker">Fig. 4: a curva de treino e validação</p>
   <h1>A curva de treino e validação</h1>
-  <p class="sub">Mova o controle e veja as três curvas: o acerto no treino, na validação limpa e na validação contaminada.</p>
+  <p class="sub">Mova o controle do tamanho do treino e veja as três curvas: o acerto no treino, na validação limpa e na validação contaminada.</p>
 
   <div class="sim one">
     <div class="ctl">
@@ -338,7 +338,7 @@ textarea, input[type="text"] {
   <div class="chart">
     <svg viewBox="0 0 560 198" role="img" aria-label="acurácia de treino, validação limpa e validação contaminada em função do tamanho do treino">
       <g id="gGrid"></g>
-      <polyline id="lTr" class="ln" points=""></polyline>
+      <polyline id="lTr" class="ln" points="" opacity=".4"></polyline>
       <polyline id="lVa" class="ln" points=""></polyline>
       <polyline id="lCv" class="ln dash" points=""></polyline>
       <line id="vMk" class="vline" x1="0" y1="12" x2="0" y2="166"></line>
@@ -346,6 +346,12 @@ textarea, input[type="text"] {
       <circle id="p2" class="pt" r="3.4"></circle>
       <circle id="p3" class="pt" r="3.4"></circle>
     </svg>
+  </div>
+
+  <div class="legend">
+    <span><svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" stroke="currentColor" stroke-width="2" opacity=".4"></line></svg>treino</span>
+    <span><svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" stroke="currentColor" stroke-width="2"></line></svg>validação limpa</span>
+    <span><svg width="18" height="4" aria-hidden="true"><line x1="0" y1="2" x2="18" y2="2" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"></line></svg>validação contaminada</span>
   </div>
 
   <div class="readout" style="margin-top:12px">
@@ -362,7 +368,7 @@ textarea, input[type="text"] {
 
   <div class="card" style="margin-top:12px">
     <p class="label">Ponto notável</p>
-    <p class="sub" style="margin:0">o vazamento apaga a distância entre treino e validação. Uma curva de validação que encosta na de treino não é um modelo que aprendeu muito, é um teste que deixou de ser teste.</p>
+    <p class="sub" style="margin:0">o leakage apaga a distância entre treino e validação. Quando a curva de validação encosta na de treino, o teste deixou de ser independente.</p>
   </div>
 
 </div>

@@ -351,7 +351,7 @@ textarea, input[type="text"] {
     <div class="modes">
       <span class="name">como o corte é feito</span>
       <button class="btn" type="button" id="m1" aria-pressed="true" aria-label="corte aleatório: sorteia fichas para o teste">corte aleatório</button>
-      <button class="btn" type="button" id="m2" aria-pressed="false" aria-label="corte por grupo: manda turmas inteiras para o teste">corte por grupo</button>
+      <button class="btn" type="button" id="m2" aria-pressed="false" aria-label="corte por turma: manda turmas inteiras para o teste">corte por turma</button>
     </div>
   </div>
 
@@ -393,7 +393,7 @@ textarea, input[type="text"] {
   function mil(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function pct(n) { return n.toFixed(1).replace('.', ',') + '%'; }
 
-  /* os dois cortes. Aleatório: f sobrevive ao corte em média. Por grupo: a
+  /* os dois cortes. Aleatório: f sobrevive ao corte em média. Por turma: a
      turma inteira cai de um lado, então o f do teste salta com k. */
   function corte(tFrac) {
     if (!porGrupo) {
@@ -467,7 +467,7 @@ textarea, input[type="text"] {
         mil(r.teste.total) + ' fichas e ' + mil(r.teste.grupo) + ' delas no grupo.';
     } else {
       var nt = r.teste.grupo / TURMA;
-      msg.textContent = 'O corte por grupo leva turmas inteiras de 50: ' + nt + ' das 2 turmas do noturno ' +
+      msg.textContent = 'O corte por turma leva turmas inteiras de 50: ' + nt + ' das 2 turmas do noturno ' +
         (nt === 1 ? 'caiu' : 'caíram') + ' no teste, que ficou com ' + mil(r.teste.total) + ' fichas e ' +
         pct(fTeste) + ' do grupo.' +
         (r.teste.total !== Math.round(r.pedido) ? ' O controle pediu ' + Math.round(r.pedido) + ' fichas.' : '');

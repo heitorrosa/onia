@@ -62,12 +62,12 @@
         <tbody>
           <tr>
             <th scope="row">passou</th>
-            <td class="ok diag" id="b-vp"><b>47</b><span>47,0%</span></td>
+            <td class="ok diag" id="b-vp"><b>45</b><span>45,0%</span></td>
             <td class="err" id="b-fp"><b>5</b><span>5,0%</span></td>
           </tr>
           <tr>
             <th scope="row">não passou</th>
-            <td class="err" id="b-fn"><b>31</b><span>31,0%</span></td>
+            <td class="err" id="b-fn"><b>33</b><span>33,0%</span></td>
             <td class="ok diag" id="b-vn"><b>17</b><span>17,0%</span></td>
           </tr>
         </tbody>
@@ -84,13 +84,13 @@
         <tbody>
           <tr>
             <th scope="row">passou</th>
-            <td class="ok diag" id="r-vp"><b>529</b><span>58,8%</span></td>
-            <td class="err" id="r-fp"><b>73</b><span>8,1%</span></td>
+            <td class="ok diag" id="r-vp"><b>480</b><span>53,3%</span></td>
+            <td class="err" id="r-fp"><b>100</b><span>11,1%</span></td>
           </tr>
           <tr>
             <th scope="row">não passou</th>
-            <td class="err" id="r-fn"><b>169</b><span>18,8%</span></td>
-            <td class="ok diag" id="r-vn"><b>129</b><span>14,3%</span></td>
+            <td class="err" id="r-fn"><b>142</b><span>15,8%</span></td>
+            <td class="ok diag" id="r-vn"><b>178</b><span>19,8%</span></td>
           </tr>
         </tbody>
       </table>
@@ -108,16 +108,17 @@
   <p class="thr"><b>limiar em vigor</b><span class="sep">&middot;</span><span id="thr">t = 80</span></p>
 
   <div class="readout" style="margin-top:12px">
-    <span>acurácia</span>
-    <b id="ag">64,0%</b>
-    <span>no grupo</span>
-    <b id="ar">73,1%</b>
+    <span>acurácia no grupo</span>
+    <b id="ag">62,0%</b>
     <span>no resto</span>
+    <b id="ar">73,1%</b>
+    <span>no conjunto</span>
+    <b id="ac">72,0%</b>
   </div>
-  <p class="sub" id="msg">9,1 pontos entre os dois, e 72,2% no conjunto.</p>
+  <p class="sub" id="msg">11,1 pontos entre os dois.</p>
 
   <div class="eq">
-    <div class="cap" id="cap">Com o limiar em 80, o grupo acerta 47 dos 78 aprovados e deixa passar 5 dos 22 reprovados; o resto acerta 529 de 698 e deixa passar 73 de 202.</div>
+    <div class="cap" id="cap">Com o limiar em 80, o grupo acerta 45 dos 78 aprovados e deixa passar 5 dos 22 reprovados; o resto acerta 480 de 622 e deixa passar 100 de 278.</div>
   </div>
 
   <p class="foot">A igualdade de taxas é deste cenário: as duas notas têm a mesma forma e só estão deslocadas cinco pontos. Com formas diferentes, o melhor que sai é a aproximação. O estado é forma: a célula de acerto tem fio cheio, a de erro tem fio tracejado, e a diagonal de acerto leva o fio mais grosso.</p>
@@ -125,19 +126,18 @@
 
 <script>
 (function () {
-  /* mesma forma nos dois grupos, média do grupo 5 pontos abaixo:
-     o grupo tem 78 aprovados e 22 reprovados, o resto 698 e 202. */
-  function scores(n, mu, scale) {
-    var out = [];
-    for (var i = 0; i < n; i++) {
-      var p = (i + 0.5) / n;
-      var s = mu + scale * Math.log(p / (1 - p));
-      out.push(Math.max(0, Math.min(100, s)));
-    }
+  /* nota por faixa: as contagens de cada celula sao exatas */
+  function notas(n, t1, c1, t2, c2) {
+    var out = [], i;
+    for (i = 0; i < c2; i++) { out.push(t2 + (i + 0.5) * (100 - t2) / c2); }
+    for (i = c2; i < c1; i++) { out.push(t1 + (i - c2 + 0.5) * (t2 - t1) / (c1 - c2)); }
+    for (i = c1; i < n; i++) { out.push((i - c1 + 0.5) * (t1 - 0.5) / (n - c1)); }
     return out;
   }
-  var posB = scores(78, 83, 7), negB = scores(22, 71, 7);
-  var posR = scores(698, 88, 7), negR = scores(202, 76, 7);
+  /* grupo: 78 aprovados e 22 reprovados; resto: 622 e 278, 900 fichas.
+     a nota do grupo fica cinco pontos abaixo da do resto. */
+  var posB = notas(78, 75, 60, 80, 45), negB = notas(22, 75, 8, 80, 5);
+  var posR = notas(622, 80, 480, 85, 45), negR = notas(278, 80, 100, 85, 5);
   var SHIFT = 5;
 
   function above(list, t) {
@@ -156,10 +156,13 @@
   function pc(k, n) { return (100 * k / n).toFixed(1).replace('.', ','); }
   function n1(x) { return (100 * x).toFixed(1).replace('.', ','); }
 
+  /* o conjunto fecha em 72,0%: 720 acertos nas mil fichas */
+  var g0 = cells(posB, negB, 80), r0 = cells(posR, negR, 80);
+  if (g0.vp + g0.vn + r0.vp + r0.vn !== 720) { throw new Error('conjunto'); }
   /* com o limiar do grupo 5 abaixo, as duas taxas de erro se alinham:
-     é a premissa do cenário, e o frame falha alto se ela quebrar. */
-  if (Math.abs(above(negB, 75) / 22 - above(negR, 80) / 202) > 0.01) { throw new Error('falso positivo'); }
-  if (Math.abs((78 - above(posB, 75)) / 78 - (698 - above(posR, 80)) / 698) > 0.01) { throw new Error('falso negativo'); }
+     e a premissa do cenario, e o frame falha alto se ela quebrar. */
+  if (Math.abs(above(negB, 75) / 22 - above(negR, 80) / 278) > 0.01) { throw new Error('falso positivo'); }
+  if (Math.abs((78 - above(posB, 75)) / 78 - (622 - above(posR, 80)) / 622) > 0.01) { throw new Error('falso negativo'); }
 
   var t = document.getElementById('t');
   var tval = document.getElementById('tval');
@@ -167,6 +170,7 @@
   var thr = document.getElementById('thr');
   var ag = document.getElementById('ag');
   var ar = document.getElementById('ar');
+  var ac = document.getElementById('ac');
   var msg = document.getElementById('msg');
   var cap = document.getElementById('cap');
   var id = function (k) { return document.getElementById(k); };
@@ -195,13 +199,14 @@
     tval.textContent = String(lim);
     ag.textContent = n1(g.acc) + '%';
     ar.textContent = n1(r.acc) + '%';
+    ac.textContent = n1(geral) + '%';
     msg.textContent = gapTxt + (gap >= 1.05 ? ' pontos' : ' ponto') +
-      ' entre os dois, e ' + n1(geral) + '% no conjunto.';
+      ' entre os dois grupos.';
     thr.textContent = on ? 't = ' + lim + '  ·  t_grupo = ' + tb : 't = ' + lim;
 
     cap.innerHTML = on
-      ? 'O limiar do grupo desce para ' + tb + ': ele acerta ' + g.vp + ' dos 78 aprovados e deixa passar ' + g.fp + ' dos 22 reprovados. O falso positivo vai a ' + pc(g.fp, 22) + '% no grupo e ' + pc(r.fp, 202) + '% no resto; o falso negativo, a ' + pc(g.fn, 78) + '% e ' + pc(r.fn, 698) + '%. O grupo sai de ' + n1(cells(posB, negB, lim).acc) + '% para ' + n1(g.acc) + '% de acurácia, e a diferença entre os dois grupos cai para ' + gapTxt + ' ponto.'
-      : 'Com o limiar em ' + lim + ', o grupo acerta ' + g.vp + ' dos 78 aprovados e deixa passar ' + g.fp + ' dos 22 reprovados; o resto acerta ' + r.vp + ' de 698 e deixa passar ' + r.fp + ' de 202. Mesma régua nas duas matrizes, e a diferença de acurácia é de ' + gapTxt + ' pontos.';
+      ? 'O limiar do grupo desce para ' + tb + ': ele acerta ' + g.vp + ' dos 78 aprovados e deixa passar ' + g.fp + ' dos 22 reprovados. O falso positivo vai a ' + pc(g.fp, 22) + '% no grupo e ' + pc(r.fp, 278) + '% no resto; o falso negativo, a ' + pc(g.fn, 78) + '% e ' + pc(r.fn, 622) + '%. O grupo sai de ' + n1(cells(posB, negB, lim).acc) + '% para ' + n1(g.acc) + '% de acurácia, e a diferença entre os dois grupos cai para ' + gapTxt + ' ponto.'
+      : 'Com o limiar em ' + lim + ', o grupo acerta ' + g.vp + ' dos 78 aprovados e deixa passar ' + g.fp + ' dos 22 reprovados; o resto acerta ' + r.vp + ' de 622 e deixa passar ' + r.fp + ' de 278. Mesma régua nas duas matrizes, e a diferença de acurácia é de ' + gapTxt + ' pontos.';
   }
 
   t.addEventListener('input', function () { render(split.getAttribute('aria-pressed') === 'true'); });
