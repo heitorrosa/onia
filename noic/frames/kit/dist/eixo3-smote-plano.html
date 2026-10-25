@@ -495,6 +495,10 @@ textarea, input[type="text"] {
     return m;
   }
 
+  /* a última linha e a última coluna são a borda da caixa: não passam dela */
+  function cx(i) { return PX(Math.min(i, N - 1)); }
+  function cy(j) { return PY(Math.min(j, N - 1)); }
+
   /* área da região: uma faixa horizontal de retângulos por linha da grade */
   function caminhoArea(m) {
     var d = '';
@@ -504,8 +508,8 @@ textarea, input[type="text"] {
         if (!m[i * N + j]) { i++; continue; }
         var s = i;
         while (i < N && m[i * N + j]) i++;
-        var w = 1.7 * (i - s);
-        d += 'M' + PX(s) + ' ' + PY(j) + 'h' + w + 'v1.7h-' + w + 'Z';
+        var w = cx(i) - cx(s), h = cy(j) - cy(j + 1);
+        if (w > 0 && h > 0) d += 'M' + cx(s) + ' ' + cy(j) + 'h' + w + 'v' + h + 'h-' + w + 'Z';
       }
     }
     return d;
@@ -517,7 +521,7 @@ textarea, input[type="text"] {
     function fora(i, j) {
       return i < 0 || i >= N || j < 0 || j >= N || !m[i * N + j];
     }
-    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) {
+    for (var i = 0; i < N - 1; i++) for (var j = 0; j < N - 1; j++) {
       if (!m[i * N + j]) continue;
       if (fora(i - 1, j)) d += 'M' + PX(i) + ' ' + PY(j) + 'L' + PX(i) + ' ' + PY(j + 1);
       if (fora(i + 1, j)) d += 'M' + PX(i + 1) + ' ' + PY(j) + 'L' + PX(i + 1) + ' ' + PY(j + 1);

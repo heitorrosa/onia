@@ -8,7 +8,7 @@
   na página do WordPress (UTF-8) ele renderiza certo.
 -->
 <figure class="noic-frame-static">
-  <figcaption><strong>Fig. 3</strong> (versão estática): o plano do SMOTE. Sete pontos do grupo concentrados num canto, quarenta do resto espalhados, e a fronteira do classificador de centro mais próximo entre os dois. Cada ponto inventado nasce no segmento entre um ponto do grupo e o vizinho mais próximo dele. Três cruzes marcam casos de teste parados logo acima da fronteira, do lado do resto: elas não se movem, e o que muda é de que lado a fronteira as deixa.</figcaption>
+  <figcaption><strong>Fig. 3</strong> (versão estática): o plano do SMOTE. Sete pontos do grupo concentrados num canto, quarenta do resto espalhados, e a região que um classificador de três vizinhos mais próximos dá ao grupo, hachurada. Cada ponto inventado nasce no segmento entre um ponto do grupo e o vizinho mais próximo dele, e a região cresce um fio para o lado que ficou mais denso. Três cruzes marcam casos de teste parados a menos de duas unidades da borda, do lado do resto: elas não se movem, e o que muda é se a região chega até elas.</figcaption>
 
   <p style="margin:0 0 .6em">
     O ponto novo é uma combinação convexa de dois pontos do grupo:
@@ -20,14 +20,14 @@
     <li>Achar \(x_2\), o ponto do grupo mais próximo de \(x_1\) pela distância euclidiana.</li>
     <li>Sortear \(\lambda\) em \((0,1)\).</li>
     <li>Criar o ponto no segmento: \((1-\lambda)\,x_1 + \lambda\,x_2\).</li>
-    <li>Recalcular a fronteira, que é a mediatriz entre o centróide do grupo e o do resto, e reconferir de que lado ficaram as três cruzes.</li>
+    <li>Recalcular a região: cada célula do plano fica com o grupo quando dois dos seus três vizinhos mais próximos são do grupo. Reconferir se a região chegou às três cruzes.</li>
   </ol>
 
   <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
     <thead>
       <tr style="text-align:left;border-bottom:2px solid currentColor">
         <th style="padding:7px 8px 7px 0;font-weight:600">Pontos sintéticos</th>
-        <th style="padding:7px 8px 7px 0;font-weight:600">Fronteira ao centróide do grupo</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Área da região do grupo</th>
         <th style="padding:7px 8px 7px 0;font-weight:600">Casos de teste que mudaram de lado</th>
         <th style="padding:7px 0 7px 0;font-weight:600">Pontos no grupo</th>
       </tr>
@@ -35,25 +35,25 @@
     <tbody>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">0</td>
-        <td style="padding:7px 8px 7px 0">38,3 unidades</td>
+        <td style="padding:7px 8px 7px 0">34,1% do plano</td>
         <td style="padding:7px 8px 7px 0">0 de 3</td>
         <td style="padding:7px 0">7</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">10</td>
-        <td style="padding:7px 8px 7px 0">36,9 unidades</td>
-        <td style="padding:7px 8px 7px 0">1 de 3</td>
+        <td style="padding:7px 8px 7px 0">35,0% do plano</td>
+        <td style="padding:7px 8px 7px 0">3 de 3</td>
         <td style="padding:7px 0">17</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">20</td>
-        <td style="padding:7px 8px 7px 0">36,3 unidades</td>
-        <td style="padding:7px 8px 7px 0">2 de 3</td>
+        <td style="padding:7px 8px 7px 0">35,1% do plano</td>
+        <td style="padding:7px 8px 7px 0">3 de 3</td>
         <td style="padding:7px 0">27</td>
       </tr>
       <tr>
         <td style="padding:7px 8px 7px 0">40</td>
-        <td style="padding:7px 8px 7px 0">34,9 unidades</td>
+        <td style="padding:7px 8px 7px 0">35,2% do plano</td>
         <td style="padding:7px 8px 7px 0">3 de 3</td>
         <td style="padding:7px 0">47</td>
       </tr>
@@ -61,10 +61,10 @@
   </table>
 
   <p style="margin:0 0 .6em">
-    Os números são de uma execução com sorteio fixo. A cada execução os pontos sorteados mudam, e a fronteira pode andar para o lado do grupo em vez do lado do resto: nesse caso ela se afasta das cruzes e nenhuma muda de lado. O que a tabela mostra é o que acontece quando ela anda para o lado delas: o veredito do caso de teste troca sem que o dado dele mude, e a mudança vem de pontos que nasceram no segmento entre dois pontos que já existiam.
+    Os números são de uma execução com sorteio fixo. O que a tabela mostra é que o ganho é densidade, não informação: a contagem de pontos do grupo quadruplica e a região cobre um ponto percentual a mais do plano. Cresce um fio, e cresce depressa, porque o ponto inventado cai onde já havia vizinho do lado. O veredito dos casos de teste troca sem que o dado deles mude.
   </p>
 
-  <p style="margin:0 0 .6em"><strong>Ponto notável.</strong> Nenhuma ficha nova entrou no conjunto de treino. O que mudou foi a proporção de pontos do grupo em relação ao resto, e com ela a posição da fronteira. O modelo não recebeu informação: recebeu a mesma informação com pesos diferentes.</p>
+  <p style="margin:0 0 .6em"><strong>Ponto notável.</strong> Nenhuma ficha nova entrou no conjunto de treino. O que mudou foi a densidade do grupo naquele canto do plano, e com ela a borda da região. O modelo não recebeu informação: recebeu a mesma informação mais concentrada.</p>
 
-  <p style="margin:0">Ler a figura com uma pergunta: o que a fronteira ganhou? Ela ganhou alguns pontos de dado que ninguém mediu, e não ganhou nenhuma ficha nova da escola.</p>
+  <p style="margin:0">Ler a figura com uma pergunta: o que a região ganhou? Ganhou espaço em volta de pontos que já existiam, e não ganhou nenhuma ficha nova da escola.</p>
 </figure>
