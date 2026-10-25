@@ -1,0 +1,138 @@
+<!--title: Um limiar só, dois grupos-->
+<div class="wrap">
+
+  <p class="kicker">Fig. 6: o limiar por grupo</p>
+  <h1>Um limiar só, dois grupos</h1>
+  <p class="sub">O mesmo modelo dá nota de 0 a 100, e a nota do grupo está cinco pontos abaixo da nota do resto. O limiar de aprovação decide quem passa; com um limiar só, as taxas de erro dos dois grupos não são iguais.</p>
+
+  <div class="sim one">
+    <div class="ctl">
+      <span class="name">limiar de aprovação</span>
+      <span class="val" id="tval">50</span>
+      <input type="range" id="t" min="20" max="80" step="1" value="50" aria-label="limiar de aprovação">
+      <div class="scale"><span>20</span><span>50</span><span>80</span></div>
+    </div>
+    <div class="gauge">
+      <div class="row" style="grid-template-columns:9.4em 1fr 3.8em">
+        <span class="name">acerto no grupo</span>
+        <span class="bar alt"><i id="g1"></i></span>
+        <span class="val" id="v1">64,1%</span>
+      </div>
+      <div class="row" style="grid-template-columns:9.4em 1fr 3.8em">
+        <span class="name">falso positivo, grupo</span>
+        <span class="bar alt"><i id="g2"></i></span>
+        <span class="val" id="v2">40,9%</span>
+      </div>
+      <div class="row" style="grid-template-columns:9.4em 1fr 3.8em">
+        <span class="name">acerto no resto</span>
+        <span class="bar"><i id="g3"></i></span>
+        <span class="val" id="v3">73,1%</span>
+      </div>
+      <div class="row" style="grid-template-columns:9.4em 1fr 3.8em">
+        <span class="name">falso positivo, resto</span>
+        <span class="bar"><i id="g4"></i></span>
+        <span class="val" id="v4">50,0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:7px; margin:14px 0">
+    <button class="btn" type="button" id="split" aria-pressed="false">um limiar por grupo</button>
+  </div>
+
+  <div class="readout">
+    <span>acurácia geral</span>
+    <b id="ag">67,4%</b>
+    <span id="msg">e as duas taxas de acerto diferem em 9,0 pontos</span>
+  </div>
+
+  <div class="eq">
+    <div id="eqline">\(\displaystyle t_B = t - 5\)</div>
+    <div class="cap" id="cap">Com o limiar do grupo cinco pontos abaixo do limiar do resto, as quatro taxas ficam iguais: 73,1% de acerto e 50,0% de falso positivo nos dois grupos. A acurácia geral vai de 67,4% para 67,9%.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">um limiar só não é neutro: ele aplica a mesma régua a duas distribuições que não estão no mesmo lugar, e a diferença de 9 pontos que aparece no grupo é a régua, não o modelo.</p>
+  </div>
+
+  <p class="foot">O estado é forma: as barras do grupo são <b>tracejadas</b>, as do resto são contínuas. O número entra só no resultado.</p>
+</div>
+
+<script>
+(function () {
+  /* mesma forma nos dois grupos, média deslocada em 5 pontos:
+     o grupo tem 78 aprovados e 22 reprovados, o resto 698 e 202. */
+  function scores(n, mu, scale) {
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var p = (i + 0.5) / n;
+      var s = mu + scale * Math.log(p / (1 - p));
+      out.push(Math.max(0, Math.min(100, s)));
+    }
+    return out;
+  }
+  var posB = scores(78, 57, 12), negB = scores(22, 45, 12);
+  var posR = scores(698, 62, 12), negR = scores(202, 50, 12);
+  var SHIFT = 5;
+
+  function rate(list, t) {
+    var k = 0;
+    for (var i = 0; i < list.length; i++) { if (list[i] >= t) { k++; } }
+    return k / list.length;
+  }
+  function acc(pos, neg, t) {
+    return (rate(pos, t) * pos.length + (1 - rate(neg, t)) * neg.length) / (pos.length + neg.length);
+  }
+  function n1(x) { return (100 * x).toFixed(1).replace('.', ','); }
+
+  /* no limiar 50, o deslocamento de 5 iguala as quatro taxas, a menos do
+     arredondamento de cada amostra */
+  if (Math.abs(rate(posB, 45) - rate(posR, 50)) > 2e-3) { throw new Error('acerto'); }
+  if (Math.abs(rate(negB, 45) - rate(negR, 50)) > 2e-3) { throw new Error('falso positivo'); }
+
+  var t = document.getElementById('t');
+  var tval = document.getElementById('tval');
+  var split = document.getElementById('split');
+  var g = [1, 2, 3, 4].map(function (i) { return document.getElementById('g' + i); });
+  var v = [1, 2, 3, 4].map(function (i) { return document.getElementById('v' + i); });
+  var ag = document.getElementById('ag');
+  var msg = document.getElementById('msg');
+  var eqline = document.getElementById('eqline');
+  var cap = document.getElementById('cap');
+
+  function render(on) {
+    var lim = Number(t.value);
+    var tb = on ? lim - SHIFT : lim;
+    var r = [rate(posB, tb), rate(negB, tb), rate(posR, lim), rate(negR, lim)];
+    for (var i = 0; i < 4; i++) {
+      g[i].style.width = (100 * r[i]) + '%';
+      v[i].textContent = n1(r[i]) + '%';
+    }
+    var geral = (acc(posB, negB, tb) * 100 + acc(posR, negR, lim) * 900) / 1000;
+    ag.textContent = n1(geral) + '%';
+    var gapAcerto = Math.abs(r[0] - r[2]) * 100;
+    var gapFp = Math.abs(r[1] - r[3]) * 100;
+    tval.textContent = String(lim);
+    msg.textContent = on
+      ? 'e as duas taxas de acerto diferem em ' + gapAcerto.toFixed(1).replace('.', ',') + ' ponto'
+      : 'e as duas taxas de acerto diferem em ' + gapAcerto.toFixed(1).replace('.', ',') + ' pontos';
+    eqline.innerHTML = on
+      ? '\\(\\displaystyle t_B = t - 5 = ' + tb + '\\)'
+      : '\\(\\displaystyle t_B = t = ' + lim + '\\)';
+    cap.innerHTML = on
+      ? 'O grupo passa a ter um limiar próprio, cinco pontos abaixo. No limiar ' + lim + ', as taxas ficam ' + n1(r[0]) + '% de acerto e ' + n1(r[1]) + '% de falso positivo nos dois grupos, e o erro entre eles some. A acurácia geral muda junto, e é isso que se paga.'
+      : 'Com um limiar só em ' + lim + ', o grupo acerta ' + n1(r[0]) + '% e o resto ' + n1(r[2]) + '%; os falsos positivos são ' + n1(r[1]) + '% e ' + n1(r[3]) + '%. As duas réguas são a mesma, e as duas distribuições não estão no mesmo lugar.';
+    if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([eqline]); }
+  }
+
+  t.addEventListener('input', function () { render(split.getAttribute('aria-pressed') === 'true'); });
+  split.addEventListener('click', function () {
+    var on = split.getAttribute('aria-pressed') !== 'true';
+    split.setAttribute('aria-pressed', on ? 'true' : 'false');
+    render(on);
+  });
+
+  render(false);
+})();
+</script>

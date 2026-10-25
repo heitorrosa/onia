@@ -1,0 +1,52 @@
+<!--
+  Gêmeo estático do frame `eixo7-ciclo-prompt.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: o ciclo vira lista ordenada, com o mesmo texto de
+  cada passo e o escore que aquele passo produz.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 2</strong> (versão estática) — o ciclo de trabalho em quatro passos, com quem executa cada um e o que ele mede.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 10px 7px 0;font-weight:600">passo</th>
+        <th style="padding:7px 10px 7px 0;font-weight:600">quem faz</th>
+        <th style="padding:7px 10px 7px 0;font-weight:600">o que sai dele</th>
+        <th style="padding:7px 0;font-weight:600">escore</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0"><strong>1. Especificar</strong></td>
+        <td style="padding:7px 10px 7px 0">quem pede</td>
+        <td style="padding:7px 10px 7px 0">os cinco critérios, escritos antes do pedido</td>
+        <td style="padding:7px 0">k = 5</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0"><strong>2. Gerar</strong></td>
+        <td style="padding:7px 10px 7px 0">o modelo</td>
+        <td style="padding:7px 10px 7px 0">a saída, que lê os critérios como texto do pedido</td>
+        <td style="padding:7px 0">não mede</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0"><strong>3. Criticar</strong></td>
+        <td style="padding:7px 10px 7px 0">o checker, não o modelo</td>
+        <td style="padding:7px 10px 7px 0">quantos dos cinco critérios a saída cumpre</td>
+        <td style="padding:7px 0">2/5 = 0,4</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 10px 7px 0"><strong>4. Refinar</strong></td>
+        <td style="padding:7px 10px 7px 0">quem pede</td>
+        <td style="padding:7px 10px 7px 0">o prompt corrigido, com o mesmo k</td>
+        <td style="padding:7px 0">recomeça em 1</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0">
+    O que volta pelo laço é o prompt, nunca a resposta. Refinar a resposta resolve aquele
+    texto; refinar o prompt resolve os próximos. E o escore só sobe se a saída melhorar,
+    porque <em>k</em> fica fixo entre uma volta e outra.
+  </p>
+</figure>

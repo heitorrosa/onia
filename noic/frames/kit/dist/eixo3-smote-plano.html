@@ -322,9 +322,9 @@ textarea, input[type="text"] {
 </script>
 <div class="wrap">
 
-  <p class="kicker">Fig. 3: o plano do SMOTE</p>
+  <p class="kicker">Fig. 4: o plano do SMOTE</p>
   <h1>Inventar um ponto entre dois</h1>
-  <p class="sub">Sete pontos do grupo num canto, quarenta do resto espalhados. Cada clique sorteia um ponto do grupo, acha o vizinho mais próximo dele e cria outro no meio do caminho. Três cruzes paradas perto da borda são casos de teste: elas não se movem, e o que muda é se a região do grupo chega até elas.</p>
+  <p class="sub">Sete pontos do grupo num canto, quarenta do resto espalhados. Cada clique sorteia um ponto do grupo, acha o vizinho mais próximo dele e cria outro no meio do caminho. Uma regressão logística é reajustada a cada ponto, e a reta que ela acha separa o plano em duas metades. Três cruzes paradas perto da reta são casos de teste: elas não se movem, e o que muda é de que lado a reta as deixa.</p>
 
   <div class="eq">
     <div>\(x_{\text{novo}} = (1-\lambda)\,x_1 + \lambda\,x_2,\quad \lambda \sim U(0,1)\)</div>
@@ -334,7 +334,7 @@ textarea, input[type="text"] {
   <div class="plot-grid">
 
     <div>
-      <svg class="plot" viewBox="0 0 240 210" role="img" aria-label="Plano de duas classes: sete quadrados do grupo num canto, quarenta círculos do resto espalhados, a região hachurada que o classificador de três vizinhos dá ao grupo e três casos de teste perto da borda">
+      <svg class="plot" viewBox="0 0 240 210" role="img" aria-label="Plano de duas classes: sete quadrados do grupo num canto, quarenta círculos do resto espalhados, a reta da regressão logística e o semiplano hachurado que ela dá ao grupo, com três casos de teste perto da reta">
         <defs>
           <clipPath id="recorte"><path id="recorteD" d=""/></clipPath>
         </defs>
@@ -361,18 +361,20 @@ textarea, input[type="text"] {
         <span><i class="ci"></i> resto</span>
         <span><i class="di"></i> sintético</span>
         <span><svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M0 9L4 5M2 9L8 3M6 9L12 3" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/></svg> região do grupo</span>
-        <span><i class="ls"></i> borda inicial</span>
+        <span><i class="ln"></i> reta do modelo</span>
+        <span><i class="ls"></i> reta inicial</span>
         <span><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1L9 9M9 1L1 9" fill="none" stroke="currentColor" stroke-width="1.4"/></svg> caso de teste</span>
       </div>
     </div>
 
     <div>
       <div class="readout"><b id="flips">0</b><span>de 3 casos de teste mudaram de lado</span></div>
-      <p class="frase" id="fraseFlip">a região do grupo ainda não chegou a nenhum caso de teste.</p>
+      <p class="frase" id="fraseFlip">a reta ainda não deixou nenhum caso de teste do lado do grupo.</p>
 
       <div class="readout" style="margin-top:10px"><b id="ns">0</b><span>pontos sintéticos</span></div>
       <div class="readout" style="margin-top:6px"><b id="ng">7</b><span>pontos no grupo agora</span></div>
-      <p class="frase" id="frase">a região do grupo cobre 34,1% do plano, e no começo cobria 34,1%.</p>
+      <p class="frase" id="pesos">peso do grupo 0,57 · do resto 0,43 · do viés 0,24</p>
+      <p class="frase" id="frase">a região do grupo cobre 21,5% do plano, e no começo cobria 21,5%.</p>
 
       <div class="btns">
         <button class="btn" id="um">inventar um ponto</button>
@@ -382,7 +384,7 @@ textarea, input[type="text"] {
     </div>
   </div>
 
-  <p class="foot">A região é a do classificador de três vizinhos mais próximos: cada célula do plano fica com o grupo quando dois dos seus três pontos mais próximos são do grupo. Inventar pontos não cria dado nenhum, mas engrossa a densidade local, e a região cresce um fio para o lado que ficou mais denso. As cruzes não mudam de posição nem de valor; só a região passa por cima delas.</p>
+  <p class="foot">A reta é a de uma regressão logística de dois atributos mais viés, ajustada por descida de gradiente sobre os pontos do grupo e do resto. Somar pontos do grupo não muda o dado de ninguém, mas muda o balanço que a perda enxerga: o modelo passa a valer mais a pena acertar o grupo, e a reta desliza para o lado dele. Os pesos da linha são os da reta (a inclinação em cada eixo, normalizada) e a parte do viés, que é quem carrega o balanço.</p>
 </div>
 
 <style>
@@ -396,7 +398,7 @@ textarea, input[type="text"] {
 .plot .syn { fill: none; stroke: currentColor; stroke-width: 1.4; }
 .plot .seg { stroke: currentColor; stroke-width: 1.3; stroke-dasharray: 3 3; stroke-opacity: .8; }
 .plot .hach { fill: none; stroke: currentColor; stroke-opacity: .34; stroke-width: .9; }
-.plot .regiao { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.plot .regiao { fill: none; stroke: currentColor; stroke-width: 1.7; }
 .plot .fantasma { fill: none; stroke: currentColor; stroke-width: 1; stroke-dasharray: 4 3; stroke-opacity: .45; }
 .plot .sonda { fill: none; stroke: currentColor; stroke-width: 1.3; }
 .plot .sonda.mudou { stroke-width: 2.8; }
@@ -404,6 +406,7 @@ textarea, input[type="text"] {
 .legend i { display: inline-block; width: 9px; height: 9px; border: 1px solid currentColor; }
 .legend i.ci { border-radius: 50%; transform: scale(.7); }
 .legend i.di { transform: rotate(45deg) scale(.8); }
+.legend i.ln { height: 0; border: 0; border-top: 2px solid currentColor; width: 12px; }
 .legend i.ls { height: 0; border: 0; border-top: 1px dashed currentColor; width: 12px; opacity: .55; }
 .frase { font-size: var(--fs-sm); margin: 8px 0 0; }
 .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
@@ -412,7 +415,8 @@ textarea, input[type="text"] {
 <script>
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
-  var N = 101;                       /* grade de 1 em 1 unidade sobre 0..100 */
+  var ITERS = 400;                   /* descida de gradiente: orçamento fixo */
+  var LR = 0.6;
   var PX = function (x) { return 55 + x * 1.7; };
   var PY = function (y) { return 185 - y * 1.7; };
 
@@ -425,11 +429,10 @@ textarea, input[type="text"] {
     [52, 52], [59, 48], [66, 44], [73, 50], [80, 44], [87, 50], [94, 46],
     [46, 94], [62, 98], [76, 98], [88, 98], [98, 66], [90, 52], [48, 58], [55, 86], [72, 72], [86, 72]
   ];
-  /* casos de teste: fixos, do lado do resto, a menos de duas unidades da borda inicial */
-  var SONDAS = [[8.5, 80], [23, 73.5], [45.5, 39]];
+  /* casos de teste: fixos, do lado do resto, a duas unidades da reta inicial */
+  var SONDAS = [[18.7, 53.7], [30.1, 38.7], [42.6, 22.2]];
 
   var grupo = BASE.slice();
-  var pontos = [];                   /* triplas x, y, 1 = grupo / 0 = resto */
   var rest = document.getElementById('rest');
   var segs = document.getElementById('seg');
   var grp = document.getElementById('grp');
@@ -440,10 +443,12 @@ textarea, input[type="text"] {
   var nsEl = document.getElementById('ns');
   var ngEl = document.getElementById('ng');
   var flipsEl = document.getElementById('flips');
+  var pesosEl = document.getElementById('pesos');
   var frase = document.getElementById('frase');
   var fraseFlip = document.getElementById('fraseFlip');
-  var mInicial = null;
+  var wInicial = null;
   var ladoInicial = null;
+  var areaInicial = null;
 
   function el(tag, at) {
     var e = document.createElementNS(NS, tag);
@@ -470,81 +475,93 @@ textarea, input[type="text"] {
     rest.appendChild(el('circle', { class: 'rest', cx: PX(p[0]), cy: PY(p[1]), r: 2.2 }));
   });
 
-  function refaz() {
-    pontos = [];
-    grupo.forEach(function (p) { pontos.push(p[0], p[1], 1); });
-    RESTO.forEach(function (p) { pontos.push(p[0], p[1], 0); });
-  }
-
-  /* três vizinhos mais próximos: empate de votos decide pelo mais próximo */
-  function classe(x, y) {
-    var b0 = 1e9, b1 = 1e9, b2 = 1e9, g0 = 0, g1 = 0, g2 = 0;
-    for (var i = 0; i < pontos.length; i += 3) {
-      var dx = pontos[i] - x, dy = pontos[i + 1] - y, d = dx * dx + dy * dy, g = pontos[i + 2];
-      if (d < b0) { b2 = b1; g2 = g1; b1 = b0; g1 = g0; b0 = d; g0 = g; }
-      else if (d < b1) { b2 = b1; g2 = g1; b1 = d; g1 = g; }
-      else if (d < b2) { b2 = d; g2 = g; }
+  /* regressão logística: 400 passos de descida de gradiente, atributos em 0..1 */
+  function treina() {
+    var n = grupo.length + RESTO.length;
+    var w = [0, 0, 0];
+    for (var it = 0; it < ITERS; it++) {
+      var g0 = 0, g1 = 0, g2 = 0, i, x, y, z, p, e, t;
+      for (i = 0; i < n; i++) {
+        t = i < grupo.length;
+        x = (t ? grupo[i][0] : RESTO[i - grupo.length][0]) / 100;
+        y = (t ? grupo[i][1] : RESTO[i - grupo.length][1]) / 100;
+        z = w[0] + w[1] * x + w[2] * y;
+        p = 1 / (1 + Math.exp(-z));
+        e = (t ? 1 : 0) - p;
+        g0 += e; g1 += e * x; g2 += e * y;
+      }
+      w[0] += LR * g0 / n;
+      w[1] += LR * g1 / n;
+      w[2] += LR * g2 / n;
     }
-    var v = g0 + g1 + g2;
-    return v > 1 ? 1 : (v < 1 ? 0 : g0);
+    return w;
   }
 
-  function mascara() {
-    var m = new Uint8Array(N * N);
-    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) m[i * N + j] = classe(i, j);
-    return m;
+  function dentro(w, x, y) {
+    return w[0] + w[1] * (x / 100) + w[2] * (y / 100) > 0;
   }
 
-  /* a última linha e a última coluna são a borda da caixa: não passam dela */
-  function cx(i) { return PX(Math.min(i, N - 1)); }
-  function cy(j) { return PY(Math.min(j, N - 1)); }
-
-  /* área da região: uma faixa horizontal de retângulos por linha da grade */
-  function caminhoArea(m) {
-    var d = '';
-    for (var j = 0; j < N; j++) {
-      var i = 0;
-      while (i < N) {
-        if (!m[i * N + j]) { i++; continue; }
-        var s = i;
-        while (i < N && m[i * N + j]) i++;
-        var w = cx(i) - cx(s), h = cy(j) - cy(j + 1);
-        if (w > 0 && h > 0) d += 'M' + cx(s) + ' ' + cy(j) + 'h' + w + 'v' + h + 'h-' + w + 'Z';
+  /* o semiplano do grupo cortado pela caixa 0..100, via recorte do quadrado */
+  function poligono(w) {
+    var q = [[0, 0], [100, 0], [100, 100], [0, 100]];
+    var out = [];
+    for (var i = 0; i < q.length; i++) {
+      var a = q[i], b = q[(i + 1) % q.length];
+      var fa = w[0] + w[1] * (a[0] / 100) + w[2] * (a[1] / 100);
+      var fb = w[0] + w[1] * (b[0] / 100) + w[2] * (b[1] / 100);
+      if (fa > 0) out.push(a);
+      if ((fa > 0) !== (fb > 0)) {
+        var t = fa / (fa - fb);
+        out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
       }
     }
-    return d;
+    return out;
   }
 
-  /* borda da região: as arestas entre célula do grupo e célula do resto */
-  function caminhoBorda(m) {
-    var d = '';
-    function fora(i, j) {
-      return i < 0 || i >= N || j < 0 || j >= N || !m[i * N + j];
+  function caminho(pts, fechar) {
+    if (!pts.length) return '';
+    var d = 'M' + PX(pts[0][0]) + ' ' + PY(pts[0][1]);
+    for (var i = 1; i < pts.length; i++) d += 'L' + PX(pts[i][0]) + ' ' + PY(pts[i][1]);
+    return fechar ? d + 'Z' : d;
+  }
+
+  /* a reta: os dois pontos onde ela cruza a caixa */
+  function retaCaixa(w) {
+    var cortes = [];
+    var ok = function (v) { return v >= -1e-6 && v <= 1 + 1e-6; };
+    var f;
+    if (Math.abs(w[2]) > 1e-9) {
+      f = -w[0] / w[2];
+      if (ok(f)) cortes.push([0, f * 100]);
+      f = (-w[0] - w[1]) / w[2];
+      if (ok(f)) cortes.push([100, f * 100]);
     }
-    for (var i = 0; i < N - 1; i++) for (var j = 0; j < N - 1; j++) {
-      if (!m[i * N + j]) continue;
-      if (fora(i - 1, j)) d += 'M' + PX(i) + ' ' + PY(j) + 'L' + PX(i) + ' ' + PY(j + 1);
-      if (fora(i + 1, j)) d += 'M' + PX(i + 1) + ' ' + PY(j) + 'L' + PX(i + 1) + ' ' + PY(j + 1);
-      if (fora(i, j - 1)) d += 'M' + PX(i) + ' ' + PY(j) + 'L' + PX(i + 1) + ' ' + PY(j);
-      if (fora(i, j + 1)) d += 'M' + PX(i) + ' ' + PY(j + 1) + 'L' + PX(i + 1) + ' ' + PY(j + 1);
+    if (Math.abs(w[1]) > 1e-9) {
+      f = -w[0] / w[1];
+      if (ok(f)) cortes.push([f * 100, 0]);
+      f = (-w[0] - w[2]) / w[1];
+      if (ok(f)) cortes.push([f * 100, 100]);
     }
-    return d;
+    return cortes;
   }
 
-  function areaPct(m) {
-    var c = 0;
-    for (var i = 0; i < m.length; i++) c += m[i];
-    return 100 * c / m.length;
+  function areaPct(w) {
+    var c = 0, t = 0;
+    for (var x = 0; x <= 100; x++) for (var y = 0; y <= 100; y++) {
+      t++;
+      if (dentro(w, x, y)) c++;
+    }
+    return 100 * c / t;
   }
 
-  function num(v) { return v.toFixed(1).replace('.', ','); }
+  function num(v) { return v.toFixed(2).replace('.', ','); }
 
-  function desenhaSondas() {
+  function desenhaSondas(w) {
     while (sondas.firstChild) sondas.removeChild(sondas.firstChild);
     var mudaram = 0;
     SONDAS.forEach(function (p, i) {
       var cx = PX(p[0]), cy = PY(p[1]);
-      var agora = classe(p[0], p[1]);
+      var agora = dentro(w, p[0], p[1]) ? 1 : 0;
       var mudou = agora !== ladoInicial[i];
       if (mudou) mudaram++;
       var g = el('g', { class: 'sonda' + (mudou ? ' mudou' : '') });
@@ -557,10 +574,11 @@ textarea, input[type="text"] {
   }
 
   function desenha() {
-    refaz();
-    var m = mascara();
-    recorte.setAttribute('d', caminhoArea(m));
-    regiao.setAttribute('d', caminhoBorda(m));
+    var w = treina();
+    var semi = poligono(w);
+    var d = caminho(semi, true);
+    recorte.setAttribute('d', d);
+    regiao.setAttribute('d', caminho(retaCaixa(w), false));
 
     while (grp.firstChild) grp.removeChild(grp.firstChild);
     grupo.forEach(function (p, i) {
@@ -576,24 +594,28 @@ textarea, input[type="text"] {
       }
     });
 
-    var m0 = mInicial;
-    if (m0 === null) {
-      m0 = m;
-      mInicial = m.slice();
-      fantasma.setAttribute('d', caminhoBorda(m0));
-      ladoInicial = SONDAS.map(function (p) { return classe(p[0], p[1]); });
+    if (wInicial === null) {
+      wInicial = w;
+      fantasma.setAttribute('d', caminho(retaCaixa(w), false));
+      ladoInicial = SONDAS.map(function (p) { return dentro(w, p[0], p[1]) ? 1 : 0; });
+      areaInicial = areaPct(w);
     }
 
-    var mudaram = desenhaSondas();
+    var mudaram = desenhaSondas(w);
+    var soma = Math.abs(w[0]) + Math.abs(w[1]) + Math.abs(w[2]) || 1;
+    var lados = Math.abs(w[1]) + Math.abs(w[2]) || 1;
 
     nsEl.textContent = grupo.length - BASE.length;
     ngEl.textContent = grupo.length;
     flipsEl.textContent = mudaram;
     fraseFlip.textContent = mudaram > 0
-      ? 'a região do grupo cresceu até o caso de teste, e o dado dele não mudou.'
-      : 'a região do grupo ainda não chegou a nenhum caso de teste.';
-    frase.textContent = 'a região do grupo cobre ' + num(areaPct(m)) +
-      '% do plano, e no começo cobria ' + num(areaPct(m0)) + '%.';
+      ? 'a reta passou para o lado dos casos de teste, e o dado deles não mudou.'
+      : 'a reta ainda não deixou nenhum caso de teste do lado do grupo.';
+    pesosEl.textContent = 'peso do grupo ' + num(Math.abs(w[1]) / lados) +
+      ' · do resto ' + num(Math.abs(w[2]) / lados) +
+      ' · do viés ' + num(Math.abs(w[0]) / soma);
+    frase.textContent = 'a região do grupo cobre ' + num(areaPct(w)) +
+      '% do plano, e no começo cobria ' + num(areaInicial) + '%.';
   }
 
   function inventa() {
@@ -628,8 +650,9 @@ textarea, input[type="text"] {
   });
   document.getElementById('volta').addEventListener('click', function () {
     grupo = BASE.slice();
-    mInicial = null;
+    wInicial = null;
     ladoInicial = null;
+    areaInicial = null;
     while (segs.firstChild) segs.removeChild(segs.firstChild);
     desenha();
   });

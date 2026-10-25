@@ -1,0 +1,109 @@
+<!--title: O filtro que escolhe quem entra-->
+<style>
+.pop { display:grid; grid-template-columns:repeat(20, 1fr); gap:3px; max-width:400px; }
+.pop i { display:block; aspect-ratio:1 / 1; border:1px solid currentColor; border-radius:2px; opacity:.8; }
+.pop i.g { background:currentColor; }
+.pop i.o { border-style:dashed; opacity:.18; }
+.dot.off { border-style:dashed; opacity:.35; }
+</style>
+
+<div class="wrap">
+
+  <p class="kicker">Fig. 3: o filtro que escolhe quem entra</p>
+  <h1>O filtro que escolhe quem entra</h1>
+  <p class="sub">Duzentas pessoas, 18% do grupo. A exigência de histórico de crédito não é neutra: ela encontra histórico em 9 das 36 pessoas do grupo e em 139 das 164 do resto.</p>
+
+  <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px">
+    <button class="btn" type="button" id="fil" aria-pressed="false">exigir histórico de crédito</button>
+  </div>
+
+  <div class="pop" id="pop" role="img" aria-label="duzentas pessoas: célula cheia é o grupo, vazada é o resto, apagada saiu do arquivo"></div>
+
+  <div class="legend">
+    <span><i class="dot on"></i> grupo</span>
+    <span><i class="dot"></i> resto</span>
+    <span><i class="dot off"></i> fora do arquivo</span>
+  </div>
+
+  <div class="readout" style="margin-top:14px">
+    <span>ficaram de fora</span>
+    <b id="out">0</b>
+    <span id="what">pessoas do grupo, e q fica em 18,0%</span>
+  </div>
+
+  <div class="eq">
+    <div id="eqline">\(\displaystyle q=\frac{36}{200}=18{,}0\%\)</div>
+    <div class="cap" id="cap">O arquivo tem 200 pessoas, 36 delas do grupo. O botão exige histórico de crédito e o arquivo encolhe para 148: o grupo passa a ser 9, ou 6,1%.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">sair do arquivo não é virar zero: as 27 pessoas que saíram não geraram linha, e a conta do grupo passa a ser feita em cima de quem sobrou.</p>
+  </div>
+
+  <p class="foot">O estado é forma: célula <b>cheia</b> é o grupo, <b>vazada</b> é o resto, <b>tracejada e apagada</b> saiu do arquivo. O número entra só no resultado.</p>
+</div>
+
+<script>
+(function () {
+  var N = 200, B = 36, KEEP_B = 9, KEEP_R = 139;   /* 25% do grupo, 84,8% do resto */
+
+  /* k verdadeiros espalhados em n posições (Bresenham) */
+  function spread(n, k) {
+    var a = [], acc = 0;
+    for (var i = 0; i < n; i++) {
+      acc += k / n;
+      if (acc >= 1) { a.push(true); acc -= 1; } else { a.push(false); }
+    }
+    return a;
+  }
+
+  var isB = spread(N, B), hasB = spread(B, KEEP_B), hasR = spread(N - B, KEEP_R);
+  var cells = [], bi = 0, ri = 0;
+  for (var i = 0; i < N; i++) {
+    if (isB[i]) { cells.push({ g: true, keep: hasB[bi++] }); }
+    else { cells.push({ g: false, keep: hasR[ri++] }); }
+  }
+
+  if (cells.length !== N || hasB.filter(Boolean).length !== KEEP_B) { throw new Error('composição'); }
+  if (cells.filter(function (c) { return c.g && !c.keep; }).length !== 27) { throw new Error('grupo que sai'); }
+
+  var pop = document.getElementById('pop');
+  var fil = document.getElementById('fil');
+  var out = document.getElementById('out');
+  var what = document.getElementById('what');
+  var eqline = document.getElementById('eqline');
+  var cap = document.getElementById('cap');
+
+  function render(on) {
+    var kept = 0, keptB = 0, outB = 0, html = '';
+    for (var j = 0; j < cells.length; j++) {
+      var c = cells[j], sai = on && !c.keep;
+      if (sai) { if (c.g) { outB++; } }
+      else { kept++; if (c.g) { keptB++; } }
+      html += '<i class="' + (c.g ? 'g' : '') + (sai ? ' o' : '') + '"></i>';
+    }
+    pop.innerHTML = html;
+    var q = 100 * keptB / kept;
+    out.textContent = String(outB);
+    what.textContent = outB
+      ? 'pessoas do grupo, e q cai de 18,0% para ' + q.toFixed(1).replace('.', ',') + '%'
+      : 'pessoas do grupo, e q fica em 18,0%';
+    eqline.innerHTML = on
+      ? '\\(\\displaystyle q=\\frac{36}{200}=18{,}0\\%\\;\\longrightarrow\\;\\frac{9}{148}=' + q.toFixed(1).replace('.', ',') + '\\%\\)'
+      : '\\(\\displaystyle q=\\frac{36}{200}=18{,}0\\%\\)';
+    cap.innerHTML = on
+      ? 'Com a exigência, o arquivo encolhe para <b>' + kept + '</b> pessoas: 27 do grupo e 25 do resto saíram, e o grupo passa a ser ' + keptB + ' de ' + kept + '. A seleção não sorteia: ela tira do grupo cinco vezes mais, proporcionalmente.'
+      : 'O arquivo tem 200 pessoas, 36 delas do grupo. O botão exige histórico de crédito e o arquivo encolhe: o grupo passa a ser uma fração menor do que era.';
+    if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([eqline]); }
+  }
+
+  fil.addEventListener('click', function () {
+    var on = fil.getAttribute('aria-pressed') !== 'true';
+    fil.setAttribute('aria-pressed', on ? 'true' : 'false');
+    render(on);
+  });
+
+  render(false);
+})();
+</script>

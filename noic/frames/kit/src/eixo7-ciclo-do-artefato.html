@@ -1,0 +1,49 @@
+<!--title: O ciclo do artefato-->
+<style>
+  .passo { margin: 9px 0 0; font-size: 11.5px; line-height: 1.45; min-height: 3.2em; padding-left: 9px; border-left: 3px solid currentColor; }
+  .flow .nlabel { font-size: 12px; }
+</style>
+<div class="wrap">
+
+  <p class="kicker">Fig. 3: do pedido à regra que fica</p>
+  <h1>O ciclo do artefato</h1>
+  <p class="sub" style="margin-bottom:8px">A regra só existe quando uma sessão nova a repete sem você pedir. As quatro etapas giram até isso acontecer.</p>
+
+  <svg class="flow" viewBox="0 0 380 210" role="img" aria-label="Ciclo: escrever a regra, fixar no artefato, testar em sessão nova, medir se repetiu">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path class="mk" d="M0 0 L10 5 L0 10 z"/>
+      </marker>
+    </defs>
+    <path class="arrow" id="a1" d="M132 42 H 246" marker-end="url(#ah)"/>
+    <path class="arrow" id="a2" d="M305 66 V 132" marker-end="url(#ah)"/>
+    <path class="arrow" id="a3" d="M246 160 H 132" marker-end="url(#ah)"/>
+    <path class="arrow loop" id="a4" d="M20 160 H 10 V 42 H 14" marker-end="url(#ah)"/>
+    <g id="n0"><rect class="node" x="20" y="20" width="112" height="44" rx="9"/><text class="nlabel" x="76" y="39">escrever</text><text class="nsub" x="76" y="53">a regra em texto</text></g>
+    <g id="n1"><rect class="node" x="246" y="20" width="112" height="44" rx="9"/><text class="nlabel" x="302" y="39">fixar</text><text class="nsub" x="302" y="53">no artefato</text></g>
+    <g id="n2"><rect class="node" x="246" y="138" width="112" height="44" rx="9"/><text class="nlabel" x="302" y="157">testar</text><text class="nsub" x="302" y="171">sessão nova</text></g>
+    <g id="n3"><rect class="node" x="20" y="138" width="112" height="44" rx="9"/><text class="nlabel" x="76" y="157">medir</text><text class="nsub" x="76" y="171">repetiu sozinho?</text></g>
+  </svg>
+
+  <p class="passo" id="passo" aria-live="polite"></p>
+
+  <p class="foot" style="margin-top:8px">A volta tracejada é o caso comum: o teste falha, a regra volta para o texto. Só a sessão nova distingue hábito de combinação.</p>
+
+</div>
+
+<script>
+(function () {
+  var PASSOS = [
+    ['n0', 'a1', '1. Escrever: a regra vira uma frase que diz o que fazer e quando. Frase que só descreve o gosto não se verifica.'],
+    ['n1', 'a2', '2. Fixar: a frase entra no artefato, o AGENTS.md, o SYSTEM.md ou o corpo de uma skill, para não depender da memória da sessão.'],
+    ['n2', 'a3', '3. Testar: sessão nova, pedido mínimo, sem lembrar o combinado. Se o padrão aparece, ele veio do artefato.'],
+    ['n3', 'a4', '4. Medir: sem repetir, virou hábito. Repetindo, ainda é combinação: volte ao texto e reescreva a frase.']
+  ];
+  var idx = 0, passo = document.getElementById('passo');
+  NOIC.cycle(function () {
+    NOIC.highlight(PASSOS.map(function (p) { return [p[0], p[1]]; }), idx);
+    passo.textContent = PASSOS[idx][2];
+    idx = (idx + 1) % PASSOS.length;
+  }, 2200);
+})();
+</script>

@@ -1,0 +1,116 @@
+<!--title: A coluna que faz o trabalho-->
+<style>
+.cols { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
+.cols .col { border:1px solid currentColor; border-radius:5px; padding:5px 10px; font-size:13px; }
+.cols .col.proxy { border-style:dashed; }
+.cols .col.fora { text-decoration:line-through; opacity:.3; }
+</style>
+
+<div class="wrap">
+
+  <p class="kicker">Fig. 7: o atalho</p>
+  <h1>A coluna que faz o trabalho</h1>
+  <p class="sub">Um modelo de crédito com a coluna CEP e sem ela. A acurácia geral fica em 72,0% nos dois casos; a do grupo perde dez pontos.</p>
+
+  <div class="cols" id="cols">
+    <span class="col">idade</span>
+    <span class="col">renda</span>
+    <span class="col proxy" id="cep">CEP</span>
+    <span class="col">histórico</span>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px">
+    <button class="btn" type="button" id="rm" aria-pressed="false">remover a coluna CEP</button>
+  </div>
+
+  <div class="gauge">
+    <div class="row" style="grid-template-columns:8.6em 1fr 4.2em">
+      <span class="name">acerto geral</span>
+      <span class="bar"><i id="g0" style="width:72%"></i></span>
+      <span class="val" id="v0">72,0%</span>
+    </div>
+    <div class="row" style="grid-template-columns:8.6em 1fr 4.2em">
+      <span class="name">acerto do grupo</span>
+      <span class="bar alt"><i id="g1" style="width:22%"></i></span>
+      <span class="val" id="v1">22,0%</span>
+    </div>
+    <div class="row" style="grid-template-columns:8.6em 1fr 4.2em">
+      <span class="name">acerto do resto</span>
+      <span class="bar"><i id="g2" style="width:77.6%"></i></span>
+      <span class="val" id="v2">77,6%</span>
+    </div>
+  </div>
+
+  <div class="readout" style="margin-top:16px">
+    <span id="lead">a manchete fica em</span>
+    <b id="d">72,0%</b>
+    <span id="dd">com 22,0% no grupo</span>
+  </div>
+
+  <div class="eq">
+    <div id="eqline">\(\displaystyle a = 0{,}1 \times 22{,}0 + 0{,}9 \times 77{,}6 = 72{,}04\)</div>
+    <div class="cap" id="cap">Sem o CEP o grupo cai para 12,0% e o resto sobe para 78,7%: a média quase não se move, porque a queda do grupo entra dividida por dez e a alta do resto entra multiplicada por nove.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <p class="label">Ponto notável</p>
+    <p class="sub" style="margin:0">o CEP não é a cor nem o turno: é a coluna que serve de atalho para os dois. Enquanto ela existe, o modelo não precisa aprender nada sobre o grupo.</p>
+  </div>
+
+  <p class="foot">O estado é forma: a coluna removida fica <b>tracejada e riscada</b>; a barra do grupo é <b>tracejada</b> nas duas configurações. O número entra só no resultado.</p>
+</div>
+
+<script>
+(function () {
+  var COM = { geral: 72.04, grupo: 22.0, resto: 77.6 };
+  var SEM = { geral: 72.03, grupo: 12.0, resto: 78.7 };
+
+  /* a média tem de fechar com as duas parcelas, nos dois casos */
+  if (Math.abs(0.1 * COM.grupo + 0.9 * COM.resto - COM.geral) > 1e-9) { throw new Error('com CEP'); }
+  if (Math.abs(0.1 * SEM.grupo + 0.9 * SEM.resto - SEM.geral) > 1e-9) { throw new Error('sem CEP'); }
+
+  var rm = document.getElementById('rm');
+  var cep = document.getElementById('cep');
+  var g = [0, 1, 2].map(function (i) { return document.getElementById('g' + i); });
+  var v = [0, 1, 2].map(function (i) { return document.getElementById('v' + i); });
+  var d = document.getElementById('d');
+  var dd = document.getElementById('dd');
+  var lead = document.getElementById('lead');
+  var eqline = document.getElementById('eqline');
+  var cap = document.getElementById('cap');
+
+  function n1(x) { return x.toFixed(1).replace('.', ','); }
+
+  function render(sem) {
+    var s = sem ? SEM : COM;
+    var vals = [s.geral, s.grupo, s.resto];
+    for (var i = 0; i < 3; i++) {
+      g[i].style.width = vals[i] + '%';
+      v[i].textContent = n1(vals[i]) + '%';
+    }
+    var perda = (COM.grupo - SEM.grupo).toFixed(1).replace('.', ',');
+    d.textContent = sem ? perda + ' pontos' : n1(s.geral) + '%';
+    lead.textContent = sem ? 'o grupo perde' : 'a manchete fica em';
+    dd.textContent = sem
+      ? 'de acurácia; a manchete fica em ' + n1(s.geral) + '%'
+      : 'com ' + n1(s.grupo) + '% no grupo';
+    eqline.innerHTML = sem
+      ? '\\(\\displaystyle a = 0{,}1 \\times 12{,}0 + 0{,}9 \\times 78{,}7 = 72{,}03\\)'
+      : '\\(\\displaystyle a = 0{,}1 \\times 22{,}0 + 0{,}9 \\times 77{,}6 = 72{,}04\\)';
+    cap.innerHTML = sem
+      ? 'Sem o CEP o grupo cai para 12,0% e o resto sobe para 78,7%: a média se move 0,01 ponto, porque a queda do grupo entra dividida por dez e a alta do resto entra multiplicada por nove.'
+      : 'Com o CEP o grupo fica em 22,0% e o resto em 77,6%, e a média fecha em 72,04%. A manchete é a mesma nos dois mundos.';
+    if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([eqline]); }
+  }
+
+  rm.addEventListener('click', function () {
+    var sem = rm.getAttribute('aria-pressed') !== 'true';
+    rm.setAttribute('aria-pressed', sem ? 'true' : 'false');
+    rm.textContent = sem ? 'devolver a coluna CEP' : 'remover a coluna CEP';
+    cep.classList.toggle('fora', sem);
+    render(sem);
+  });
+
+  render(false);
+})();
+</script>

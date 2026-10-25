@@ -327,8 +327,8 @@ textarea, input[type="text"] {
   <p class="sub">O modelo aprende a média do conjunto de treino, e a média não é o grupo. Com o grupo raro fora do treino, o acerto geral continua alto e o acerto do próprio grupo desaba.</p>
 
   <div class="eq">
-    <div>\(\displaystyle a_{\mathrm{geral}}(q)=72+23q \qquad a_{B}(q)=22+66\,q^{0{,}6}\)</div>
-    <div class="cap">\(q\) = fração do grupo B no conjunto de treino, de 0 a 1. O teste mantém o grupo em \(f = 0{,}1\): quem sai do treino não sai da avaliação. Os coeficientes são de um modelo didático da classe, e o que importa é a <b>forma</b> das duas curvas: a geral sobe depressa, a do grupo sobe devagar.</div>
+    <div>\(\displaystyle a_{\mathrm{geral}}(q)=0{,}1\,(22+66q)+0{,}9\times 77{,}6 \qquad a_{B}(q)=22+66q\)</div>
+    <div class="cap">\(q\) = fração do grupo B no conjunto de treino, de 0 a 1. O teste mantém o grupo em \(f = 0{,}1\) e o resto em 77,6%: a acurácia geral é a mistura das duas, e cada ponto do grupo entra nela dividido por dez. Em \(q = 1\) o grupo chega a 88% e a geral a 78,6%.</div>
   </div>
 
   <div class="sim">
@@ -342,19 +342,19 @@ textarea, input[type="text"] {
       <div class="row" style="grid-template-columns:7.4em 1fr 4.4em">
         <span class="name">acerto geral</span>
         <span class="bar"><i id="g1" style="width:72%"></i></span>
-        <span class="val" id="v1">72%</span>
+        <span class="val" id="v1">72,0%</span>
       </div>
       <div class="row" style="grid-template-columns:7.4em 1fr 4.4em">
         <span class="name">acerto do grupo B</span>
         <span class="bar alt"><i id="g2" style="width:22%"></i></span>
-        <span class="val" id="v2">22%</span>
+        <span class="val" id="v2">22,0%</span>
       </div>
     </div>
   </div>
 
   <div class="readout">
-    <span id="outtxt">o modelo acerta 72% no geral e 22% no grupo B: uma diferença de</span>
-    <b id="dif">50</b>
+    <span id="outtxt">o modelo acerta 72,0% no geral e 22,0% no grupo B: uma diferença de</span>
+    <b id="dif">50,0</b>
     <span>pontos</span>
   </div>
 
@@ -362,7 +362,7 @@ textarea, input[type="text"] {
 
   <div class="card" style="margin-top:12px">
     <p class="label">Ponto notável</p>
-    <p class="sub" style="margin:0">com 0% do grupo no treino, o modelo ainda acerta 72% no geral, e o grupo fica em 22%. A média não mostra o erro.</p>
+    <p class="sub" style="margin:0">o grupo ganha 66 pontos ao longo do controle; a manchete ganha 6,6. Não é um modelo diferente: é o mesmo ganho, visto com o peso de 10%.</p>
   </div>
 
   <p class="foot">O estado é forma: a barra do acerto do grupo B é <b>tracejada</b> e mais clara; a do acerto geral é contínua e cheia. O número entra só no resultado.</p>
@@ -379,17 +379,26 @@ textarea, input[type="text"] {
   var outtxt = document.getElementById('outtxt');
   var dif = document.getElementById('dif');
 
+  var F = 0.1, RESTO = 77.6;   /* teste parado em 10% do grupo */
+
+  function geralDe(p) { return F * (22 + 66 * p) + (1 - F) * RESTO; }
+  function n1(x) { return x.toFixed(1).replace('.', ','); }
+
+  /* a mistura: em q=0 dá 72,04 e em q=1 dá 78,64 */
+  if (Math.abs(geralDe(0) - 72.04) > 1e-9 || Math.abs(geralDe(1) - 78.64) > 1e-9) {
+    throw new Error('equação da mistura');
+  }
+
   function render() {
     var p = Number(q.value) / 100;
-    var geral = Math.round(72 + 23 * p);
-    var grupo = Math.round(22 + 66 * Math.pow(p, 0.6));
+    var geral = geralDe(p), grupo = 22 + 66 * p;
     qval.textContent = q.value + '%';
     g1.style.width = geral + '%';
     g2.style.width = grupo + '%';
-    v1.textContent = geral + '%';
-    v2.textContent = grupo + '%';
-    outtxt.textContent = 'o modelo acerta ' + geral + '% no geral e ' + grupo + '% no grupo B: uma diferença de';
-    dif.textContent = Math.abs(geral - grupo);
+    v1.textContent = n1(geral) + '%';
+    v2.textContent = n1(grupo) + '%';
+    outtxt.textContent = 'o modelo acerta ' + n1(geral) + '% no geral e ' + n1(grupo) + '% no grupo B: uma diferença de';
+    dif.textContent = n1(Math.abs(geral - grupo));
   }
 
   q.addEventListener('input', render);

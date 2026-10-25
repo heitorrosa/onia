@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O ciclo do prompt verificável</title>
+<!--
+  NOIC frame kit — shell único.
+  O MathJax da página do WordPress NÃO entra no documento do iframe: cada frame
+  carrega o seu (mesmo CDN que o site já usa). Degradação: se o CDN não
+  responder, `kit.js` converte a matemática em texto legível.
+-->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+/* ============================================================================
+   NOIC FRAME KIT — frame SEM cor definida
+   ----------------------------------------------------------------------------
+   REGRA: o frame não declara NENHUMA cor. Zero hex, zero rgb(), zero nome de
+   cor. Tudo o que aparece sai de `currentColor` (a tinta do próprio navegador)
+   e de opacidades. A cor de acento da classe pertence à PÁGINA (WordPress),
+   nunca ao frame.
+
+   Estado interativo é marcado por FORMA, nunca por matiz:
+     · glifo (✓ / ✗) + texto
+     · peso da fonte
+     · contorno (outline) e borda
+     · preenchido vs. vazado (o ponto da legenda, a barra)
+   ========================================================================== */
+
+:root {
+  /* métrica (aqui não há cor nenhuma) ------------------------------------ */
+  --r:      8px;          /* raio padrão */
+  --r-sm:   5px;
+  --gap:    14px;
+  --pad:    14px;
+  --fs:     15px;         /* corpo */
+  --fs-sm:  13px;
+  --fs-xs:  11.5px;       /* micro-rótulo */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;   /* o frame se mistura com a página */
+  color: inherit;            /* tinta padrão do navegador (o site do NOIC é branco) */
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 16px 22px;
+}
+
+/* --- micro-rótulo: o "Em que C é coulomb" do frame ---------------------- */
+.label,
+.kicker {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 700;
+  opacity: .6;
+  margin: 0 0 8px;
+}
+.kicker { margin: 0 0 3px; }
+
+h1 { font-size: 17px; line-height: 1.3; margin: 0 0 4px; letter-spacing: -.01em; font-weight: 650; }
+h2 { font-size: var(--fs-sm); margin: 0 0 8px; font-weight: 650; }
+.sub { font-size: var(--fs-sm); margin: 0 0 var(--gap); opacity: .78; }
+
+/* --- blocos: a separação é um fio na tinta, não uma cor ------------------ */
+.card { position: relative; padding: var(--pad) 0 0; }
+.card + .card { margin-top: var(--gap); }
+.card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: currentColor; opacity: .16;
+}
+.card--flat { padding-top: 0; }
+.card--flat::before { display: none; }
+
+.grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: var(--gap); align-items: start; }
+@media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+/* --- equação: a régua da esquerda é tinta, o fundo é o da página --------- */
+.eq {
+  margin-top: var(--gap);
+  padding: 10px 0 10px 12px;
+  border-left: 3px solid currentColor;
+  font-size: var(--fs-sm);
+}
+.eq .cap { font-size: var(--fs-xs); margin-top: 6px; opacity: .78; }
+.eq .cap b { font-weight: 600; }
+
+/* --- controles ----------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: inherit; font-size: var(--fs-sm); font-weight: 550;
+  padding: 7px 12px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.btn:hover { text-decoration: underline; }
+.btn.ghost { border-color: transparent; }
+.btn.ghost:hover { text-decoration: underline; }
+.btn[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.btn:focus-visible, .choice:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid currentColor; outline-offset: 2px;
+}
+
+input[type="checkbox"] { accent-color: currentColor; width: 15px; height: 15px; }
+input[type="range"] { accent-color: currentColor; width: 100%; }
+
+textarea, input[type="text"] {
+  width: 100%; font: inherit; font-size: var(--fs-sm);
+  padding: 9px 10px; color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  resize: vertical;
+}
+
+/* --- leitura de número: o "display" do quadro --------------------------- */
+.readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; }
+.readout b { font-size: 28px; line-height: 1; font-weight: 650; font-variant-numeric: tabular-nums; }
+.readout span { font-size: var(--fs-sm); opacity: .78; }
+
+/* --- barra: moldura na tinta, preenchimento na tinta --------------------- */
+.bar { height: 12px; border: 1px solid currentColor; border-radius: 999px; overflow: hidden; display: flex; }
+.bar i { display: block; height: 100%; width: 0; background: currentColor; transition: width .3s cubic-bezier(.2,.7,.3,1); }
+
+/* --- legenda: ponto vazado = fora, ponto cheio = dentro ------------------ */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 9px; font-size: var(--fs-xs); opacity: .85; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; border: 1px solid currentColor; }
+.dot.on { background: currentColor; }
+
+/* --- simulador (arquétipo A): 1 controle + o que responde ----------------- */
+.sim { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+@media (min-width: 560px) { .sim { grid-template-columns: 1.05fr .95fr; } }
+.sim.one { grid-template-columns: 1fr; }
+.sim .ctl { display: flex; flex-direction: column; gap: 7px; }
+.sim .ctl .name { font-size: var(--fs-xs); opacity: .6; }
+.sim .ctl .val { font-size: 20px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.sim .ctl .scale { display: flex; justify-content: space-between; font-size: var(--fs-xs); opacity: .55; }
+
+/* duas barras: geral (contínua, cheia) × grupo (tracejada, clara) */
+.gauge { display: flex; flex-direction: column; gap: 9px; }
+.gauge .row { display: grid; grid-template-columns: minmax(4.2em, 5.4em) minmax(0, 1fr) minmax(3.4em, 4.6em); align-items: center; gap: 9px; }
+.gauge .row .name { font-size: var(--fs-xs); opacity: .6; }
+.gauge .row .val { font-size: var(--fs-xs); font-variant-numeric: tabular-nums; text-align: right; }
+.bar.alt { border-style: dashed; }
+.bar.alt i { opacity: .45; }
+
+/* --- mapa mental navegável (arquétipo D) ---------------------------------- */
+/* Um SVG de vértices e ligações; o clique num vértice acende o vértice e a
+   ligação correspondente. Sem cor: o vértice ativo ganha traço mais grosso,
+   preenchimento e um anel de foco. */
+.mind .link { stroke: currentColor; stroke-width: 1.2; fill: none; opacity: .35; }
+.mind .link.on { stroke-width: 2.4; opacity: 1; }
+.mind .vtx { fill: none; stroke: currentColor; stroke-width: 1.4; cursor: pointer; }
+.mind .vtx:hover { stroke-width: 2.4; }
+.mind .vtx.on { stroke-width: 2.8; fill: currentColor; fill-opacity: .12; }
+.mind .vlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.mind .vsub { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.mind .vtx:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* --- lista de critérios -------------------------------------------------- */
+.list { display: flex; flex-direction: column; gap: 7px; }
+.list label { display: flex; gap: 9px; align-items: flex-start; font-size: var(--fs-sm); cursor: pointer; }
+.list .k { font-size: var(--fs-xs); display: block; opacity: .6; }
+
+/* --- escolha única (arquétipo C) ---------------------------------------- */
+.choice {
+  display: block; width: 100%; text-align: left;
+  font: inherit; font-size: var(--fs-sm);
+  padding: 9px 11px; margin-bottom: 7px;
+  color: inherit; background: none;
+  border: 1px solid currentColor; border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.choice:hover { text-decoration: underline; }
+.choice[aria-pressed="true"] { font-weight: 650; outline: 2px solid currentColor; outline-offset: -2px; }
+.choice .mark { font-weight: 700; margin-right: 6px; }
+.choice[data-verdict="right"] { font-weight: 650; }
+.choice[data-verdict="wrong"] { opacity: .6; }
+
+.verdict { font-size: var(--fs-sm); margin-top: 8px; min-height: 1.5em; opacity: .85; }
+.verdict b { font-weight: 600; }
+
+/* --- svg do frame -------------------------------------------------------- */
+.flow { width: 100%; height: auto; }
+.flow .node { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.flow .node.on { stroke-width: 2.6; fill: currentColor; fill-opacity: .12; }
+.flow .nlabel { font-size: 12.5px; fill: currentColor; text-anchor: middle; font-weight: 600; }
+.flow .nsub   { font-size: 10.5px; fill: currentColor; text-anchor: middle; opacity: .6; }
+.flow .arrow  { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.flow .arrow.on { stroke-width: 2.6; }
+.flow .mk     { fill: currentColor; }
+.flow .loop   { stroke-dasharray: 5 4; animation: dash 1.6s linear infinite; }
+.flow .gridline { stroke: currentColor; stroke-width: 1; opacity: .16; }
+.flow .axis   { stroke: currentColor; stroke-width: 1.2; opacity: .5; }
+@keyframes dash { to { stroke-dashoffset: -18; } }
+
+/* --- grade de pixels (imagem -> números) ---------------------------------- */
+/* A imagem vira uma grade de células: vazada = fundo, cheia = pixel. */
+.pxgrid {
+  display: grid; grid-template-columns: repeat(28, 1fr); gap: 1px;
+  width: 264px; max-width: 100%;
+}
+.pxgrid i { display: block; aspect-ratio: 1; background: currentColor; opacity: .08; }
+.pxgrid i.on { opacity: 1; }
+
+/* --- token (texto -> número) --------------------------------------------- */
+/* A palavra em cima, o índice do vocabulário embaixo. Fora do vocabulário:
+   borda tracejada e opacidade menor. */
+.tok {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 5px 9px; border: 1px solid currentColor; border-radius: var(--r-sm);
+  font-size: var(--fs-xs);
+}
+.tok b { font-size: var(--fs-sm); font-weight: 650; }
+.tok.out { border-style: dashed; opacity: .7; }
+
+/* --- rodapé -------------------------------------------------------------- */
+.foot { margin-top: var(--gap); font-size: var(--fs-xs); opacity: .78; }
+.foot b { font-weight: 600; }
+
+/* --- grafico de linhas (curva de aprendizado) ---------------------------- */
+/* Sem cor: as linhas sao a tinta da pagina, e a separacao vem do traco. */
+.chart { margin: 10px 0 0; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid { stroke: currentColor; stroke-opacity: .14; stroke-width: 1; }
+.chart .ax { stroke: currentColor; stroke-opacity: .45; stroke-width: 1; }
+.chart .ln { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.chart .ln.dash { stroke-dasharray: 5 4; stroke-opacity: .6; }
+.chart .tick { font-size: 11px; fill: currentColor; opacity: .6; }
+.chart .vline { stroke: currentColor; stroke-opacity: .3; stroke-dasharray: 2 3; }
+.chart .pt { fill: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow .loop { animation: none; }
+  .bar i { transition: none; }
+}
+</style>
+</head>
+<body>
+<script>
+/* ============================================================================
+   NOIC FRAME KIT — JS compartilhado
+   ----------------------------------------------------------------------------
+   Só o que os frames realmente precisam:
+     1. NOIC.degradeMath() — degradação do MathJax (se o CDN não responder, a
+                      fórmula continua legível em texto);
+     2. NOIC.reducedMotion — respeitar prefers-reduced-motion;
+     3. NOIC.cycle(fn, ms) e NOIC.highlight(steps, i) — o ciclo de etapas
+                      do diagrama, com a seta de estado aceso.
+   Sem dependência, sem build, sem rede além do MathJax.
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var reduced = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Degradação do MathJax ------------------------------------------------- */
+  /* Se o CDN não respondeu em 2.5s, cada container mjx vira texto plano com
+     a expressão original entre \( \) — legível, sem depender de rede. */
+  function degradeMath() {
+    if (global.MathJax && global.MathJax.typesetPromise) return;   /* MathJax carregou */
+    var nodes = document.querySelectorAll('mjx-container');
+    for (var i = 0; i < nodes.length; i++) {
+      var src = nodes[i].querySelector('[data-latex]') || nodes[i];
+      var tex = src.getAttribute && src.getAttribute('data-latex');
+      if (!tex) tex = nodes[i].textContent;
+      var span = document.createElement('code');
+      span.textContent = tex;
+      span.style.fontFamily = 'ui-monospace, Consolas, monospace';
+      span.style.fontSize = '13px';
+      nodes[i].replaceWith(span);
+    }
+  }
+  global.setTimeout(degradeMath, 2500);
+
+  /* Preferência de movimento ------------------------------------------------ */
+  function cycle(fn, ms) {
+    if (reduced) { fn(0); return null; }
+    return global.setInterval(function () { fn(Date.now()); }, ms);
+  }
+
+  global.NOIC = {
+    reducedMotion: reduced,
+    degradeMath: degradeMath,
+    cycle: cycle,
+    /* marca o nó ativo de um diagrama de etapas: [ [idNo, idSeta], ... ]
+       Como o frame não declara cor, "ativo" é Forma: o nó ganha traço mais
+       grosso e um preenchimento de 12% da tinta; a seta, idem. */
+    highlight: function (steps, index) {
+      steps.forEach(function (s) {
+        var n = document.getElementById(s[0]);
+        var a = document.getElementById(s[1]);
+        if (n) { n.querySelector('.node').classList.remove('on'); }
+        if (a) { a.classList.remove('on'); }
+      });
+      var cur = steps[index % steps.length];
+      var cn = document.getElementById(cur[0]);
+      var ca = document.getElementById(cur[1]);
+      if (cn) { cn.querySelector('.node').classList.add('on'); }
+      if (ca) { ca.classList.add('on'); }
+    }
+  };
+})(window);
+</script>
+<div class="wrap">
+
+  <p class="kicker">Fig. 2 · o ciclo de trabalho</p>
+  <h1>Quem faz cada passo do ciclo</h1>
+  <p class="sub">O ciclo só fecha quando o passo 3 mede a saída contra o critério escrito no passo 1, e não contra a impressão de quem pediu.</p>
+
+  <svg class="flow" viewBox="0 0 380 210" role="img" aria-label="Ciclo: especificar, gerar, criticar, refinar">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path class="mk" d="M0 0 L10 5 L0 10 z"/>
+      </marker>
+    </defs>
+    <path class="arrow" id="a1" d="M108 42 H 272" marker-end="url(#ah)"/>
+    <path class="arrow" id="a2" d="M300 68 V 130" marker-end="url(#ah)"/>
+    <path class="arrow" id="a3" d="M272 160 H 108" marker-end="url(#ah)"/>
+    <path class="arrow loop" id="a4" d="M20 159 H 10 V 41 H 17" marker-end="url(#ah)"/>
+    <g id="n0"><rect class="node" x="20" y="20" width="88" height="42" rx="9"/><text class="nlabel" x="64" y="38">Especificar</text><text class="nsub" x="64" y="52">você</text></g>
+    <g id="n1"><rect class="node" x="272" y="20" width="88" height="42" rx="9"/><text class="nlabel" x="316" y="38">Gerar</text><text class="nsub" x="316" y="52">o modelo</text></g>
+    <g id="n2"><rect class="node" x="272" y="138" width="88" height="42" rx="9"/><text class="nlabel" x="316" y="156">Criticar</text><text class="nsub" x="316" y="170">o checker</text></g>
+    <g id="n3"><rect class="node" x="20" y="138" width="88" height="42" rx="9"/><text class="nlabel" x="64" y="156">Refinar</text><text class="nsub" x="64" y="170">o prompt</text></g>
+  </svg>
+
+  <p class="verdict" id="msg" aria-live="polite">Especificar: os cinco critérios são escritos antes do pedido, e k = 5.</p>
+
+  <p class="foot">O que volta pelo laço é o prompt, nunca a resposta. Refinar a resposta resolve aquele texto; refinar o prompt resolve os próximos.</p>
+</div>
+
+<script>
+(function () {
+  var steps = [['n0', 'a1'], ['n1', 'a2'], ['n2', 'a3'], ['n3', 'a4']];
+  var MSG = [
+    'Especificar: os cinco critérios são escritos antes do pedido, e k = 5. Quem escreve é quem pede.',
+    'Gerar: o modelo produz a saída. Ele lê os critérios como texto do pedido, não como teste que ele aplica.',
+    'Criticar: a rubrica conta quantos dos cinco critérios a saída cumpre. Quem conta é o checker, não o modelo.',
+    'Refinar: o que faltou volta para o prompt. O ciclo recomeça com o mesmo k, e o escore só sobe se a saída melhorar.'
+  ];
+  var idx = 0;
+  var msg = document.getElementById('msg');
+  NOIC.cycle(function () {
+    NOIC.highlight(steps, idx);
+    msg.textContent = MSG[idx];
+    idx = (idx + 1) % steps.length;
+  }, 1800);
+})();
+</script>
+</body>
+</html>

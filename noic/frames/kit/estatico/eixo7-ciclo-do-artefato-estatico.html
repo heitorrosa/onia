@@ -1,0 +1,50 @@
+<!--title: O ciclo do artefato-->
+<!--
+  Gêmeo estático do frame `eixo7-ciclo-do-artefato.html`.
+  Vai no CORPO da página do WordPress, logo abaixo do iframe. É a mesma ideia
+  sem JS: o ciclo vira uma lista ordenada e uma tabela do que cada etapa exige.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig.</strong> (versão estática): as quatro etapas do ciclo, o que cada uma exige e o que o teste da sessão nova separa.</figcaption>
+
+  <ol style="margin:.4em 0 .9em;padding-left:1.2em">
+    <li><strong>Escrever</strong> a regra em uma frase que diga o que fazer e quando. Frase que só descreve gosto não se verifica.</li>
+    <li><strong>Fixar</strong> a frase no artefato: <code>AGENTS.md</code>, <code>SYSTEM.md</code> ou o corpo de uma skill. O que fica no histórico morre com a sessão.</li>
+    <li><strong>Testar</strong> em sessão nova, com pedido mínimo, sem lembrar o combinado. O padrão tem de aparecer sozinho.</li>
+    <li><strong>Medir</strong> se ele apareceu. Repetindo, ainda é combinação: a regra volta para o texto.</li>
+  </ol>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:5px 8px 5px 0;font-weight:600">etapa</th>
+        <th style="padding:5px 8px 5px 0;font-weight:600">onde a regra mora</th>
+        <th style="padding:5px 0;font-weight:600">o que ela alcança</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor;vertical-align:top">
+        <td style="padding:5px 8px 5px 0">escrever</td>
+        <td style="padding:5px 8px 5px 0">no texto do pedido</td>
+        <td style="padding:5px 0">o turno atual e, se o pedido foi longo, o começo da janela</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor;vertical-align:top">
+        <td style="padding:5px 8px 5px 0">fixar</td>
+        <td style="padding:5px 8px 5px 0"><code>AGENTS.md</code>, <code>SYSTEM.md</code>, skill</td>
+        <td style="padding:5px 0">toda sessão que abrir naquele diretório ou carregar aquela skill</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor;vertical-align:top">
+        <td style="padding:5px 8px 5px 0">testar</td>
+        <td style="padding:5px 8px 5px 0">em sessão nova, sem histórico</td>
+        <td style="padding:5px 0">prova que o padrão veio do artefato, não da conversa</td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="padding:5px 8px 5px 0">medir</td>
+        <td style="padding:5px 8px 5px 0">num verificador, quando existe</td>
+        <td style="padding:5px 0">mantém o padrão no tempo: regra sem verificador é intenção</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0">O ciclo não fecha na primeira volta. Enquanto o teste exigir que você repita a regra, o que existe é um combinado, não um hábito.</p>
+</figure>

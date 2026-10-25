@@ -1,0 +1,65 @@
+<!--
+  Gêmeo estático do frame `eixo7-criterios.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: os cinco critérios viram tabela e o escore vira
+  uma frase com a conta escrita.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 1</strong> (versão estática) — o mesmo pedido de resumo em dois estados: o vago, que satisfaz qualquer saída, e o especificado, que se pode contar.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 10px 7px 0;font-weight:600">critério</th>
+        <th style="padding:7px 10px 7px 0;font-weight:600">a pergunta fechada</th>
+        <th style="padding:7px 10px 7px 0;font-weight:600">no pedido vago</th>
+        <th style="padding:7px 0;font-weight:600">a frase que resolve</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">papel</td>
+        <td style="padding:7px 10px 7px 0">diz para quem é a resposta?</td>
+        <td style="padding:7px 10px 7px 0">✗</td>
+        <td style="padding:7px 0">Você é um professor de biologia do 1º ano do ensino médio.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">tarefa</td>
+        <td style="padding:7px 10px 7px 0">nomeia um verbo e um entregável?</td>
+        <td style="padding:7px 10px 7px 0">✓</td>
+        <td style="padding:7px 0">Resuma o capítulo 3.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">restrição</td>
+        <td style="padding:7px 10px 7px 0">diz o que não fazer e qual é o teto?</td>
+        <td style="padding:7px 10px 7px 0">✗</td>
+        <td style="padding:7px 0">Sem fórmulas e sem exemplo que não esteja no capítulo.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">fonte</td>
+        <td style="padding:7px 10px 7px 0">diz de onde a afirmação pode sair?</td>
+        <td style="padding:7px 10px 7px 0">✗</td>
+        <td style="padding:7px 0">Cite a página de cada afirmação.</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 10px 7px 0">formato</td>
+        <td style="padding:7px 10px 7px 0">diz a forma e o tamanho da saída?</td>
+        <td style="padding:7px 10px 7px 0">✗</td>
+        <td style="padding:7px 0">Em três seções nomeadas, com 150 palavras no total.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    Com os cinco critérios ligados, o pedido vago mede
+    \(\operatorname{escore}(p)=\frac{1}{5}\sum_{i=1}^{5}\mathbb{1}\left[c_i(p)\right]=0{,}2\),
+    porque só a tarefa passa. Desligando os quatro critérios que falham, o mesmo texto
+    mede \(1/1\): o escore subiu, a saída não mudou.
+  </p>
+
+  <p style="margin:0">
+    O teto de palavras é o que separa resumo de cópia, e a lista de ideias obrigatórias é
+    o que separa resumo de recorte. Um pedido sem os dois não tem como ser conferido, e
+    um pedido com <em>k</em> = 0 não tira zero: fica fora da conta.
+  </p>
+</figure>

@@ -1,0 +1,142 @@
+<!--title: A rubrica aplicada a um prompt-->
+<style>
+  .list label { align-items: center; padding: 3px 0; }
+  .list .g { margin-left: auto; font-weight: 700; width: 1em; text-align: center; }
+  .list label.off { opacity: .45; }
+  .list label.fail .g { opacity: .7; }
+  .mono { font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; }
+</style>
+<div class="wrap">
+
+  <p class="kicker">Fig. 1 · a rubrica em cinco critérios</p>
+  <h1>Quais critérios este prompt cumpre?</h1>
+  <p class="sub">Ligue os critérios que o contrato exige e aplique a rubrica. O escore é a fração deles que o texto satisfaz, então apagar um critério muda a conta sem mudar a saída.</p>
+
+  <div class="grid">
+
+    <div class="card card--flat">
+      <p class="label">o prompt</p>
+      <textarea id="p" rows="5" spellcheck="false">Resume o capítulo 3 para mim.</textarea>
+
+      <p class="label" style="margin-top:14px">critérios do contrato</p>
+      <div class="list" id="crits"></div>
+
+      <div style="margin-top:12px">
+        <button class="btn" id="apply">aplicar a rubrica</button>
+      </div>
+    </div>
+
+    <div class="card card--flat">
+      <p class="label">escore da rubrica</p>
+      <div class="readout"><b id="sc">—</b><span id="scl">nenhuma rubrica aplicada</span></div>
+      <div class="bar" style="margin-top:8px"><i id="fill"></i></div>
+
+      <div class="eq">
+        <div class="mono">escore = (1/k) * soma de 1[c_i(p)]</div>
+        <div class="cap">k é o número de critérios ligados, e cada c_i é uma pergunta fechada sobre o texto. Com k = 0 a conta não existe: o pedido vago não tira zero, ele fica fora da conta.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="foot">O estado é forma: <b>✓</b> passa, <b>✗</b> não passa, <b>·</b> rubrica ainda não aplicada; o critério desligado fica vazado e não entra em <b>k</b>.</p>
+</div>
+
+<script>
+(function () {
+  var CRIT = [
+    { id: 'papel', nome: 'papel', q: 'diz para quem é?',
+      re: /voc[êe] é/i },
+    { id: 'tarefa', nome: 'tarefa', q: 'nomeia um verbo e um entregável?',
+      re: /resum/i },
+    { id: 'restricao', nome: 'restrição', q: 'diz o que não fazer e o teto?',
+      re: /\bsem\b|\bnão\b/i },
+    { id: 'fonte', nome: 'fonte', q: 'diz de onde a afirmação sai?',
+      re: /página|\bcite\b|\btrecho\b/i },
+    { id: 'formato', nome: 'formato', q: 'diz a forma e o tamanho?',
+      re: /\bseç|palavras|\blista\b/i }
+  ];
+
+  var ativos = Object.create(null);
+  var aplicado = false;
+  var ta = document.getElementById('p');
+  var box = document.getElementById('crits');
+  var sc = document.getElementById('sc');
+  var scl = document.getElementById('scl');
+  var fill = document.getElementById('fill');
+
+  CRIT.forEach(function (c) {
+    var l = document.createElement('label');
+    l.setAttribute('data-id', c.id);
+    l.innerHTML = '<input type="checkbox" checked><span><b>' + c.nome +
+                  '</b><span class="k">' + c.q + '</span></span>' +
+                  '<span class="g">·</span>';
+    box.appendChild(l);
+    ativos[c.id] = true;
+    /* desligar um critério NÃO reaplica a rubrica: o escore sobe
+       porque o denominador encolheu, e é isso que o frame mostra. */
+    l.querySelector('input').addEventListener('change', function (e) {
+      ativos[c.id] = e.target.checked;
+      render();
+    });
+  });
+
+  function ligados() {
+    return CRIT.filter(function (c) { return ativos[c.id]; });
+  }
+
+  function render() {
+    var on = ligados();
+    var k = on.length;
+
+    CRIT.forEach(function (c) {
+      var l = box.querySelector('label[data-id="' + c.id + '"]');
+      var g = l.querySelector('.g');
+      var ativo = !!ativos[c.id];
+      l.classList.toggle('off', !ativo);
+      l.classList.toggle('fail', false);
+      if (aplicado && ativo && !c.re.test(ta.value)) {
+        g.textContent = '✗';
+        l.classList.add('fail');
+      } else {
+        g.textContent = aplicado && ativo ? '✓' : '·';
+      }
+    });
+
+    if (!k) {
+      sc.textContent = '—';
+      scl.textContent = 'k = 0: o prompt não tem escore';
+      fill.style.width = '0%';
+      return;
+    }
+    if (!aplicado) {
+      sc.textContent = '—';
+      scl.textContent = k + ' critério(s) ligado(s), rubrica não aplicada';
+      fill.style.width = '0%';
+      return;
+    }
+
+    var pass = 0;
+    for (var j = 0; j < on.length; j++) {
+      if (on[j].re.test(ta.value)) pass++;
+    }
+    sc.textContent = pass + '/' + k;
+    scl.textContent = pass === k
+      ? 'todos os critérios ligados passam'
+      : (k - pass) + ' critério(s) não passam';
+    fill.style.width = (pass / k * 100) + '%';
+  }
+
+  document.getElementById('apply').addEventListener('click', function () {
+    aplicado = true;
+    render();
+  });
+
+  ta.addEventListener('input', function () {
+    aplicado = false;
+    render();
+  });
+
+  render();
+})();
+</script>

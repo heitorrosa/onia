@@ -8,7 +8,7 @@
   na página do WordPress (UTF-8) ele renderiza certo.
 -->
 <figure class="noic-frame-static">
-  <figcaption><strong>Fig. 3</strong> (versão estática): o plano do SMOTE. Sete pontos do grupo concentrados num canto, quarenta do resto espalhados, e a região que um classificador de três vizinhos mais próximos dá ao grupo, hachurada. Cada ponto inventado nasce no segmento entre um ponto do grupo e o vizinho mais próximo dele, e a região cresce um fio para o lado que ficou mais denso. Três cruzes marcam casos de teste parados a menos de duas unidades da borda, do lado do resto: elas não se movem, e o que muda é se a região chega até elas.</figcaption>
+  <figcaption><strong>Fig. 3</strong> (versão estática): o plano do SMOTE. Sete pontos do grupo concentrados num canto, quarenta do resto espalhados, e a reta de uma regressão logística de dois atributos mais viés, ajustada sobre os dois. O semiplano do grupo fica hachurado. Cada ponto inventado nasce no segmento entre um ponto do grupo e o vizinho mais próximo dele, e a reta é reajustada do zero: ela desliza para o lado do grupo sem que nenhuma ficha nova entre no conjunto. Três cruzes marcam casos de teste parados a duas unidades da reta inicial, do lado do resto: elas não se movem, e o que muda é de que lado a reta as deixa.</figcaption>
 
   <p style="margin:0 0 .6em">
     O ponto novo é uma combinação convexa de dois pontos do grupo:
@@ -20,7 +20,8 @@
     <li>Achar \(x_2\), o ponto do grupo mais próximo de \(x_1\) pela distância euclidiana.</li>
     <li>Sortear \(\lambda\) em \((0,1)\).</li>
     <li>Criar o ponto no segmento: \((1-\lambda)\,x_1 + \lambda\,x_2\).</li>
-    <li>Recalcular a região: cada célula do plano fica com o grupo quando dois dos seus três vizinhos mais próximos são do grupo. Reconferir se a região chegou às três cruzes.</li>
+    <li>Reajustar a regressão logística \(w_0 + w_1 x + w_2 y\) por descida de gradiente, 400 passos, com \(x\) e \(y\) normalizados para \(0\) a \(1\). A reta dos pesos é a fronteira, e o lado positivo é o do grupo.</li>
+    <li>Reconferir de que lado da reta ficaram as três cruzes.</li>
   </ol>
 
   <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
@@ -28,43 +29,43 @@
       <tr style="text-align:left;border-bottom:2px solid currentColor">
         <th style="padding:7px 8px 7px 0;font-weight:600">Pontos sintéticos</th>
         <th style="padding:7px 8px 7px 0;font-weight:600">Área da região do grupo</th>
-        <th style="padding:7px 8px 7px 0;font-weight:600">Casos de teste que mudaram de lado</th>
-        <th style="padding:7px 0 7px 0;font-weight:600">Pontos no grupo</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">Pesos: grupo / resto / viés</th>
+        <th style="padding:7px 0 7px 0;font-weight:600">Casos de teste que mudaram de lado</th>
       </tr>
     </thead>
     <tbody>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">0</td>
-        <td style="padding:7px 8px 7px 0">34,1% do plano</td>
-        <td style="padding:7px 8px 7px 0">0 de 3</td>
-        <td style="padding:7px 0">7</td>
+        <td style="padding:7px 8px 7px 0">21,6% do plano</td>
+        <td style="padding:7px 8px 7px 0">0,57 / 0,43 / 0,24</td>
+        <td style="padding:7px 0">0 de 3</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">10</td>
-        <td style="padding:7px 8px 7px 0">35,0% do plano</td>
-        <td style="padding:7px 8px 7px 0">3 de 3</td>
-        <td style="padding:7px 0">17</td>
+        <td style="padding:7px 8px 7px 0">28,2% do plano</td>
+        <td style="padding:7px 8px 7px 0">0,56 / 0,44 / 0,27</td>
+        <td style="padding:7px 0">3 de 3</td>
       </tr>
       <tr style="border-bottom:1px solid currentColor">
         <td style="padding:7px 8px 7px 0">20</td>
-        <td style="padding:7px 8px 7px 0">35,1% do plano</td>
-        <td style="padding:7px 8px 7px 0">3 de 3</td>
-        <td style="padding:7px 0">27</td>
+        <td style="padding:7px 8px 7px 0">32,3% do plano</td>
+        <td style="padding:7px 8px 7px 0">0,56 / 0,44 / 0,28</td>
+        <td style="padding:7px 0">3 de 3</td>
       </tr>
       <tr>
         <td style="padding:7px 8px 7px 0">40</td>
-        <td style="padding:7px 8px 7px 0">35,2% do plano</td>
-        <td style="padding:7px 8px 7px 0">3 de 3</td>
-        <td style="padding:7px 0">47</td>
+        <td style="padding:7px 8px 7px 0">35,9% do plano</td>
+        <td style="padding:7px 8px 7px 0">0,55 / 0,45 / 0,30</td>
+        <td style="padding:7px 0">3 de 3</td>
       </tr>
     </tbody>
   </table>
 
   <p style="margin:0 0 .6em">
-    Os números são de uma execução com sorteio fixo. O que a tabela mostra é que o ganho é densidade, não informação: a contagem de pontos do grupo quadruplica e a região cobre um ponto percentual a mais do plano. Cresce um fio, e cresce depressa, porque o ponto inventado cai onde já havia vizinho do lado. O veredito dos casos de teste troca sem que o dado deles mude.
+    Os números são de uma execução com sorteio fixo. A inclinação da reta quase não muda: o que muda é o viés, o termo que carrega o balanço entre as classes. Com quarenta pontos inventados, o grupo deixa de ser um sexto da tabela e passa a ser mais da metade dela, e a região que o modelo dá a ele cobre quatorze pontos percentuais a mais do plano. A contagem subiu, o dado não mudou, e o balanço mudou.
   </p>
 
-  <p style="margin:0 0 .6em"><strong>Ponto notável.</strong> Nenhuma ficha nova entrou no conjunto de treino. O que mudou foi a densidade do grupo naquele canto do plano, e com ela a borda da região. O modelo não recebeu informação: recebeu a mesma informação mais concentrada.</p>
+  <p style="margin:0 0 .6em"><strong>Ponto notável.</strong> Nenhuma ficha nova entrou no conjunto de treino. O que mudou foi o quanto o modelo é punido por errar o grupo, e com isso a posição da reta. O modelo não recebeu informação: recebeu a mesma informação com outro peso na conta.</p>
 
-  <p style="margin:0">Ler a figura com uma pergunta: o que a região ganhou? Ganhou espaço em volta de pontos que já existiam, e não ganhou nenhuma ficha nova da escola.</p>
+  <p style="margin:0">Ler a figura com uma pergunta: o que a reta ganhou? Ganhou a obrigação de acertar pontos que ninguém mediu, e não ganhou nenhuma ficha nova da escola.</p>
 </figure>
