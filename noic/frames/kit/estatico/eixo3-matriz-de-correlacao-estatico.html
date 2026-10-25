@@ -1,0 +1,55 @@
+<!--
+  Gêmeo estático do frame `eixo3-matriz-de-correlacao.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  A MESMA ideia sem JS: os seis pares mais altos da matriz, em tabela.
+  Sem cor declarada: só a tinta da página (currentColor) e fio de 1px.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 8</strong> (versão estática): os seis pares com a maior correlação de Pearson nas mil linhas, o que cada um muda na leitura da ficha, e o que o botão esconde.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 8px 7px 0;font-weight:600">Par</th>
+        <th style="padding:7px 8px 7px 0;font-weight:600">r</th>
+        <th style="padding:7px 0;font-weight:600">O que isso muda</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">CEP e grupo</td>
+        <td style="padding:7px 8px 7px 0">0,86</td>
+        <td style="padding:7px 0">O CEP substitui o grupo: a coluna que o modelo usa carrega o turno inteiro.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">horas de estudo e label</td>
+        <td style="padding:7px 8px 7px 0">0,60</td>
+        <td style="padding:7px 0">Quem estuda mais passa mais, e essa relação não passa pelo grupo.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">CEP e label</td>
+        <td style="padding:7px 8px 7px 0">0,30</td>
+        <td style="padding:7px 0">O atalho chega à resposta sem citar o grupo em nenhum momento.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">grupo e label</td>
+        <td style="padding:7px 8px 7px 0">0,30</td>
+        <td style="padding:7px 0">O grupo declarado chega no mesmo tamanho do CEP, e é por isso que os dois se confundem.</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 8px 7px 0">horas de estudo e grupo</td>
+        <td style="padding:7px 8px 7px 0">0,13</td>
+        <td style="padding:7px 0">O noturno estuda um pouco mais, e o efeito é pequeno perto do CEP.</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 8px 7px 0">horas de estudo e CEP</td>
+        <td style="padding:7px 8px 7px 0">0,11</td>
+        <td style="padding:7px 0">Quem mora longe estuda um pouco mais: a linha do CEP já entrega isso.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em"><strong>O botão.</strong> Esconder a coluna do grupo tira a linha e a coluna dele da matriz, e o que fica são as correlações que não dependem da coluna declarada: CEP e label continuam em 0,30, e horas de estudo e label seguem em 0,60. A informação do grupo sai da tabela, e o atalho que a carregava não sai.</p>
+
+  <p style="margin:0">A idade e a altura andam perto de zero com todas as outras colunas: nenhuma das duas serve de atalho para a resposta.</p>
+</figure>
