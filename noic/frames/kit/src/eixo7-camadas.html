@@ -1,0 +1,114 @@
+<!--title: As cinco camadas do contexto-->
+<style>
+  .pilha { border: 1px solid currentColor; border-radius: 7px; margin-top: 2px; }
+  .camada {
+    display: grid; grid-template-columns: 9px minmax(0, 8.4em) minmax(0, 1fr);
+    column-gap: 10px; align-items: start;
+    padding: 7px 10px 7px 9px; border-bottom: 1px solid currentColor;
+    opacity: .52;
+  }
+  .camada:last-child { border-bottom: 0; }
+  .camada .dot { margin-top: .45em; }
+  .camada.on { opacity: 1; outline: 2px solid currentColor; outline-offset: -2px; }
+  .camada.on .dot { background: currentColor; }
+  .nome { font-size: 13px; font-weight: 600; line-height: 1.35; }
+  .nome .n { font-weight: 600; opacity: .6; margin-right: 5px; font-variant-numeric: tabular-nums; }
+  .quem { display: flex; flex-direction: column; gap: 2px; font-size: 10.5px; line-height: 1.4; }
+  .quem b { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; opacity: .65; margin-right: 4px; }
+  .msg { margin: 11px 0 0; padding-left: 11px; border-left: 3px solid currentColor; font-size: 12px; line-height: 1.45; min-height: 5.4em; }
+  .barra { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .barra .nota { font-size: 10.5px; opacity: .6; }
+</style>
+<div class="wrap">
+
+  <p class="kicker">Fig. 5: as cinco camadas do contexto</p>
+  <h1>O que vai para a janela, camada por camada</h1>
+  <p class="sub">As cinco vão juntas, nesta ordem, a cada turno. Em cada uma você escreve uma parte e o harness monta a outra.</p>
+
+  <div class="pilha" id="pilha">
+
+    <div class="camada" id="c1">
+      <i class="dot" aria-hidden="true"></i>
+      <span class="nome"><span class="n">1</span>prompt do sistema</span>
+      <span class="quem">
+        <span><b>você</b>o conteúdo do AGENTS.md, as regras do projeto, o tom</span>
+        <span><b>harness</b>a ordem das seções</span>
+      </span>
+    </div>
+
+    <div class="camada" id="c2">
+      <i class="dot" aria-hidden="true"></i>
+      <span class="nome"><span class="n">2</span>descrição das ferramentas</span>
+      <span class="quem">
+        <span><b>você</b>quais entram</span>
+        <span><b>harness</b>como cada uma é descrita e quanto do resultado entra</span>
+      </span>
+    </div>
+
+    <div class="camada" id="c3">
+      <i class="dot" aria-hidden="true"></i>
+      <span class="nome"><span class="n">3</span>índice de skills</span>
+      <span class="quem">
+        <span><b>você</b>quais existem e a descrição de uma linha</span>
+        <span><b>harness</b>só nome e descrição entram; o corpo é lido sob demanda</span>
+      </span>
+    </div>
+
+    <div class="camada" id="c4">
+      <i class="dot" aria-hidden="true"></i>
+      <span class="nome"><span class="n">4</span>histórico</span>
+      <span class="quem">
+        <span><b>você</b>o que pedir, o que corrigir</span>
+        <span><b>harness</b>o ponto de corte e o resumo que fica</span>
+      </span>
+    </div>
+
+    <div class="camada" id="c5">
+      <i class="dot" aria-hidden="true"></i>
+      <span class="nome"><span class="n">5</span>turno atual</span>
+      <span class="quem">
+        <span><b>você</b>a frase do pedido</span>
+        <span><b>harness</b>quanto dela cabe na janela</span>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="barra">
+    <button class="btn" id="next" aria-label="acender a próxima camada da pilha">acender a próxima camada ↓</button>
+    <span class="nota">a camada acesa é a que está na sua vez de ser montada</span>
+  </div>
+
+  <p class="msg" id="msg" aria-live="polite"></p>
+
+  <p class="foot">O que você escreve é conteúdo. O que o harness monta é forma: a ordem, o corte e o quanto de cada coisa cabe.</p>
+
+</div>
+
+<script>
+(function () {
+  var FRASE = [
+    'A camada 1 carrega o AGENTS.md, as regras do projeto e o tom. Você decide o conteúdo; o harness decide a ordem das seções.',
+    'A camada 2 carrega o que cada ferramenta sabe fazer. Você decide quais entram; o harness escreve a descrição e corta o resultado.',
+    'A camada 3 carrega uma linha por skill. Você decide quais existem; o harness envia só nome e descrição e lê o corpo sob demanda.',
+    'A camada 4 carrega o que já foi dito. Você decide o que pedir e o que corrigir; o harness decide o ponto de corte e o resumo.',
+    'A camada 5 carrega a sua frase. Você a escreve; o harness decide quanto dela cabe na janela.'
+  ];
+  var i = 0;
+  var msg = document.getElementById('msg');
+
+  function render() {
+    for (var k = 0; k < FRASE.length; k++) {
+      document.getElementById('c' + (k + 1)).classList.toggle('on', k === i);
+    }
+    msg.textContent = FRASE[i];
+  }
+
+  document.getElementById('next').addEventListener('click', function () {
+    i = (i + 1) % FRASE.length;
+    render();
+  });
+
+  render();
+})();
+</script>

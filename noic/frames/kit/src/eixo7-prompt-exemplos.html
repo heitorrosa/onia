@@ -1,0 +1,88 @@
+<!--title: O mesmo pedido em três estilos-->
+<style>
+  .estilos { display: flex; flex-wrap: wrap; gap: 7px; }
+  .estilos .btn { font-size: 12px; padding: 6px 10px; }
+  .prompt {
+    margin: 11px 0 0; padding: 10px 12px;
+    border: 1px solid currentColor; border-radius: 6px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11px; line-height: 1.5;
+    white-space: pre-wrap; overflow-wrap: break-word;
+    min-height: 6.5em;
+  }
+  .nota { display: flex; align-items: baseline; gap: 10px; margin-top: 11px; flex-wrap: wrap; }
+  .nota b { font-size: 26px; line-height: 1; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .nota span { font-size: 12px; }
+</style>
+<div class="wrap">
+
+  <p class="kicker">Fig. 4: o mesmo pedido em três estilos</p>
+  <h1>Três estilos, um pedido, três notas</h1>
+  <p class="sub">O pedido é o mesmo nas três versões. O que muda é quanto dele vai escrito antes: nenhum exemplo, dois exemplos, ou um passo de raciocínio.</p>
+
+  <div class="estilos" role="group" aria-label="estilo do prompt">
+    <button class="btn" data-i="0" aria-pressed="false" aria-label="ver o pedido em zero-shot">zero-shot</button>
+    <button class="btn" data-i="1" aria-pressed="true" aria-label="ver o pedido em few-shot">few-shot</button>
+    <button class="btn" data-i="2" aria-pressed="false" aria-label="ver o pedido em chain-of-thought">chain-of-thought</button>
+  </div>
+
+  <div class="prompt" id="prompt" aria-live="polite"></div>
+
+  <div class="nota">
+    <b id="nota">3/5</b>
+    <span id="crit"></span>
+  </div>
+
+  <p class="foot" id="leitura"></p>
+
+  <p class="foot">O few-shot ganhou forma e pagou 40 por cento mais texto. O chain-of-thought ganhou cobertura e estourou o teto de palavras.</p>
+
+</div>
+
+<script>
+(function () {
+  var ESTILOS = [
+    {
+      texto: 'Resuma o capítulo 3 de biologia em três seções nomeadas (o que é, como funciona, onde erra), 150 palavras no total, sem fórmula, só o capítulo, com a página de cada afirmação.',
+      nota: '3/5',
+      crit: 'falhou: formato (duas seções em vez de três)',
+      leitura: 'O pedido inteiro, sem exemplo: o modelo escolhe o formato que já viu antes.'
+    },
+    {
+      texto: 'Exemplo 1\npedido: resuma o capítulo 1 de química em três seções\n1. O que é: a ligação iônica, p. 12\n2. Como funciona: o elétron passa do metal ao ametal, p. 13\n3. Onde erra: confundir com covalente, p. 15\n\nExemplo 2\npedido: resuma o capítulo 2 de física em três seções\n1. O que é: a queda livre, p. 21\n2. Como funciona: a gravidade acelera o corpo, p. 22\n3. Onde erra: ignorar o ar, p. 24\n\nCopie a forma dos exemplos, não o conteúdo.\n\nResuma o capítulo 3 de biologia em três seções nomeadas (o que é, como funciona, onde erra), 150 palavras no total, sem fórmula, só o capítulo, com a página de cada afirmação.',
+      nota: '5/5',
+      crit: 'nenhum critério falhou',
+      leitura: 'Dois pares de exemplo antes do pedido: a forma vem pronta e o conteúdo fica livre.'
+    },
+    {
+      texto: 'Resuma o capítulo 3 de biologia em três seções nomeadas (o que é, como funciona, onde erra), 150 palavras no total, sem fórmula, só o capítulo, com a página de cada afirmação.\n\nAntes de escrever o resumo, liste os três assuntos que o capítulo cobre, diga qual página sustenta cada um, e só então escreva as três seções.',
+      nota: '4/5',
+      crit: 'falhou: restrição (172 palavras)',
+      leitura: 'O passo antes da resposta melhora a cobertura, mas gasta palavras que o teto não previa.'
+    }
+  ];
+
+  var botoes = document.querySelectorAll('.estilos .btn');
+  var elTexto = document.getElementById('prompt');
+  var elNota = document.getElementById('nota');
+  var elCrit = document.getElementById('crit');
+  var elLeitura = document.getElementById('leitura');
+
+  function render(i) {
+    var e = ESTILOS[i];
+    elTexto.textContent = e.texto;
+    elNota.textContent = e.nota;
+    elCrit.textContent = e.crit;
+    elLeitura.textContent = e.leitura;
+    for (var k = 0; k < botoes.length; k++) {
+      botoes[k].setAttribute('aria-pressed', k === i ? 'true' : 'false');
+    }
+  }
+
+  for (var k = 0; k < botoes.length; k++) {
+    botoes[k].addEventListener('click', function () { render(Number(this.dataset.i)); });
+  }
+
+  render(1);
+})();
+</script>

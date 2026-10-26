@@ -1,0 +1,45 @@
+<!--title: O mesmo pedido em três estilos-->
+<!--
+  Gêmeo estático do frame `eixo7-prompt-exemplos.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: os três prompts, as três notas e o critério que
+  falhou, em HTML puro.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 4</strong> (versão estática) - o mesmo pedido de resumo escrito nos três estilos, com a nota que cada um tirou.</figcaption>
+
+  <p style="margin:.4em 0 .8em">
+    O pedido é o mesmo nas três versões: resumir o capítulo 3 de biologia em três seções nomeadas,
+    150 palavras, com a página de cada afirmação. O que muda é quanto dele vai escrito antes.
+  </p>
+
+  <p style="margin:0 0 .3em"><strong>zero-shot</strong>, nota 3/5, falhou formato (duas seções em vez de três):</p>
+  <div style="border:1px solid currentColor;border-radius:6px;padding:9px 11px;font-family:ui-monospace,Consolas,monospace;font-size:.82em;line-height:1.5;white-space:pre-wrap;margin:0 0 1em">Resuma o capítulo 3 de biologia em três seções nomeadas (o que é, como funciona, onde erra), 150 palavras no total, sem fórmula, só o capítulo, com a página de cada afirmação.</div>
+
+  <p style="margin:0 0 .3em"><strong>few-shot</strong>, nota 5/5, nenhum critério falhou:</p>
+  <div style="border:1px solid currentColor;border-radius:6px;padding:9px 11px;font-family:ui-monospace,Consolas,monospace;font-size:.82em;line-height:1.5;white-space:pre-wrap;margin:0 0 1em">Exemplo 1
+pedido: resuma o capítulo 1 de química em três seções
+1. O que é: a ligação iônica, p. 12
+2. Como funciona: o elétron passa do metal ao ametal, p. 13
+3. Onde erra: confundir com covalente, p. 15
+
+Exemplo 2
+pedido: resuma o capítulo 2 de física em três seções
+1. O que é: a queda livre, p. 21
+2. Como funciona: a gravidade acelera o corpo, p. 22
+3. Onde erra: ignorar o ar, p. 24
+
+Copie a forma dos exemplos, não o conteúdo.
+
+Resuma o capítulo 3 de biologia em três seções nomeadas (o que é, como funciona, onde erra), 150 palavras no total, sem fórmula, só o capítulo, com a página de cada afirmação.</div>
+
+  <p style="margin:0 0 .3em"><strong>chain-of-thought</strong>, nota 4/5, falhou restrição (172 palavras):</p>
+  <div style="border:1px solid currentColor;border-radius:6px;padding:9px 11px;font-family:ui-monospace,Consolas,monospace;font-size:.82em;line-height:1.5;white-space:pre-wrap;margin:0 0 1em">Resuma o capítulo 3 de biologia em três seções nomeadas (o que é, como funciona, onde erra), 150 palavras no total, sem fórmula, só o capítulo, com a página de cada afirmação.
+
+Antes de escrever o resumo, liste os três assuntos que o capítulo cobre, diga qual página sustenta cada um, e só então escreva as três seções.</div>
+
+  <p style="margin:0">
+    O few-shot ganhou forma e pagou 40 por cento mais texto. O chain-of-thought ganhou cobertura
+    e estourou o teto de palavras. Cada estilo compra uma coisa e cobra outra.
+  </p>
+</figure>
