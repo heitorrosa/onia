@@ -18,6 +18,7 @@
    ========================================================================== */
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFile } = require('child_process');
 const http = require('http');
 
@@ -49,15 +50,20 @@ const tmp = path.join(dist, `_medir_${tag}.html`);
 /* dump-dom do Edge, com timeout */
 function dumpDom(url) {
   return new Promise((resolve) => {
+    /* perfil próprio por medição: sem --user-data-dir o headless divide o perfil
+       padrão, e uma instância que fica pendurada trava as seguintes. */
+    const prof = path.join(os.tmpdir(), `noic-edge-${process.pid}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`);
+    const limpar = () => { try { fs.rmSync(prof, { recursive: true, force: true }); } catch (e) { /* já saiu */ } };
     const p = execFile(EDGE, [
       '--headless=new', '--disable-gpu', '--no-sandbox',
+      `--user-data-dir=${prof}`,
       '--run-all-compositor-stages-before-draw',
       '--virtual-time-budget=9000', '--dump-dom', url
     ], { encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
     let out = '';
     p.stdout.on('data', d => { out += d; });
-    p.on('close', () => resolve(out));
-    p.on('error', () => resolve(''));
+    p.on('close', () => { limpar(); resolve(out); });
+    p.on('error', () => { limpar(); resolve(''); });
   });
 }
 
@@ -133,6 +139,7 @@ if (require.main === module) {
     });
 
     console.log('\n--- bloco completo para colar (o mesmo para todos) ---');
+    /* sem <figcaption>: o número e a leitura ficam dentro do próprio frame */
     console.log(`
 <figure class="noic-frame">
   <iframe src="https://<host>/noic/classes/FRAMESLUG.html"
@@ -140,7 +147,6 @@ if (require.main === module) {
           loading="lazy" referrerpolicy="no-referrer"
           style="width:100%;height:ALTURAPX;border:0;border-radius:8px;"
           sandbox="allow-scripts"></iframe>
-  <figcaption><strong>Fig. N</strong> — o que a interação mostra.</figcaption>
 </figure>
 `);
 

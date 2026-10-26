@@ -1,0 +1,64 @@
+<!--
+  Gêmeo estático do frame `eixo7-camadas.html`.
+  Vai no CORPO da página do WordPress (logo abaixo do iframe), não no frame.
+  É a MESMA ideia sem JS: as cinco camadas viram tabela, e a coluna do meio
+  separa o que o aluno escreve do que o harness monta.
+-->
+<figure class="noic-frame-static">
+  <figcaption><strong>Fig. 5</strong> (versão estática) — a pilha de contexto que o harness monta a cada turno, na ordem em que é enviada.</figcaption>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.94em;margin:.4em 0 1em">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid currentColor">
+        <th style="padding:7px 10px 7px 0;font-weight:600">camada</th>
+        <th style="padding:7px 10px 7px 0;font-weight:600">o que você decide</th>
+        <th style="padding:7px 10px 7px 0;font-weight:600">o que o harness monta</th>
+        <th style="padding:7px 0;font-weight:600">o que ela carrega</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">1. prompt do sistema</td>
+        <td style="padding:7px 10px 7px 0">o conteúdo do <code>AGENTS.md</code>, as regras do projeto, o tom</td>
+        <td style="padding:7px 10px 7px 0">a ordem das seções</td>
+        <td style="padding:7px 0">o que vale para a conversa inteira</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">2. descrição das ferramentas</td>
+        <td style="padding:7px 10px 7px 0">quais entram</td>
+        <td style="padding:7px 10px 7px 0">como cada uma é descrita e quanto do resultado entra</td>
+        <td style="padding:7px 0">o que o modelo pode fazer além de escrever</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">3. índice de skills</td>
+        <td style="padding:7px 10px 7px 0">quais existem e a descrição de uma linha</td>
+        <td style="padding:7px 10px 7px 0">só nome e descrição entram; o corpo é lido sob demanda</td>
+        <td style="padding:7px 0">o procedimento que pode ser aberto quando serve</td>
+      </tr>
+      <tr style="border-bottom:1px solid currentColor">
+        <td style="padding:7px 10px 7px 0">4. histórico</td>
+        <td style="padding:7px 10px 7px 0">o que pedir, o que corrigir</td>
+        <td style="padding:7px 10px 7px 0">o ponto de corte e o resumo que fica</td>
+        <td style="padding:7px 0">o que já foi dito e não precisa ser dito de novo</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 10px 7px 0">5. turno atual</td>
+        <td style="padding:7px 10px 7px 0">a frase do pedido</td>
+        <td style="padding:7px 10px 7px 0">quanto dela cabe na janela</td>
+        <td style="padding:7px 0">o pedido deste turno</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin:0 0 .6em">
+    As cinco vão juntas, nesta ordem, a cada turno. O que você escreve é conteúdo:
+    o <code>AGENTS.md</code>, a frase do pedido, a correção. O que o harness monta é forma:
+    a ordem das seções, o corte do histórico, o quanto de cada resultado entra.
+  </p>
+
+  <p style="margin:0">
+    É por isso que escrever um prompt melhor não basta quando a pilha é montada por outro:
+    o mesmo texto pode caber inteiro na camada 5 e chegar cortado, e a skill que você
+    escreveu pode entrar só pela descrição de uma linha.
+  </p>
+</figure>
